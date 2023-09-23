@@ -19,7 +19,8 @@ let package = Package.package(
         .iOS(.v15)
     ],
     dependencies: [
-        .package(url: "https://github.com/Alamofire/Alamofire", from: "5.8.0")
+        .package(url: "https://github.com/Alamofire/Alamofire", from: "5.8.0"),
+        .package(url: "https://github.com/nicklockwood/SwiftFormat", from: "0.52.4"),
     ],
     targets: [
         api

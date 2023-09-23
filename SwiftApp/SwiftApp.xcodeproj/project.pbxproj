@@ -121,6 +121,9 @@
 				en,
 			);
 			mainGroup = 65C9DD575CECF80C81395CC8;
+			packageReferences = (
+				609D101331B4F0906430DF9C /* XCRemoteSwiftPackageReference "SwiftFormat" */,
+			);
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -332,6 +335,17 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		609D101331B4F0906430DF9C /* XCRemoteSwiftPackageReference "SwiftFormat" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nicklockwood/SwiftFormat.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.52.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		DB9202C6AE0D2F6394563A4A /* API */ = {

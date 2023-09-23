@@ -20,6 +20,13 @@ configs:
   Debug: debug
   Release: release
 
+packages:
+  Package:
+    path: Package
+  SwiftFormat:
+    url: https://github.com/nicklockwood/SwiftFormat.git
+    from: 0.52.4
+
 targets:
   App:
     type: application
@@ -72,6 +79,3 @@ schemes:
     archive:
       config: Release
 
-packages:
-  Package:
-    path: Package
