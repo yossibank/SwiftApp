@@ -2,7 +2,7 @@ name: SwiftApp
 
 settings:
   base:
-    IPHONEOS_DEPLOYMENT_TARGET: 17.0
+    IPHONEOS_DEPLOYMENT_TARGET: 15.0
     MARKETING_VERSION: &marketing_version 1.0.0
     CURRENT_PROJECT_VERSION: &project_version 1.0
   configs:
@@ -14,7 +14,7 @@ settings:
 options:
   bundleIdPrefix: y.kamiyama
   deploymentTarget:
-    iOS: 17.0
+    iOS: 15.0
 
 configs:
   Debug: debug
@@ -30,6 +30,9 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: y.kamiyama.App
+    dependencies:
+      - package: Package
+        product: API
 
 schemeTemplates:
   Scheme:
@@ -68,3 +71,7 @@ schemes:
       config: Release
     archive:
       config: Release
+
+packages:
+  Package:
+    path: Package
