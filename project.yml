@@ -1,0 +1,70 @@
+name: SwiftApp
+
+settings:
+  base:
+    IPHONEOS_DEPLOYMENT_TARGET: 17.0
+    MARKETING_VERSION: &marketing_version 1.0.0
+    CURRENT_PROJECT_VERSION: &project_version 1.0
+  configs:
+    Debug:
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+    Release:
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: RELEASE
+
+options:
+  bundleIdPrefix: y.kamiyama
+  deploymentTarget:
+    iOS: 17.0
+
+configs:
+  Debug: debug
+  Release: release
+
+targets:
+  App:
+    type: application
+    platform: iOS
+    sources:
+      - path: ./SwiftApp/Sources
+        excludes: [Info.plist]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: y.kamiyama.App
+
+schemeTemplates:
+  Scheme:
+    build:
+      targets:
+        App: all
+
+schemes:
+  App-Debug:
+    templates:
+      - Scheme
+    build:
+      config: Debug
+    run:
+      config: Debug
+    test:
+      config: Debug
+    profile:
+      config: Debug
+    analyze:
+      config: Debug
+    archive:
+      config: Debug
+  App-Release:
+    templates:
+      - Scheme
+    build:
+      config: Release
+    run:
+      config: Release
+    test:
+      config: Release
+    profile:
+      config: Release
+    analyze:
+      config: Release
+    archive:
+      config: Release
