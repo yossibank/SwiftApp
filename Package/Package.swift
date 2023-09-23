@@ -13,6 +13,13 @@ let api = Target.target(
     dependenciesLibraries: [alamofire]
 )
 
+let apiTest = Target.testTarget(
+    name: "APITest",
+    dependencies: [
+        api
+    ]
+)
+
 let package = Package.package(
     name: "Package",
     platforms: [
@@ -25,7 +32,9 @@ let package = Package.package(
     targets: [
         api
     ],
-    testTargets: []
+    testTargets: [
+        apiTest
+    ]
 )
 
 extension Target {

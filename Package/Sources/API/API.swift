@@ -6,4 +6,8 @@ public final class APIClient {
     public func request() {
         print("Request!!!")
     }
+
+    public func test() -> String {
+        "Test!!!"
+    }
 }
