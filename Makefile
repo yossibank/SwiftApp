@@ -3,6 +3,7 @@ setup:
 	brew bundle
 	mint bootstrap
 	make xcodegen
+	make open
 
 .PHONY: open
 open:
@@ -11,6 +12,10 @@ open:
 .PHONY: xcodegen
 xcodegen:
 	mint run xcodegen --spec project.yml --project SwiftApp
+
+.PHONY: format
+format:
+	swift run --package-path BuildTools swiftformat .
 
 .PHONY: clean
 clean:
