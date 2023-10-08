@@ -23,6 +23,8 @@ configs:
 packages:
   Package:
     path: ./Package
+  StructBuilderMacro:
+    path: ./Macro/StructBuilderMacro
   SwiftFormat:
     url: https://github.com/nicklockwood/SwiftFormat.git
     from: 0.52.4
@@ -40,6 +42,8 @@ targets:
     dependencies:
       - package: Package
         product: API
+      - package: StructBuilderMacro
+        product: StructBuilderMacro
 
 schemeTemplates:
   Scheme:
