@@ -1,4 +1,4 @@
-import StructBuilderMacro
+import StructBuilder
 
 let a = 17
 let b = 25

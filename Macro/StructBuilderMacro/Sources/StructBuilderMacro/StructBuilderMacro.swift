@@ -1,11 +1,33 @@
-// The Swift Programming Language
-// https://docs.swift.org/swift-book
+import SwiftCompilerPlugin
+import SwiftSyntax
+import SwiftSyntaxBuilder
+import SwiftSyntaxMacros
 
-/// A macro that produces both a value and a string containing the
-/// source code that generated the value. For example,
+/// Implementation of the `stringify` macro, which takes an expression
+/// of any type and produces a tuple containing the value of that expression
+/// and the source code that produced the value. For example
 ///
 ///     #stringify(x + y)
 ///
-/// produces a tuple `(x + y, "x + y")`.
-@freestanding(expression)
-public macro stringify<T>(_ value: T) -> (T, String) = #externalMacro(module: "StructBuilderMacroMacros", type: "StringifyMacro")
+///  will expand to
+///
+///     (x + y, "x + y")
+public struct StringifyMacro: ExpressionMacro {
+    public static func expansion(
+        of node: some FreestandingMacroExpansionSyntax,
+        in context: some MacroExpansionContext
+    ) -> ExprSyntax {
+        guard let argument = node.argumentList.first?.expression else {
+            fatalError("compiler bug: the macro does not have any arguments")
+        }
+
+        return "(\(argument), \(literal: argument.description))"
+    }
+}
+
+@main
+struct StructBuilderPlugin: CompilerPlugin {
+    let providingMacros: [Macro.Type] = [
+        StringifyMacro.self
+    ]
+}
