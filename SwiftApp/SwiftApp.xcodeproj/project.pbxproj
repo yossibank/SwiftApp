@@ -3,22 +3,22 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		0A90EEDAA45249BBA6EFB15B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 814303125DC2C4CAABED3DCE /* Assets.xcassets */; };
 		12ADF72A7E597266B19F9FCB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBB3C8AB5EB3D082FABD97B /* ContentView.swift */; };
-		1496F119A55786F537081C4F /* SwiftApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0762CCD046A7FBB9AFAF1213 /* SwiftApp.swift */; };
+		79047AA2264D395AC275A2F0 /* SwiftApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49E1512D026996BA5DB68900 /* SwiftApp.swift */; };
 		C59640445810340D51A9A95B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 188231E93446F6A7CB812ABA /* Preview Assets.xcassets */; };
 		EF06E3E68082ADB5E6CEA325 /* API in Frameworks */ = {isa = PBXBuildFile; productRef = DB9202C6AE0D2F6394563A4A /* API */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0762CCD046A7FBB9AFAF1213 /* SwiftApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftApp.swift; sourceTree = "<group>"; };
 		0FE14076DEB340E44002FC28 /* App.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		188231E93446F6A7CB812ABA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		4055BF40F34ABCE4CB900688 /* Package */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Package; path = ../Package; sourceTree = SOURCE_ROOT; };
+		49E1512D026996BA5DB68900 /* SwiftApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftApp.swift; sourceTree = "<group>"; };
 		4BBB3C8AB5EB3D082FABD97B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		814303125DC2C4CAABED3DCE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -40,7 +40,7 @@
 			children = (
 				814303125DC2C4CAABED3DCE /* Assets.xcassets */,
 				4BBB3C8AB5EB3D082FABD97B /* ContentView.swift */,
-				0762CCD046A7FBB9AFAF1213 /* SwiftApp.swift */,
+				49E1512D026996BA5DB68900 /* SwiftApp.swift */,
 				22566DF1AF11FC193A253933 /* Preview Content */,
 			);
 			path = Sources;
@@ -108,8 +108,9 @@
 		4D5AD64E64049143C718FE55 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 1200;
+				TargetAttributes = {
+				};
 			};
 			buildConfigurationList = 5731D47799DEB4F676348823 /* Build configuration list for PBXProject "SwiftApp" */;
 			compatibilityVersion = "Xcode 10.0";
@@ -149,7 +150,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				12ADF72A7E597266B19F9FCB /* ContentView.swift in Sources */,
-				1496F119A55786F537081C4F /* SwiftApp.swift in Sources */,
+				79047AA2264D395AC275A2F0 /* SwiftApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,7 +195,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -286,7 +286,6 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
