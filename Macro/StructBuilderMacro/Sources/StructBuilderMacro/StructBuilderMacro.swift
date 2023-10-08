@@ -25,9 +25,34 @@ public struct StringifyMacro: ExpressionMacro {
     }
 }
 
+public struct CustomBuilderMacro: PeerMacro {
+    public static func expansion(
+        of node: AttributeSyntax,
+        providingPeersOf declaration: some DeclSyntaxProtocol,
+        in context: some MacroExpansionContext
+    ) throws -> [DeclSyntax] {
+        guard let structDeclration = declaration.as(StructDeclSyntax.self) else {
+            return []
+        }
+
+        return ["""
+        struct PersonBuilder {
+            var name: String = ""
+
+            func build() -> Person {
+                return Person(
+                    name: name
+                )
+            }
+        }
+        """]
+    }
+}
+
 @main
 struct StructBuilderPlugin: CompilerPlugin {
     let providingMacros: [Macro.Type] = [
-        StringifyMacro.self
+        StringifyMacro.self,
+        CustomBuilderMacro.self
     ]
 }

@@ -3,20 +3,39 @@ import SwiftSyntaxMacros
 import SwiftSyntaxMacrosTestSupport
 import XCTest
 
-let testMacros: [String: Macro.Type] = [
+let testBuilderMacros: [String: Macro.Type] = [
+    "CustomBuilder": CustomBuilderMacro.self
+]
+
+let testStringifyMacros: [String: Macro.Type] = [
     "stringify": StringifyMacro.self
 ]
 
 final class StructBuilderMacroTests: XCTestCase {
-    func testMacro() throws {
+    func testMacroWithCustomBuilder() throws {
         assertMacroExpansion(
             """
-            #stringify(a + b)
+            @CustomBuilder
+            struct Person {
+                let name: String
+            }
             """,
             expandedSource: """
-            (a + b, "a + b")
+            struct Person {
+                let name: String
+            }
+
+            struct PersonBuilder {
+                var name: String = ""
+
+                func build() -> Person {
+                    return Person(
+                        name: name
+                    )
+                }
+            }
             """,
-            macros: testMacros
+            macros: testBuilderMacros
         )
     }
 
@@ -28,7 +47,7 @@ final class StructBuilderMacroTests: XCTestCase {
             expandedSource: #"""
             ("Hello, \(name)", #""Hello, \(name)""#)
             """#,
-            macros: testMacros
+            macros: testStringifyMacros
         )
     }
 }
