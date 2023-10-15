@@ -118,17 +118,17 @@ public struct CustomBuilderMacro: PeerMacro {
         // MemberBlockItemSyntaxからVariableDeclSyntaxを生成(プロパティ生成、例でのlet name: Stringの部分)
         func getMemberVaiable(member: Member) -> VariableDeclSyntax {
             VariableDeclSyntax(
-                bindingSpecifier: .keyword(.let),
+                bindingSpecifier: .keyword(.var),
                 bindings: PatternBindingListSyntax([
                     PatternBindingSyntax(
                         pattern: IdentifierPatternSyntax(identifier: member.identifier),
-                        typeAnnotation: TypeAnnotationSyntax(type: member.type)
+                        typeAnnotation: TypeAnnotationSyntax(type: member.type),
+                        initializer: InitializerClauseSyntax(value: ExprSyntax(stringLiteral: "\"\""))
                     )
                 ])
             )
         }
 
-        var returnStatement = ReturnStmtSyntax()
         // 関数でreturnされる中身作成
         // calledExpression: 構造体名「Person」
         // leftParen: 「(」のこと(引数内のtrailingTriviaで右側に処理「改行してさらにスペースを4つ分空ける」)
@@ -138,18 +138,20 @@ public struct CustomBuilderMacro: PeerMacro {
         // rightParen: 「)」のこと(引数内のleadingTriviaで左側に処理「改行する」)
         //
         // ※ trimmed: leadingTrivia, trailingTraviaを取り除く
-        returnStatement.expression = ExprSyntax(
-            FunctionCallExprSyntax(
-                calledExpression: DeclReferenceExprSyntax(baseName: structDeclaration.name.trimmed),
-                leftParen: .leftParenToken(trailingTrivia: .newline.appending(Trivia.spaces(4))),
-                arguments: LabeledExprListSyntax {
-                    for member in members {
-                        LabeledExprSyntax(
-                            label: member.identifier.text,
-                            expression: ExprSyntax(stringLiteral: member.identifier.text))
-                    }
-                },
-                rightParen: .rightParenToken(leadingTrivia: .newline)
+        let returnStatement = ReturnStmtSyntax(
+            expression: ExprSyntax(
+                FunctionCallExprSyntax(
+                    calledExpression: DeclReferenceExprSyntax(baseName: structDeclaration.name.trimmed),
+                    leftParen: .leftParenToken(trailingTrivia: .newline.appending(Trivia.spaces(4))),
+                    arguments: LabeledExprListSyntax {
+                        for member in members {
+                            LabeledExprSyntax(
+                                label: member.identifier.text,
+                                expression: ExprSyntax(stringLiteral: member.identifier.text))
+                        }
+                    },
+                    rightParen: .rightParenToken(leadingTrivia: .newline)
+                )
             )
         )
 
@@ -184,7 +186,7 @@ public struct CustomBuilderMacro: PeerMacro {
                     for member in members {
                         MemberBlockItemSyntax(decl: getMemberVaiable(member: member))
                     }
-                    MemberBlockItemListSyntax.Element(decl: buildFunction)
+                    MemberBlockItemListSyntax.Element(leadingTrivia: .newlines(2), decl: buildFunction)
                 }
             }
         )
