@@ -25,6 +25,10 @@ public struct StringifyMacro: ExpressionMacro {
     }
 }
 
+extension String: Error {}
+
+typealias Members = (identifier: TokenSyntax, type: TypeSyntax)
+
 // https://swift-ast-explorer.com/
 //
 // 【ベース】
@@ -83,16 +87,50 @@ public struct CustomBuilderMacro: PeerMacro {
             return []
         }
 
-        // 構造体の全てのプロパティ名抽出(例での`name`)
-        let members = structDeclaration.memberBlock.members
-            .compactMap { $0.decl.as(VariableDeclSyntax.self)?.bindings.first }
-            .compactMap { $0.pattern.as(IdentifierPatternSyntax.self) }
+        // 構造体の全てのプロパティ名、型名抽出(例での`name`, `String型`)
+        let members = try structDeclaration.memberBlock.members
+            .filter {
+                _ = try getIdentifierMember($0)
+                _ = try getTypeFromMember($0)
+                return true
+            }
+
+        // MemberBlockItemSyntaxからIdentifierPatternSyntaxのidentifierを取り出す(例でのnameという変数名)
+        func getIdentifierMember(_ member: MemberBlockItemSyntax) throws -> TokenSyntax {
+            guard let identifier = member.decl.as(VariableDeclSyntax.self)?.bindings.first?.pattern.as(IdentifierPatternSyntax.self)?.identifier else {
+                throw "Missing identifier on member"
+            }
+
+            return identifier
+        }
+
+        // MemberBlockItemSyntaxからTypeAnnotationSyntaxのtype(型)を取り出す(例でのStringという型)
+        func getTypeFromMember(_ member: MemberBlockItemSyntax) throws -> TypeSyntax {
+            guard let type = member.decl.as(VariableDeclSyntax.self)?.bindings.first?.typeAnnotation?.as(TypeAnnotationSyntax.self)?.type else {
+                throw "Missing type on member"
+            }
+
+            return type
+        }
 
         // 「構造体名+Builder」という名前を生成(構造体名Personの場合はPersonBuilder)
         // `trailingTrivia`を使用して右にスペース1つ分空ける(この後に「{」をつけるため)
         let name = TokenSyntax
             .identifier(structDeclaration.name.text + "Builder")
             .with(\.trailingTrivia, .spaces(1))
+
+        // MemberBlockItemSyntaxからVariableDeclSyntaxを生成(プロパティ生成、例でのlet name: Stringの部分)
+        func getMemberVaiable(member: MemberBlockItemSyntax) throws -> VariableDeclSyntax {
+            VariableDeclSyntax(
+                bindingSpecifier: .keyword(.let),
+                bindings: PatternBindingListSyntax([
+                    PatternBindingSyntax(
+                        pattern: IdentifierPatternSyntax(identifier: try getIdentifierMember(member)),
+                        typeAnnotation: TypeAnnotationSyntax(type: try getTypeFromMember(member))
+                    )
+                ])
+            )
+        }
 
         var returnStatement = ReturnStmtSyntax()
         // 関数でreturnされる中身作成
@@ -109,10 +147,12 @@ public struct CustomBuilderMacro: PeerMacro {
                 calledExpression: DeclReferenceExprSyntax(baseName: structDeclaration.name.trimmed),
                 leftParen: .leftParenToken(trailingTrivia: .newline.appending(Trivia.spaces(4))),
                 arguments: LabeledExprListSyntax(
-                    members.map { member in
-                        LabeledExprSyntax(
-                            label: member.identifier.text,
-                            expression: ExprSyntax(stringLiteral: member.identifier.text)
+                    try members.map { member in
+                        let identifier = try getIdentifierMember(member)
+
+                        return LabeledExprSyntax(
+                            label: identifier.text,
+                            expression: ExprSyntax(stringLiteral: identifier.text)
                         )
                     }
                 ),
@@ -143,12 +183,15 @@ public struct CustomBuilderMacro: PeerMacro {
         // 構造体の作成
         // name: 構造体名「PersonBuilder」
         // memberBlockBuilder: 構造体が持つ関数「build()」
-        let structureDeclaration = StructDeclSyntax(
+        let structureDeclaration = try StructDeclSyntax(
             name: name,
             memberBlockBuilder: {
-                MemberBlockItemListSyntax([
+                try MemberBlockItemListSyntax {
+                    for member in members {
+                        MemberBlockItemSyntax(decl: try getMemberVaiable(member: member))
+                    }
                     MemberBlockItemListSyntax.Element(decl: buildFunction)
-                ])
+                }
             }
         )
 
