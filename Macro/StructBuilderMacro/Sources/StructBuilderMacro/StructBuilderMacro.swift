@@ -12,8 +12,6 @@ struct StructBuilderPlugin: CompilerPlugin {
 
 extension String: Error {}
 
-typealias Member = (identifier: TokenSyntax, type: TypeSyntax)
-
 // https://swift-ast-explorer.com/
 //
 // 【ベース】
@@ -61,6 +59,38 @@ typealias Member = (identifier: TokenSyntax, type: TypeSyntax)
 // (14) TypeAnnotationSyntax(colon: colon, type: IdentifierTypeSyntax)
 // (15) TokenSyntax(kind: colon, text: :)
 // (16) IdentifierTypeSyntax(name: identifier("String"))
+
+/// Implementation of the `CustomBuilder` macro, which takes a struct declaration
+/// and produces a peer struct which implements the builder pattern
+///
+///     @CustomBuilder
+///     struct Person {
+///         name: String
+///         age: Int
+///         address: Address
+///     }
+///
+/// will expand to
+///
+///     struct Person {
+///         let name: String
+///         let age: Int
+///         let address: Address
+///     }
+///
+///     struct PersonBuilder {
+///         var name: String = ""
+///         var age: Int = 0
+///         var address: Address = AddressBuilder().build()
+///
+///         func build() -> Person {
+///             return Person(
+///                 name: name,
+///                 age: age,
+///                 address: address
+///             )
+///         }
+///     }
 public struct CustomBuilderMacro: PeerMacro {
     public static func expansion(
         of node: AttributeSyntax,
@@ -72,23 +102,8 @@ public struct CustomBuilderMacro: PeerMacro {
             throw "Macro can only be applied to structs"
         }
 
-        // MemberBlockItemSyntaxからIdentifierPatternSyntaxのidentifierを取り出す(例でのnameという変数名)
-        func getIdentifierMember(_ member: MemberBlockItemSyntax) throws -> TokenSyntax {
-            guard let identifier = member.decl.as(VariableDeclSyntax.self)?.bindings.first?.pattern.as(IdentifierPatternSyntax.self)?.identifier else {
-                throw "Missing identifier on member"
-            }
-
-            return identifier
-        }
-
-        // MemberBlockItemSyntaxからTypeAnnotationSyntaxのtype(型)を取り出す(例でのStringという型)
-        func getTypeFromMember(_ member: MemberBlockItemSyntax) throws -> TypeSyntax {
-            guard let type = member.decl.as(VariableDeclSyntax.self)?.bindings.first?.typeAnnotation?.as(TypeAnnotationSyntax.self)?.type else {
-                throw "Missing type on member"
-            }
-
-            return type
-        }
+        // 構造体の全てのプロパティ名、型名抽出(例での`name`, `String型`)
+        let members: [Member] = try MemberMapper.mapFrom(members:structDeclaration.memberBlock.members)
 
         // 「構造体名+Builder」という名前を生成(構造体名Personの場合はPersonBuilder)
         // `trailingTrivia`を使用して右にスペース1つ分空ける(この後に「{」をつけるため)
@@ -96,95 +111,21 @@ public struct CustomBuilderMacro: PeerMacro {
             .identifier(structDeclaration.name.text + "Builder")
             .with(\.trailingTrivia, .spaces(1))
 
-        // 構造体の全てのプロパティ名、型名抽出(例での`name`, `String型`)
-        let members: [Member] = try structDeclaration.memberBlock.members
-            .map { (identifier: try getIdentifierMember($0), type: try getTypeFromMember($0)) }
-
-        // TypeSyntaxからtype(型)の情報をInitializerClauseSyntaxとして取り出す
-        func getDefaultInitializerClause(type: TypeSyntax) -> InitializerClauseSyntax? {
-            guard let defaultExpr = TypeMapper.getDefaultValueFor(type: type) else {
-                return nil
-            }
-
-            return InitializerClauseSyntax(value: defaultExpr)
-        }
-
-        // MemberBlockItemSyntaxからVariableDeclSyntaxを生成(プロパティ生成、例でのlet name: Stringの部分)
-        func getMemberVaiable(member: Member) -> VariableDeclSyntax {
-            VariableDeclSyntax(
-                bindingSpecifier: .keyword(.var),
-                bindings: PatternBindingListSyntax {
-                    PatternBindingSyntax(
-                        pattern: IdentifierPatternSyntax(identifier: member.identifier),
-                        typeAnnotation: TypeAnnotationSyntax(type: member.type),
-                        initializer: getDefaultInitializerClause(type: member.type)
-                    )
-                }
-            )
-        }
-
-        // 関数でreturnされる中身作成
-        // calledExpression: 構造体名「Person」
-        // leftParen: 「(」のこと
-        // arguments: 中身
-        //     leadingTrivia: 「改行」
-        //     label: ラベル名(プロパティ名)「TokenSyntax: name」
-        //     colon: コロン「:」
-        //     expression: 値(プロパティ名)「ExprSyntax: name」
-        // rightParen: 「)」のこと(引数内のleadingTriviaで左側に処理「改行する」)
-        //
-        // ※ trimmed: leadingTrivia, trailingTraviaを取り除く
-        let buildFunctionReturnStatement = ReturnStmtSyntax(
-            expression: ExprSyntax(
-                FunctionCallExprSyntax(
-                    calledExpression: DeclReferenceExprSyntax(baseName: structDeclaration.name.trimmed),
-                    leftParen: .leftParenToken(),
-                    arguments: LabeledExprListSyntax {
-                        for member in members {
-                            LabeledExprSyntax(
-                                leadingTrivia: .newline,
-                                label: member.identifier,
-                                colon: TokenSyntax(.colon, presence: .present),
-                                expression: ExprSyntax(stringLiteral: member.identifier.text))
-                        }
-                    },
-                    rightParen: .rightParenToken(leadingTrivia: .newline)
-                )
-            )
-        )
-
-        // 関数の情報作成
-        // parameterClause: 引数情報(今回は不要なため空配列)
-        // returnClause: 戻り値(TypeSyntaxで型指定、型名は構造体名)
-        let buildFunctionSignature = FunctionSignatureSyntax(
-            parameterClause: FunctionParameterClauseSyntax(parameters: FunctionParameterListSyntax([])),
-            returnClause: ReturnClauseSyntax(type: TypeSyntax(stringLiteral: structDeclaration.name.text))
-        )
-
-        // 関数の作成
-        // name: 関数名「build」
-        // signature: 関数の情報「上のbuildFunctionSignature使用」
-        let buildFunction = FunctionDeclSyntax(
-            name: .identifier("build"),
-            signature: buildFunctionSignature
-        ) {
-            // 関数内の中身
-            CodeBlockItemListSyntax {
-                CodeBlockItemSyntax(
-                    item: CodeBlockItemListSyntax.Element.Item.stmt(StmtSyntax(buildFunctionReturnStatement))
-                )
-            }
-        }
-
         // 構造体の作成
         // name: 構造体名「PersonBuilder」
         // memberBlockBuilder: 構造体が持つ関数「build()」
         let structureDeclaration = StructDeclSyntax(name: structName) {
             MemberBlockItemListSyntax {
                 for member in members {
-                    MemberBlockItemSyntax(decl: getMemberVaiable(member: member))
+                    MemberBlockItemSyntax(decl: VariableDeclFactory.makeMemberVaiable(member: member))
                 }
-                MemberBlockItemListSyntax.Element(leadingTrivia: .newlines(2), decl: buildFunction)
+                MemberBlockItemListSyntax.Element(
+                    leadingTrivia: .newlines(2),
+                    decl: FunctionDeclFactory.makeFunctionDeclFrom(
+                        structDeclaration: structDeclaration,
+                        members: members
+                    )
+                )
             }
         }
 
