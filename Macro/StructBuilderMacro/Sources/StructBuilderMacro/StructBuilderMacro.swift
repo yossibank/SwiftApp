@@ -212,6 +212,10 @@ struct TypeMapper {
     ]
 
     static func getDefaultValueFor(type: TypeSyntax) -> ExprSyntax {
+        guard type.kind != .arrayType else {
+            return ExprSyntax(stringLiteral: "[]")
+        }
+
         guard let defaultValue = mapping[type.trimmedDescription] else {
             return ExprSyntax(stringLiteral: type.trimmedDescription + "Builder().build()")
         }
