@@ -2,5 +2,13 @@ import StructBuilder
 
 //@CustomBuilder
 struct House {
-    let numberOfRooms: Int
+    let name: String
+    var familyName: String = ""
+    let sofaBrand: String
+    let kitchenBrand: String
+}
+
+//@CustomBuilder
+struct Car {
+    let wheelsType: String
 }
