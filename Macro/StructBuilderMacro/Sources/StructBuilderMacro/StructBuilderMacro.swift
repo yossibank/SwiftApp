@@ -116,10 +116,12 @@ public struct CustomBuilderMacro: PeerMacro {
 
         // 関数でreturnされる中身作成
         // calledExpression: 構造体名「Person」
-        // leftParen: 「(」のこと(引数内のtrailingTriviaで右側に処理「改行してさらにスペースを4つ分空ける」)
+        // leftParen: 「(」のこと
         // arguments: 中身
-        //     label: ラベル名(プロパティ名)「name」
-        //     expression: 値(プロパティ名)「name」
+        //     leadingTrivia: 「改行」
+        //     label: ラベル名(プロパティ名)「TokenSyntax: name」
+        //     colon: コロン「:」
+        //     expression: 値(プロパティ名)「ExprSyntax: name」
         // rightParen: 「)」のこと(引数内のleadingTriviaで左側に処理「改行する」)
         //
         // ※ trimmed: leadingTrivia, trailingTraviaを取り除く
@@ -127,11 +129,13 @@ public struct CustomBuilderMacro: PeerMacro {
             expression: ExprSyntax(
                 FunctionCallExprSyntax(
                     calledExpression: DeclReferenceExprSyntax(baseName: structDeclaration.name.trimmed),
-                    leftParen: .leftParenToken(trailingTrivia: .newline.appending(Trivia.spaces(4))),
+                    leftParen: .leftParenToken(),
                     arguments: LabeledExprListSyntax {
                         for member in members {
                             LabeledExprSyntax(
-                                label: member.identifier.text,
+                                leadingTrivia: .newline,
+                                label: member.identifier,
+                                colon: TokenSyntax(.colon, presence: .present),
                                 expression: ExprSyntax(stringLiteral: member.identifier.text))
                         }
                     },

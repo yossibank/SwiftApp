@@ -56,7 +56,7 @@ final class StructBuilderMacroTests: XCTestCase {
 
                 func build() -> Person {
                     return Person(
-                        name: name
+                        name: name,
                         middleName: middleName
                     )
                 }
