@@ -104,13 +104,13 @@ public struct CustomBuilderMacro: PeerMacro {
         func getMemberVaiable(member: Member) -> VariableDeclSyntax {
             VariableDeclSyntax(
                 bindingSpecifier: .keyword(.var),
-                bindings: PatternBindingListSyntax([
+                bindings: PatternBindingListSyntax {
                     PatternBindingSyntax(
                         pattern: IdentifierPatternSyntax(identifier: member.identifier),
                         typeAnnotation: TypeAnnotationSyntax(type: member.type),
                         initializer: InitializerClauseSyntax(value: ExprSyntax(stringLiteral: "\"\""))
                     )
-                ])
+                }
             )
         }
 
@@ -123,7 +123,7 @@ public struct CustomBuilderMacro: PeerMacro {
         // rightParen: 「)」のこと(引数内のleadingTriviaで左側に処理「改行する」)
         //
         // ※ trimmed: leadingTrivia, trailingTraviaを取り除く
-        let returnStatement = ReturnStmtSyntax(
+        let buildFunctionReturnStatement = ReturnStmtSyntax(
             expression: ExprSyntax(
                 FunctionCallExprSyntax(
                     calledExpression: DeclReferenceExprSyntax(baseName: structDeclaration.name.trimmed),
@@ -140,41 +140,40 @@ public struct CustomBuilderMacro: PeerMacro {
             )
         )
 
+        // 関数の情報作成
+        // parameterClause: 引数情報(今回は不要なため空配列)
+        // returnClause: 戻り値(TypeSyntaxで型指定、型名は構造体名)
+        let buildFunctionSignature = FunctionSignatureSyntax(
+            parameterClause: FunctionParameterClauseSyntax(parameters: FunctionParameterListSyntax([])),
+            returnClause: ReturnClauseSyntax(type: TypeSyntax(stringLiteral: structDeclaration.name.text))
+        )
+
         // 関数の作成
         // name: 関数名「build」
-        // signature: 関数の情報
-        //     parameterClause: 引数情報(今回は不要なため空配列)
-        //     returnClause: 戻り値(TypeSyntaxで型指定、型名は構造体名)
+        // signature: 関数の情報「上のbuildFunctionSignature使用」
         let buildFunction = FunctionDeclSyntax(
             name: .identifier("build"),
-            signature: FunctionSignatureSyntax(
-                parameterClause: FunctionParameterClauseSyntax(parameters: FunctionParameterListSyntax([])),
-                returnClause: ReturnClauseSyntax(type: TypeSyntax(stringLiteral: structDeclaration.name.text))
-            ),
-            bodyBuilder: {
-                // 関数内の中身
-                CodeBlockItemListSyntax([
-                    CodeBlockItemListSyntax.Element(
-                        item: CodeBlockItemListSyntax.Element.Item.stmt(StmtSyntax(returnStatement))
-                    )
-                ])
+            signature: buildFunctionSignature
+        ) {
+            // 関数内の中身
+            CodeBlockItemListSyntax {
+                CodeBlockItemSyntax(
+                    item: CodeBlockItemListSyntax.Element.Item.stmt(StmtSyntax(buildFunctionReturnStatement))
+                )
             }
-        )
+        }
 
         // 構造体の作成
         // name: 構造体名「PersonBuilder」
         // memberBlockBuilder: 構造体が持つ関数「build()」
-        let structureDeclaration = StructDeclSyntax(
-            name: structName,
-            memberBlockBuilder: {
-                MemberBlockItemListSyntax {
-                    for member in members {
-                        MemberBlockItemSyntax(decl: getMemberVaiable(member: member))
-                    }
-                    MemberBlockItemListSyntax.Element(leadingTrivia: .newlines(2), decl: buildFunction)
+        let structureDeclaration = StructDeclSyntax(name: structName) {
+            MemberBlockItemListSyntax {
+                for member in members {
+                    MemberBlockItemSyntax(decl: getMemberVaiable(member: member))
                 }
+                MemberBlockItemListSyntax.Element(leadingTrivia: .newlines(2), decl: buildFunction)
             }
-        )
+        }
 
         return [DeclSyntax(structureDeclaration)]
     }
