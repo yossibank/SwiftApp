@@ -4,14 +4,14 @@ import SwiftSyntaxMacrosTestSupport
 import XCTest
 
 let testMacros: [String: Macro.Type] = [
-    "CustomBuilder": CustomBuilderMacro.self
+    "Buildable": BuildableMacro.self
 ]
 
-final class StructBuilderMacroTests: XCTestCase {
+final class BuildableMacroTests: XCTestCase {
     func test_macro_with_one_string_number() throws {
         assertMacroExpansion(
             """
-            @CustomBuilder
+            @Buildable
             struct Person {
                 let name: String
             }
@@ -38,7 +38,7 @@ final class StructBuilderMacroTests: XCTestCase {
     func test_macro_with_two_string_number() throws {
         assertMacroExpansion(
             """
-            @CustomBuilder
+            @Buildable
             struct Person {
                 let name: String
                 let middleName: String
@@ -69,7 +69,7 @@ final class StructBuilderMacroTests: XCTestCase {
     func test_macro_with_different_types() {
         assertMacroExpansion(
             """
-            @CustomBuilder
+            @Buildable
             struct MyObject {
                 let m01: String
                 let m02: Int
@@ -184,7 +184,7 @@ final class StructBuilderMacroTests: XCTestCase {
     func test_macro_with_array_types() {
         assertMacroExpansion(
             """
-            @CustomBuilder
+            @Buildable
             struct MyObject {
                 let m1: [String]
                 let m2: [MyOtherObject]
@@ -215,7 +215,7 @@ final class StructBuilderMacroTests: XCTestCase {
     func test_macro_with_optional_types() {
         assertMacroExpansion(
             """
-            @CustomBuilder
+            @Buildable
             struct MyObject {
                 let m1: String?
                 let m2: [Int]?

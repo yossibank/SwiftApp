@@ -4,13 +4,11 @@ import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
 
 @main
-struct StructBuilderPlugin: CompilerPlugin {
+struct BuildablePlugin: CompilerPlugin {
     let providingMacros: [Macro.Type] = [
-        CustomBuilderMacro.self
+        BuildableMacro.self
     ]
 }
-
-extension String: Error {}
 
 // https://swift-ast-explorer.com/
 //
@@ -60,10 +58,10 @@ extension String: Error {}
 // (15) TokenSyntax(kind: colon, text: :)
 // (16) IdentifierTypeSyntax(name: identifier("String"))
 
-/// Implementation of the `CustomBuilder` macro, which takes a struct declaration
+/// Implementation of the `Buildable` macro, which takes a struct declaration
 /// and produces a peer struct which implements the builder pattern
 ///
-///     @CustomBuilder
+///     @Buildable
 ///     struct Person {
 ///         name: String
 ///         age: Int
@@ -91,7 +89,7 @@ extension String: Error {}
 ///             )
 ///         }
 ///     }
-public struct CustomBuilderMacro: PeerMacro {
+public struct BuildableMacro: PeerMacro {
     public static func expansion(
         of node: AttributeSyntax,
         providingPeersOf declaration: some DeclSyntaxProtocol,

@@ -1,7 +1,7 @@
 // arbitary[マクロを使用するまで名前がわからない宣言をマクロで生成できるようにする]
 /// A macro that produces a peer struct which implements the builder pattern
 ///
-///     @CustomBuilder
+///     @Buildable
 ///     struct Person {
 ///         let name: String
 ///         let age: Int
@@ -30,7 +30,7 @@
 ///         }
 ///     }
 @attached(peer, names: arbitrary)
-public macro CustomBuilder() = #externalMacro(
+public macro Buildable() = #externalMacro(
     module: "StructBuilderMacro",
-    type: "CustomBuilderMacro"
+    type: "BuildableMacro"
 )
