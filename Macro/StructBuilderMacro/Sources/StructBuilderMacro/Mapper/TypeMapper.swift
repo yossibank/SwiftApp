@@ -17,7 +17,7 @@ struct TypeMapper {
         "Double": "0",
         "Float": "0",
         "Bool": "false",
-        "Date": ".now",
+        "Date": "Date()",
         "UUID": "UUID()",
         "Data": "Data()",
         "URL": "URL(string: \"https://www.google.com\")!",

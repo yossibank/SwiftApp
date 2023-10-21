@@ -138,7 +138,7 @@ final class BuildableMacroTests: XCTestCase {
                 var m12: Double = 0
                 var m13: Float = 0
                 var m14: Bool = false
-                var m15: Date = .now
+                var m15: Date = Date()
                 var m16: UUID = UUID()
                 var m17: Data = Data()
                 var m18: URL = URL(string: "https://www.google.com")!
