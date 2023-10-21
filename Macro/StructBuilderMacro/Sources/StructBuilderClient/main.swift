@@ -1,7 +1,7 @@
 import Foundation
 import StructBuilder
 
-//@Buildable
+@Buildable
 struct MyObject {
     let m01: String
     let m02: Int
