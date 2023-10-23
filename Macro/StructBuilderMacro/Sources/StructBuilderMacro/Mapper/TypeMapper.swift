@@ -33,6 +33,10 @@ struct TypeMapper {
             return nil
         }
 
+        guard type.kind != .implicitlyUnwrappedOptionalType else {
+            return nil
+        }
+
         guard type.kind != .arrayType else {
             return ExprSyntax(stringLiteral: "[]")
         }
