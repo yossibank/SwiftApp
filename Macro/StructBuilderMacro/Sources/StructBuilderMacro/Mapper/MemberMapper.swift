@@ -10,6 +10,7 @@ struct MemberMapper {
             .compactMap { $0.decl.as(VariableDeclSyntax.self) }
             .filter(\.isStoredProperty)
             .filter { !hasStaticModifier($0) }
+            .filter { !hasPrivateModifier($0) }
             .compactMap {
                 guard
                     let patternBinding = $0.bindings.first,
@@ -33,10 +34,17 @@ struct MemberMapper {
         patternBinding.typeAnnotation?.as(TypeAnnotationSyntax.self)?.type
     }
 
-    // VariableDeclSyntaxからstaticのキーワードのSyntax排除
+    // VariableDeclSyntaxのmodifiersから「static」のキーワードがあるかどうかの判定
     private static func hasStaticModifier(_ variable: VariableDeclSyntax) -> Bool {
         variable.modifiers.contains(where: {
             $0.name.text.contains("static")
+        })
+    }
+
+    // VariableDeclSyntaxのmodifiersから「private」のキーワードがあるかどうかの判定
+    private static func hasPrivateModifier(_ variable: VariableDeclSyntax) -> Bool {
+        variable.modifiers.contains(where: {
+            $0.name.text.contains("private")
         })
     }
 }
