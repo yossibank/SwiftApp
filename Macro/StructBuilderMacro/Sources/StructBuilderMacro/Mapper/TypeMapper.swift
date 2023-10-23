@@ -37,6 +37,10 @@ struct TypeMapper {
             return nil
         }
 
+        guard type.kind != .dictionaryType else {
+            return ExprSyntax(stringLiteral: "[:]")
+        }
+
         guard type.kind != .arrayType else {
             return ExprSyntax(stringLiteral: "[]")
         }

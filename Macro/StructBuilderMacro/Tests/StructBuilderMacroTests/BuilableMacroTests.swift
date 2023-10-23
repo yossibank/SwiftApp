@@ -8,7 +8,7 @@ let testMacros: [String: Macro.Type] = [
 ]
 
 final class BuildableMacroTests: XCTestCase {
-    func test_macro_with_one_string_number() throws {
+    func test_should_create_macro_with_one_string_number() throws {
         assertMacroExpansion(
             """
             @Buildable
@@ -35,7 +35,7 @@ final class BuildableMacroTests: XCTestCase {
         )
     }
 
-    func test_macro_with_two_string_number() throws {
+    func test_should_create_macro_with_two_string_number() throws {
         assertMacroExpansion(
             """
             @Buildable
@@ -66,19 +66,81 @@ final class BuildableMacroTests: XCTestCase {
         )
     }
 
-    func test_macro_with_unwanted_computed_property() {
+    func test_should_create_macro_with_custom_types_builder() {
         assertMacroExpansion(
             """
             @Buildable
             struct MyObject {
-                var unwantedComputedProperty: String {
+                let m1: MyOtherObject
+            }
+            """,
+            expandedSource: """
+            struct MyObject {
+                let m1: MyOtherObject
+            }
+
+            struct MyObjectBuilder {
+                var m1: MyOtherObject = MyOtherObjectBuilder().build()
+
+                func build() -> MyObject {
+                    return MyObject(
+                        m1: m1
+                    )
+                }
+            }
+            """,
+            macros: testMacros
+        )
+    }
+
+    func test_should_create_macro_with_collection_types_having_empty_collection_default_values() {
+        assertMacroExpansion(
+            """
+            @Buildable
+            struct MyObject {
+                let m1: [String]
+                let m2: [MyOtherObject]
+                let m3: [String: String]
+            }
+            """,
+            expandedSource: """
+            struct MyObject {
+                let m1: [String]
+                let m2: [MyOtherObject]
+                let m3: [String: String]
+            }
+
+            struct MyObjectBuilder {
+                var m1: [String] = []
+                var m2: [MyOtherObject] = []
+                var m3: [String: String] = [:]
+
+                func build() -> MyObject {
+                    return MyObject(
+                        m1: m1,
+                        m2: m2,
+                        m3: m3
+                    )
+                }
+            }
+            """,
+            macros: testMacros
+        )
+    }
+
+    func test_macro_with_unwanted_computed_variable() {
+        assertMacroExpansion(
+            """
+            @Buildable
+            struct MyObject {
+                var unwantedComputedVariable: String {
                     "myText"
                 }
             }
             """,
             expandedSource: """
             struct MyObject {
-                var unwantedComputedProperty: String {
+                var unwantedComputedVariable: String {
                     "myText"
                 }
             }
@@ -174,6 +236,37 @@ final class BuildableMacroTests: XCTestCase {
                 func build() -> MyObject {
                     return MyObject(
                         m1: m1
+                    )
+                }
+            }
+            """,
+            macros: testMacros
+        )
+    }
+
+    func test_macro_with_optional_types() {
+        assertMacroExpansion(
+            """
+            @Buildable
+            struct MyObject {
+                let m1: String?
+                let m2: [Int]?
+            }
+            """,
+            expandedSource: """
+            struct MyObject {
+                let m1: String?
+                let m2: [Int]?
+            }
+
+            struct MyObjectBuilder {
+                var m1: String?
+                var m2: [Int]?
+
+                func build() -> MyObject {
+                    return MyObject(
+                        m1: m1,
+                        m2: m2
                     )
                 }
             }
@@ -289,68 +382,6 @@ final class BuildableMacroTests: XCTestCase {
                         m21: m21,
                         m22: m22,
                         m23: m23
-                    )
-                }
-            }
-            """,
-            macros: testMacros
-        )
-    }
-
-    func test_macro_with_array_types() {
-        assertMacroExpansion(
-            """
-            @Buildable
-            struct MyObject {
-                let m1: [String]
-                let m2: [MyOtherObject]
-            }
-            """,
-            expandedSource: """
-            struct MyObject {
-                let m1: [String]
-                let m2: [MyOtherObject]
-            }
-
-            struct MyObjectBuilder {
-                var m1: [String] = []
-                var m2: [MyOtherObject] = []
-
-                func build() -> MyObject {
-                    return MyObject(
-                        m1: m1,
-                        m2: m2
-                    )
-                }
-            }
-            """,
-            macros: testMacros
-        )
-    }
-
-    func test_macro_with_optional_types() {
-        assertMacroExpansion(
-            """
-            @Buildable
-            struct MyObject {
-                let m1: String?
-                let m2: [Int]?
-            }
-            """,
-            expandedSource: """
-            struct MyObject {
-                let m1: String?
-                let m2: [Int]?
-            }
-
-            struct MyObjectBuilder {
-                var m1: String?
-                var m2: [Int]?
-
-                func build() -> MyObject {
-                    return MyObject(
-                        m1: m1,
-                        m2: m2
                     )
                 }
             }
