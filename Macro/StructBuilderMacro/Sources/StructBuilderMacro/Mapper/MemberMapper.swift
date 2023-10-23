@@ -5,7 +5,7 @@ typealias Member = (identifier: TokenSyntax, type: TypeSyntax)
 struct MemberMapper {
     // 構造体の全てのプロパティ名、型名抽出(例での`name`プロパティ名, `String`型)
     // stored propertyのみ抽出
-    static func mapFrom(members: MemberBlockItemListSyntax) throws -> [Member] {
+    static func mapFrom(members: MemberBlockItemListSyntax) -> [Member] {
         members
             .compactMap { $0.decl.as(VariableDeclSyntax.self) }
             .filter(\.isStoredProperty)
