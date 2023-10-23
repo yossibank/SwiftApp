@@ -66,6 +66,35 @@ final class BuildableMacroTests: XCTestCase {
         )
     }
 
+    func test_macro_with_unwanted_computed_property() {
+        assertMacroExpansion(
+            """
+            @Buildable
+            struct MyObject {
+                var unwantedComputedProperty: String {
+                    "myText"
+                }
+            }
+            """,
+            expandedSource: """
+            struct MyObject {
+                var unwantedComputedProperty: String {
+                    "myText"
+                }
+            }
+
+            struct MyObjectBuilder {
+
+                func build() -> MyObject {
+                    return MyObject(
+                    )
+                }
+            }
+            """,
+            macros: testMacros
+        )
+    }
+
     func test_macro_with_different_types() {
         assertMacroExpansion(
             """
