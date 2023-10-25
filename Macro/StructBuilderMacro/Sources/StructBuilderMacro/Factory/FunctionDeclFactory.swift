@@ -27,7 +27,8 @@ struct FunctionDeclFactory {
                                 leadingTrivia: .newline,
                                 label: member.identifier,
                                 colon: TokenSyntax(.colon, presence: .present),
-                                expression: ExprSyntax(stringLiteral: member.identifier.text))
+                                expression: ExprSyntax(stringLiteral: member.identifier.text)
+                            )
                         }
                     },
                     rightParen: .rightParenToken(leadingTrivia: .newline)

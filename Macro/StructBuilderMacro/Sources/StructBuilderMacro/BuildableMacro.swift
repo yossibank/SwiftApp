@@ -101,7 +101,7 @@ public struct BuildableMacro: PeerMacro {
         }
 
         // 構造体の全てのプロパティ名、型名抽出(例での`name`, `String型`)
-        let members: [Member] = MemberMapper.mapFrom(members:structDeclaration.memberBlock.members)
+        let members: [Member] = MemberMapper.mapFrom(members: structDeclaration.memberBlock.members)
 
         // 「構造体名+Builder」という名前を生成(構造体名Personの場合はPersonBuilder)
         // `trailingTrivia`を使用して右にスペース1つ分空ける(この後に「{」をつけるため)

@@ -23,6 +23,8 @@ configs:
 packages:
   Package:
     path: ./Package
+  CodingKeysMacro:
+    path: ./Macro/CodingKeysMacro
   StructBuilderMacro:
     path: ./Macro/StructBuilderMacro
   SwiftFormat:
@@ -44,6 +46,8 @@ targets:
         product: API
       - package: StructBuilderMacro
         product: StructBuilder
+      - package: CodingKeysMacro
+        product: CodingKeys
 
 schemeTemplates:
   Scheme:
