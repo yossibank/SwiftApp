@@ -8,6 +8,11 @@ let alamofire = Target.Dependency.product(
     package: "Alamofire"
 )
 
+let codingKeys = Target.Dependency.product(
+    name: "CodingKeys",
+    package: "CodingKeysMacro"
+)
+
 let structBuilderMacro = Target.Dependency.product(
     name: "StructBuilder",
     package: "StructBuilderMacro"
@@ -15,7 +20,7 @@ let structBuilderMacro = Target.Dependency.product(
 
 let api = Target.target(
     name: "API",
-    dependenciesLibraries: [alamofire, structBuilderMacro]
+    dependenciesLibraries: [alamofire, codingKeys, structBuilderMacro]
 )
 
 let apiTest = Target.testTarget(
@@ -33,6 +38,7 @@ let package = Package.package(
     dependencies: [
         .package(url: "https://github.com/Alamofire/Alamofire", from: "5.8.0"),
         .package(url: "https://github.com/nicklockwood/SwiftFormat", from: "0.52.4"),
+        .package(path: "../CodingKeysMacro"),
         .package(path: "../StructBuilderMacro")
     ],
     targets: [

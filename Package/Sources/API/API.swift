@@ -1,4 +1,5 @@
 import Alamofire
+import CodingKeys
 import StructBuilder
 
 public final class APIClient {
@@ -11,6 +12,12 @@ public final class APIClient {
     public func test() -> String {
         TestBuilder(test: "Test!!!").build().test
     }
+}
+
+@CodingKeys(.all)
+public struct Coding {
+    let hogeHoge: String
+    let fooBar: String
 }
 
 @Buildable

@@ -1,4 +1,4 @@
-import StructBuilderMacros
+@testable import StructBuilderMacros
 import SwiftSyntaxMacros
 import SwiftSyntaxMacrosTestSupport
 import XCTest

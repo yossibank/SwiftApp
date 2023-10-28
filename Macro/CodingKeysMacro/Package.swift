@@ -15,8 +15,8 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "CodingKeysMacro",
-            targets: ["CodingKeysMacro"]
+            name: "CodingKeys",
+            targets: ["CodingKeys"]
         )
     ],
     dependencies: [
@@ -27,19 +27,17 @@ let package = Package(
             name: "CodingKeysMacroPlugin",
             dependencies: [
                 .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
-                .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
-                .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
-                .product(name: "SwiftParserDiagnostics", package: "swift-syntax")
+                .product(name: "SwiftCompilerPlugin", package: "swift-syntax")
             ]
         ),
         .target(
-            name: "CodingKeysMacro",
+            name: "CodingKeys",
             dependencies: ["CodingKeysMacroPlugin"]
         ),
         .testTarget(
             name: "CodingKeysTests",
             dependencies: [
-                "CodingKeysMacro",
+                "CodingKeys",
                 "CodingKeysMacroPlugin",
                 .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax")
             ]

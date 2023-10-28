@@ -1,4 +1,4 @@
-@testable import CodingKeysMacro
+@testable import CodingKeys
 @testable import CodingKeysMacroPlugin
 import SwiftSyntaxMacros
 import SwiftSyntaxMacrosTestSupport
