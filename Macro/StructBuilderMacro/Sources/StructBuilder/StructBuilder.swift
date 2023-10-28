@@ -1,4 +1,3 @@
-// arbitary[マクロを使用するまで名前がわからない宣言をマクロで生成できるようにする]
 /// A macro that produces a peer struct which implements the builder pattern
 ///
 ///     @Buildable
@@ -31,6 +30,6 @@
 ///     }
 @attached(peer, names: suffixed(Builder))
 public macro Buildable() = #externalMacro(
-    module: "StructBuilderMacro",
+    module: "StructBuilderMacros",
     type: "BuildableMacro"
 )

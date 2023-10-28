@@ -17,10 +17,6 @@ let package = Package(
         .library(
             name: "StructBuilder",
             targets: ["StructBuilder"]
-        ),
-        .executable(
-            name: "StructBuilderClient",
-            targets: ["StructBuilderClient"]
         )
     ],
     dependencies: [
@@ -28,7 +24,7 @@ let package = Package(
     ],
     targets: [
         .macro(
-            name: "StructBuilderMacro",
+            name: "StructBuilderMacros",
             dependencies: [
                 .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
                 .product(name: "SwiftCompilerPlugin", package: "swift-syntax")
@@ -36,16 +32,12 @@ let package = Package(
         ),
         .target(
             name: "StructBuilder",
-            dependencies: ["StructBuilderMacro"]
-        ),
-        .executableTarget(
-            name: "StructBuilderClient",
-            dependencies: ["StructBuilder"]
+            dependencies: ["StructBuilderMacros"]
         ),
         .testTarget(
             name: "StructBuilderTests",
             dependencies: [
-                "StructBuilderMacro",
+                "StructBuilderMacros",
                 .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax")
             ]
         )

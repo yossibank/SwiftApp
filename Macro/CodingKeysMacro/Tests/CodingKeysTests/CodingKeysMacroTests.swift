@@ -1,47 +1,135 @@
+@testable import CodingKeysMacro
+@testable import CodingKeysMacroPlugin
 import SwiftSyntaxMacros
 import SwiftSyntaxMacrosTestSupport
 import XCTest
 
-// Macro implementations build for the host, so the corresponding module is not available when cross-compiling. Cross-compiled tests may still make
-// use of the macro itself in end-to-end tests.
-#if canImport(CodingKeysMacroMacros)
-    import CodingKeysMacroMacros
-
-    let testMacros: [String: Macro.Type] = [
-        "stringify": StringifyMacro.self
-    ]
-#endif
+let testMacros: [String: Macro.Type] = [
+    "CodingKeys": CodingKeysMacro.self
+]
 
 final class CodingKeysMacroTests: XCTestCase {
-    func testMacro() throws {
-        #if canImport(CodingKeysMacroMacros)
-            assertMacroExpansion(
-                """
-                #stringify(a + b)
-                """,
-                expandedSource: """
-                (a + b, "a + b")
-                """,
-                macros: testMacros
-            )
-        #else
-            throw XCTSkip("macros are only supported when running tests for the host platform")
-        #endif
+    func test_option_all() throws {
+        assertMacroExpansion(
+            """
+            @CodingKeys(.all)
+            public struct Hoge {
+                let hogeHoge: String
+                let fugaFuga: String
+                let hoge: String
+                let fuga: String
+            }
+            """,
+            expandedSource: """
+            public struct Hoge {
+                let hogeHoge: String
+                let fugaFuga: String
+                let hoge: String
+                let fuga: String
+
+                enum CodingKeys: String, CodingKey {
+                    case hogeHoge = "hoge_hoge"
+                    case fugaFuga = "fuga_fuga"
+                    case hoge
+                    case fuga
+                }
+            }
+            """,
+            macros: testMacros
+        )
     }
 
-    func testMacroWithStringLiteral() throws {
-        #if canImport(CodingKeysMacroMacros)
-            assertMacroExpansion(
-                #"""
-                #stringify("Hello, \(name)")
-                """#,
-                expandedSource: #"""
-                ("Hello, \(name)", #""Hello, \(name)""#)
-                """#,
-                macros: testMacros
-            )
-        #else
-            throw XCTSkip("macros are only supported when running tests for the host platform")
-        #endif
+    func test_option_select() throws {
+        assertMacroExpansion(
+            """
+            @CodingKeys(.select(["hogeHoge", "hoge"])
+            public struct Hoge {
+                let hogeHoge: String
+                var fugaFuga: String
+                let hoge: String
+                var fuga: String
+            }
+            """,
+
+            expandedSource: """
+            public struct Hoge {
+                let hogeHoge: String
+                var fugaFuga: String
+                let hoge: String
+                var fuga: String
+
+                enum CodingKeys: String, CodingKey {
+                    case hogeHoge = "hoge_hoge"
+                    case fugaFuga
+                    case hoge
+                    case fuga
+                }
+            }
+            """,
+            macros: testMacros
+        )
+    }
+
+    func test_option_exclude() throws {
+        assertMacroExpansion(
+            """
+            @CodingKeys(.exclude(["hogeHoge", "fooFoo"])
+            public struct Hoge {
+                let hogeHoge: String
+                var fugaFuga: String
+                let fooFoo: String
+                var hogeHogeHoge: String
+            }
+            """,
+            expandedSource: """
+            public struct Hoge {
+                let hogeHoge: String
+                var fugaFuga: String
+                let fooFoo: String
+                var hogeHogeHoge: String
+
+                enum CodingKeys: String, CodingKey {
+                    case hogeHoge
+                    case fugaFuga = "fuga_fuga"
+                    case fooFoo
+                    case hogeHogeHoge = "hoge_hoge_hoge"
+                }
+            }
+            """,
+            macros: testMacros
+        )
+    }
+
+    func test_option_custom() throws {
+        assertMacroExpansion(
+            """
+            @CodingKeys(.custom(["id": "hoge_id", "hogeHoge": "hogee"])
+            public struct Hoge {
+                let id: String
+                let hogeHoge: String
+                var fugaFuga: String
+                let fooFoo: String
+                var hogeHogeHoge: String
+            }
+            """,
+            expandedSource: """
+            public struct Hoge {
+                let id: String
+                let hogeHoge: String
+                var fugaFuga: String
+                let fooFoo: String
+                var hogeHogeHoge: String
+
+                enum CodingKeys: String, CodingKey {
+                    case id = "hoge_id"
+                    case hogeHoge = "hogee"
+                    case fugaFuga = "fuga_fuga"
+                    case fooFoo = "foo_foo"
+                    case hogeHogeHoge = "hoge_hoge_hoge"
+                }
+            }
+            """,
+            macros: testMacros
+        )
     }
 }
