@@ -30,6 +30,6 @@
 ///     }
 @attached(peer, names: suffixed(Builder))
 public macro Buildable() = #externalMacro(
-    module: "StructBuilderMacros",
+    module: "StructBuilderMacroPlugin",
     type: "BuildableMacro"
 )
