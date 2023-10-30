@@ -3,9 +3,9 @@
 
 import PackageDescription
 
-let alamofire = Target.Dependency.product(
-    name: "Alamofire",
-    package: "Alamofire"
+let ohHttpStubs = Target.Dependency.product(
+    name: "OHHTTPStubsSwift",
+    package: "OHHTTPStubs"
 )
 
 let codingKeys = Target.Dependency.product(
@@ -20,14 +20,13 @@ let structBuilderMacro = Target.Dependency.product(
 
 let api = Target.target(
     name: "API",
-    dependenciesLibraries: [alamofire, codingKeys, structBuilderMacro]
+    dependenciesLibraries: [codingKeys, structBuilderMacro]
 )
 
 let apiTest = Target.testTarget(
     name: "APITest",
-    dependencies: [
-        api
-    ]
+    dependencies: [api],
+    dependenciesLibraries: [ohHttpStubs]
 )
 
 let package = Package.package(
@@ -36,8 +35,8 @@ let package = Package.package(
         .iOS(.v15)
     ],
     dependencies: [
-        .package(url: "https://github.com/Alamofire/Alamofire", from: "5.8.0"),
         .package(url: "https://github.com/nicklockwood/SwiftFormat", from: "0.52.4"),
+        .package(url: "https://github.com/AliSoftware/OHHTTPStubs", from: "9.1.0"),
         .package(path: "../CodingKeysMacro"),
         .package(path: "../StructBuilderMacro")
     ],
@@ -79,11 +78,12 @@ extension Target {
 
     static func testTarget(
         name: String,
-        dependencies: [Target]
+        dependencies: [Target],
+        dependenciesLibraries: [Target.Dependency] = []
     ) -> Target {
         .testTarget(
             name: name,
-            dependencies: dependencies.map(\.dependency)
+            dependencies: dependencies.map(\.dependency) + dependenciesLibraries
         )
     }
 }
