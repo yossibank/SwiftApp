@@ -1,6 +1,10 @@
-import Alamofire
 import CodingKeys
 import StructBuilder
+
+/// @mockable
+protocol TestProtocol {
+    func hoge() -> String
+}
 
 public final class APIClient {
     public init() {}
