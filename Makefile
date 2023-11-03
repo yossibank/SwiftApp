@@ -21,7 +21,7 @@ generate-files:
 	mkdir -p Package/Tests/APITest/Mock
 
 .PHONY: generate-api-test-mock
-generate-test-mock:
+generate-api-test-mock:
 	mint run mockolo mockolo --sourcedirs Package/Sources/API \
 		--destination Package/Tests/APITest/Mock/MockResults.swift \
 		--testable-imports API \

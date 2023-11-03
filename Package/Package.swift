@@ -26,7 +26,8 @@ let api = Target.target(
 let apiTest = Target.testTarget(
     name: "APITest",
     dependencies: [api],
-    dependenciesLibraries: [ohHttpStubs]
+    dependenciesLibraries: [ohHttpStubs],
+    resources: [.process("JSON")]
 )
 
 let package = Package.package(
@@ -79,11 +80,13 @@ extension Target {
     static func testTarget(
         name: String,
         dependencies: [Target],
-        dependenciesLibraries: [Target.Dependency] = []
+        dependenciesLibraries: [Target.Dependency] = [],
+        resources: [Resource] = []
     ) -> Target {
         .testTarget(
             name: name,
-            dependencies: dependencies.map(\.dependency) + dependenciesLibraries
+            dependencies: dependencies.map(\.dependency) + dependenciesLibraries,
+            resources: resources
         )
     }
 }
