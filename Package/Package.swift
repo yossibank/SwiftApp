@@ -18,9 +18,19 @@ let structBuilderMacro = Target.Dependency.product(
     package: "StructBuilderMacro"
 )
 
+let appLogger = Target.target(
+    name: "AppLogger"
+)
+
 let api = Target.target(
     name: "API",
+    dependencies: [appLogger],
     dependenciesLibraries: [codingKeys, structBuilderMacro]
+)
+
+let appLoggerTest = Target.testTarget(
+    name: "AppLoggerTest",
+    dependencies: [appLogger]
 )
 
 let apiTest = Target.testTarget(
@@ -42,10 +52,12 @@ let package = Package.package(
         .package(path: "../StructBuilderMacro")
     ],
     targets: [
-        api
+        api,
+        appLogger
     ],
     testTargets: [
-        apiTest
+        apiTest,
+        appLoggerTest
     ]
 )
 

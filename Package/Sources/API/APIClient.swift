@@ -1,3 +1,4 @@
+import AppLogger
 import Foundation
 
 /// @mockable
@@ -68,7 +69,7 @@ private extension APIClient {
             urlRequest.addValue($1, forHTTPHeaderField: $0)
         }
 
-        print(urlRequest.curlString)
+        AppLogger.debug(message: urlRequest.curlString)
 
         return urlRequest
     }

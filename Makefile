@@ -23,7 +23,7 @@ generate-files:
 .PHONY: generate-api-test-mock
 generate-api-test-mock:
 	mint run mockolo mockolo --sourcedirs Package/Sources/API \
-		--destination Package/Tests/APITest/Mock/MockResults.swift \
+		--destination Package/Tests/APITest/Mock/APIMockResults.swift \
 		--testable-imports API \
 		--mock-final \
 		--macro "DEBUG"

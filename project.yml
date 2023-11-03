@@ -45,6 +45,8 @@ targets:
     dependencies:
       - package: Package
         product: API
+      - package: Package
+        product: AppLogger
       - package: StructBuilderMacro
         product: StructBuilder
       - package: CodingKeysMacro
