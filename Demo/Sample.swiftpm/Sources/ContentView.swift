@@ -7,9 +7,6 @@ struct ContentView: View {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundColor(.accentColor)
-            Button(APIClient().test()) {
-                APIClient().request()
-            }
         }
     }
 }
