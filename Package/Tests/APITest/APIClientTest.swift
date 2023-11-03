@@ -54,7 +54,7 @@ final class APIClientTest: XCTestCase {
         stub(condition: isPath("/request")) { _ in
             fixture(
                 filePath: OHPathForFileInBundle(
-                    "success.json",
+                    "test_success.json",
                     .module
                 )!,
                 headers: ["Content-Type": "application/json"]
@@ -71,12 +71,12 @@ final class APIClientTest: XCTestCase {
         XCTAssertEqual(response.first!.userId, 1)
     }
 
-    func test_receive_decode_error() async throws {
+    func test_receive_failure_decode_error() async throws {
         // arrange
         stub(condition: isPath("/request")) { _ in
             fixture(
                 filePath: OHPathForFileInBundle(
-                    "failure.json",
+                    "test_failure_decode.json",
                     .module
                 )!,
                 headers: ["Content-Type": "application/json"]
@@ -97,12 +97,12 @@ final class APIClientTest: XCTestCase {
         }
     }
 
-    func test_receive_300_unit_error() async throws {
+    func test_receive_failure_300_unit_error() async throws {
         // arrange
         stub(condition: isPath("/request")) { _ in
             fixture(
                 filePath: OHPathForFileInBundle(
-                    "success.json",
+                    "test_success.json",
                     .module
                 )!,
                 status: 302,
@@ -124,12 +124,12 @@ final class APIClientTest: XCTestCase {
         }
     }
 
-    func test_receive_400_unit_error() async throws {
+    func test_receive_failure_400_unit_error() async throws {
         // arrange
         stub(condition: isPath("/request")) { _ in
             fixture(
                 filePath: OHPathForFileInBundle(
-                    "success.json",
+                    "test_success.json",
                     .module
                 )!,
                 status: 404,
@@ -151,12 +151,12 @@ final class APIClientTest: XCTestCase {
         }
     }
 
-    func test_receive_500_unit_error() async throws {
+    func test_receive_failure_500_unit_error() async throws {
         // arrange
         stub(condition: isPath("/request")) { _ in
             fixture(
                 filePath: OHPathForFileInBundle(
-                    "success.json",
+                    "test_success.json",
                     .module
                 )!,
                 status: 500,
@@ -178,7 +178,7 @@ final class APIClientTest: XCTestCase {
         }
     }
 
-    func test_receive_timeout_error() async throws {
+    func test_receive_failure_timeout_error() async throws {
         // arrange
         stub(condition: isPath("/request")) { _ in
             let error = NSError(
@@ -202,7 +202,7 @@ final class APIClientTest: XCTestCase {
         }
     }
 
-    func test_receive_urlSession_error() async throws {
+    func test_receive_failure_urlSession_error() async throws {
         // arrange
         stub(condition: isPath("/request")) { _ in
             let error = NSError(
@@ -226,7 +226,7 @@ final class APIClientTest: XCTestCase {
         }
     }
 
-    func test_receive_unknown_error() async throws {
+    func test_receive_failure_unknown_error() async throws {
         // arrange
         stub(condition: isPath("/request")) { _ in
             let error = NSError(

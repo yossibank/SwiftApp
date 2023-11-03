@@ -35,7 +35,25 @@ public protocol Request<Response> {
     )
 }
 
-extension Request {
+public extension Request where Parameters == EmptyParameters {
+    init(pathComponent: PathComponent) {
+        self.init(
+            parameters: .init(),
+            pathComponent: pathComponent
+        )
+    }
+}
+
+public extension Request where PathComponent == EmptyPathComponent {
+    init(parameters: Parameters) {
+        self.init(
+            parameters: parameters,
+            pathComponent: .init()
+        )
+    }
+}
+
+public extension Request {
     var body: Data? {
         method == .get
             ? nil
