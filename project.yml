@@ -48,9 +48,11 @@ targets:
       - package: Package
         product: AppLogger
       - package: Package
+        product: Mock
+      - package: Package
         product: Model
       - package: Package
-        product: Pokemon
+        product: PokemonData
       - package: StructBuilderMacro
         product: StructBuilder
       - package: CodingKeysMacro

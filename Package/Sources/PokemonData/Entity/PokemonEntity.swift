@@ -1,18 +1,19 @@
+import API
 import CodingKeys
 import StructBuilder
 
 @Buildable
 @CodingKeys(.all)
-public struct PokemonDataObject: DataStructure {
+public struct PokemonEntity: DataStructure {
     public let id: Int
     public let name: String
     public let isDefault: Bool
-    public let sprites: PokemonDataSprites
+    public let sprites: PokemonSprites
 }
 
 @Buildable
 @CodingKeys(.all)
-public struct PokemonDataSprites: DataStructure {
+public struct PokemonSprites: DataStructure {
     public let backDefault: String?
     public let backFemale: String?
     public let backShiny: String?
@@ -21,27 +22,27 @@ public struct PokemonDataSprites: DataStructure {
     public let frontFemale: String?
     public let frontShiny: String?
     public let frontShinyFemale: String?
-    public let other: PokemonDataOther
+    public let other: PokemonOther
 }
 
 @Buildable
 @CodingKeys(.custom(["officialArtwork": "official-artwork"]))
-public struct PokemonDataOther: DataStructure {
-    public let dreamWorld: PokemonDataDreamWorld
-    public let home: PokemonDataHome
-    public let officialArtwork: PokemonDataOfficialArtwork
+public struct PokemonOther: DataStructure {
+    public let dreamWorld: PokemonDreamWorld
+    public let home: PokemonHome
+    public let officialArtwork: PokemonOfficialArtwork
 }
 
 @Buildable
 @CodingKeys(.all)
-public struct PokemonDataDreamWorld: DataStructure {
+public struct PokemonDreamWorld: DataStructure {
     public let frontDefault: String?
     public let frontFemale: String?
 }
 
 @Buildable
 @CodingKeys(.all)
-public struct PokemonDataHome: DataStructure {
+public struct PokemonHome: DataStructure {
     public let frontDefault: String?
     public let frontFemale: String?
     public let frontShiny: String?
@@ -50,7 +51,7 @@ public struct PokemonDataHome: DataStructure {
 
 @Buildable
 @CodingKeys(.all)
-public struct PokemonDataOfficialArtwork: DataStructure {
+public struct PokemonOfficialArtwork: DataStructure {
     public let frontDefault: String?
     public let frontShiny: String?
 }

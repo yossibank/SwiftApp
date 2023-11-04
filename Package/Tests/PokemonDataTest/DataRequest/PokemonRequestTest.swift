@@ -1,9 +1,10 @@
 @testable import API
 import OHHTTPStubs
 import OHHTTPStubsSwift
+@testable import PokemonData
 import XCTest
 
-final class PokemonSpeciesRequestTest: XCTestCase {
+final class PokemonRequestTest: XCTestCase {
     private var apiClient: APIClient!
 
     override func setUp() {
@@ -22,33 +23,33 @@ final class PokemonSpeciesRequestTest: XCTestCase {
 
     func test_receive_success_response() async throws {
         // arrange
-        stub(condition: isPath("/api/v2/pokemon-species/1")) { _ in
+        stub(condition: isPath("/api/v2/pokemon/1")) { _ in
             fixture(
                 filePath: OHPathForFileInBundle(
-                    "pokemon_species_success.json",
+                    "pokemon_success.json",
                     .module
                 )!,
-                headers: ["Conetnt-Type": "application/json"]
+                headers: ["Content-Type": "application/json"]
             )
         }
 
         // act
         let response = try await apiClient.request(
-            item: PokemonSpeciesRequest(pathComponent: 1)
+            item: PokemonRequest(pathComponent: 1)
         )
 
         // assert
         XCTAssertEqual(response.id, 1)
-        XCTAssertEqual(response.isLegendary, true)
-        XCTAssertEqual(response.names.filter { $0.name == "フシギダネ" }.count, 2)
+        XCTAssertEqual(response.name, "bulbasaur")
+        XCTAssertEqual(response.isDefault, true)
     }
 
     func test_receive_failure_decode_error() async throws {
         // arrange
-        stub(condition: isPath("/api/v2/pokemon-species/1")) { _ in
+        stub(condition: isPath("/api/v2/pokemon/1")) { _ in
             fixture(
                 filePath: OHPathForFileInBundle(
-                    "pokemon_species_failure_decode.json",
+                    "pokemon_failure_decode.json",
                     .module
                 )!,
                 headers: ["Content-Type": "application/json"]
@@ -58,7 +59,7 @@ final class PokemonSpeciesRequestTest: XCTestCase {
         do {
             // act
             _ = try await apiClient.request(
-                item: PokemonSpeciesRequest(pathComponent: 1)
+                item: PokemonRequest(pathComponent: 1)
             )
         } catch {
             // assert

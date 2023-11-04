@@ -18,18 +18,18 @@ run-format:
 
 .PHONY: generate-files
 generate-files:
-	mkdir -p Package/Tests/APITest/Mock
-	mkdir -p Package/Tests/ModelTest/Mock
+	mkdir -p Package/Sources/Mock/Generated
 
 .PHONY: generate-mock
 generate-mock:
 	make generate-api-test-mock
 	make generate-model-test-mock
+	make generate-pokemonData-test-mock
 
 .PHONY: generate-api-test-mock
 generate-api-test-mock:
 	mint run mockolo mockolo --sourcedirs Package/Sources/API \
-		--destination Package/Tests/APITest/Mock/APIMockResults.swift \
+		--destination Package/Sources/Mock/Generated/APIMockResults.swift \
 		--testable-imports API \
 		--mock-final \
 		--macro "DEBUG"
@@ -37,8 +37,16 @@ generate-api-test-mock:
 .PHONY: generate-model-test-mock
 generate-model-test-mock:
 	mint run mockolo mockolo --sourcedirs Package/Sources/Model \
-		--destination Package/Tests/ModelTest/Mock/ModelMockResults.swift \
+		--destination Package/Sources/Mock/Generated/ModelMockResults.swift \
 		--testable-imports Model \
+		--mock-final \
+		--macro "DEBUG"
+
+.PHONY: generate-pokemonData-test-mock
+generate-pokemonData-test-mock:
+	mint run mockolo mockolo --sourcedirs Package/Sources/PokemonData \
+		--destination Package/Sources/Mock/Generated/PokemonDataMockResults.swift \
+		--testable-imports PokemonData \
 		--mock-final \
 		--macro "DEBUG"
 

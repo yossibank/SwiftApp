@@ -26,7 +26,7 @@ extension APIError: LocalizedError {
     }
 }
 
-extension APIError {
+public extension APIError {
     static func parse(_ error: Error) -> APIError {
         if error is DecodingError {
             return .decodeError

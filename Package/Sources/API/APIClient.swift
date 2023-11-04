@@ -2,12 +2,14 @@ import AppLogger
 import Foundation
 
 /// @mockable
-protocol APIClientRequest {
+public protocol APIClientProtocol {
     func request<T>(item: some Request<T>) async throws -> T
 }
 
-public struct APIClient: APIClientRequest {
-    func request<T>(item: some Request<T>) async throws -> T {
+public struct APIClient: APIClientProtocol {
+    public init() {}
+
+    public func request<T>(item: some Request<T>) async throws -> T {
         guard let urlRequest = createURLRequest(item) else {
             throw APIError.invalidRequest
         }

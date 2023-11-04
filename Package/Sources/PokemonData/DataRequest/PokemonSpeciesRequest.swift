@@ -1,8 +1,8 @@
-import Foundation
+import API
 
 public struct PokemonSpeciesRequest: Request {
     public typealias Parameters = EmptyParameters
-    public typealias Response = PokemonSpeciesDataObject
+    public typealias Response = PokemonSpeciesEntity
 
     public var baseURL: String { "https://pokeapi.co" }
     public var path: String { "/api/v2/pokemon-species/\(id.description)" }
