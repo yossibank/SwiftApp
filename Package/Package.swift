@@ -34,6 +34,12 @@ let model = Target.target(
     dependenciesLibraries: [structBuilderMacro]
 )
 
+let pokemon = Target.target(
+    name: "Pokemon",
+    dependencies: [appLogger, api, model],
+    dependenciesLibraries: [structBuilderMacro]
+)
+
 let appLoggerTest = Target.testTarget(
     name: "AppLoggerTest",
     dependencies: [appLogger]
@@ -51,6 +57,11 @@ let modelTest = Target.testTarget(
     dependencies: [model]
 )
 
+let pokemonTest = Target.testTarget(
+    name: "PokemonTest",
+    dependencies: [pokemon]
+)
+
 let package = Package.package(
     name: "Package",
     platforms: [
@@ -65,12 +76,14 @@ let package = Package.package(
     targets: [
         api,
         appLogger,
-        model
+        model,
+        pokemon
     ],
     testTargets: [
         apiTest,
         appLoggerTest,
-        modelTest
+        modelTest,
+        pokemonTest
     ]
 )
 

@@ -47,6 +47,10 @@ targets:
         product: API
       - package: Package
         product: AppLogger
+      - package: Package
+        product: Model
+      - package: Package
+        product: Pokemon
       - package: StructBuilderMacro
         product: StructBuilder
       - package: CodingKeysMacro
