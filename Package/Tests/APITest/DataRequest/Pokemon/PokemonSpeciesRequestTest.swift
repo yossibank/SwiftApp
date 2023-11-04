@@ -3,7 +3,7 @@ import OHHTTPStubs
 import OHHTTPStubsSwift
 import XCTest
 
-final class PokemonRequestTest: XCTestCase {
+final class PokemonSpeciesRequestTest: XCTestCase {
     private var apiClient: APIClient!
 
     override func setUp() {
@@ -22,33 +22,33 @@ final class PokemonRequestTest: XCTestCase {
 
     func test_receive_success_response() async throws {
         // arrange
-        stub(condition: isPath("/1")) { _ in
+        stub(condition: isPath("/api/v2/pokemon-species/1")) { _ in
             fixture(
                 filePath: OHPathForFileInBundle(
-                    "pokemon_success.json",
+                    "pokemon_species_success.json",
                     .module
                 )!,
-                headers: ["Content-Type": "application/json"]
+                headers: ["Conetnt-Type": "application/json"]
             )
         }
 
         // act
         let response = try await apiClient.request(
-            item: PokemonRequest(pathComponent: 1)
+            item: PokemonSpeciesRequest(pathComponent: 1)
         )
 
         // assert
         XCTAssertEqual(response.id, 1)
-        XCTAssertEqual(response.name, "bulbasaur")
-        XCTAssertEqual(response.isDefault, true)
+        XCTAssertEqual(response.isLegendary, true)
+        XCTAssertEqual(response.names.filter { $0.name == "フシギダネ" }.count, 2)
     }
 
     func test_receive_failure_decode_error() async throws {
         // arrange
-        stub(condition: isPath("/1")) { _ in
+        stub(condition: isPath("/api/v2/pokemon-species/1")) { _ in
             fixture(
                 filePath: OHPathForFileInBundle(
-                    "pokemon_failure_decode.json",
+                    "pokemon_species_failure_decode.json",
                     .module
                 )!,
                 headers: ["Content-Type": "application/json"]
@@ -58,7 +58,7 @@ final class PokemonRequestTest: XCTestCase {
         do {
             // act
             _ = try await apiClient.request(
-                item: PokemonRequest(pathComponent: 1)
+                item: PokemonSpeciesRequest(pathComponent: 1)
             )
         } catch {
             // assert

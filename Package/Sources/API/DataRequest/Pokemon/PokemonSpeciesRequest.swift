@@ -1,11 +1,11 @@
 import Foundation
 
-public struct PokemonRequest: Request {
+public struct PokemonSpeciesRequest: Request {
     public typealias Parameters = EmptyParameters
-    public typealias Response = PokemonDataObject
+    public typealias Response = PokemonSpeciesDataObject
 
     public var baseURL: String { "https://pokeapi.co" }
-    public var path: String { "/api/v2/pokemon/\(id.description)" }
+    public var path: String { "/api/v2/pokemon-species/\(id.description)" }
     public var method: HTTPMethod { .get }
 
     public let parameters: Parameters
