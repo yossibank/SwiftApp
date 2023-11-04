@@ -28,6 +28,12 @@ let api = Target.target(
     dependenciesLibraries: [codingKeys, structBuilderMacro]
 )
 
+let model = Target.target(
+    name: "Model",
+    dependencies: [api],
+    dependenciesLibraries: [structBuilderMacro]
+)
+
 let appLoggerTest = Target.testTarget(
     name: "AppLoggerTest",
     dependencies: [appLogger]
@@ -38,6 +44,11 @@ let apiTest = Target.testTarget(
     dependencies: [api],
     dependenciesLibraries: [ohHttpStubs],
     resources: [.process("JSON")]
+)
+
+let modelTest = Target.testTarget(
+    name: "ModelTest",
+    dependencies: [model]
 )
 
 let package = Package.package(
@@ -53,11 +64,13 @@ let package = Package.package(
     ],
     targets: [
         api,
-        appLogger
+        appLogger,
+        model
     ],
     testTargets: [
         apiTest,
-        appLoggerTest
+        appLoggerTest,
+        modelTest
     ]
 )
 
