@@ -9,7 +9,7 @@ public struct AppError: Error, Equatable {
     }
 }
 
-extension AppError {
+public extension AppError {
     static func parse(_ error: Error) -> AppError {
         guard let appError = error as? AppError else {
             return .init(apiError: .unknown)

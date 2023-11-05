@@ -8,12 +8,12 @@ public struct PokemonEntity: DataStructure {
     public let id: Int
     public let name: String
     public let isDefault: Bool
-    public let sprites: PokemonSprites
+    public let sprites: PokemonSpritesEntity
 }
 
 @Buildable
 @CodingKeys(.all)
-public struct PokemonSprites: DataStructure {
+public struct PokemonSpritesEntity: DataStructure {
     public let backDefault: String?
     public let backFemale: String?
     public let backShiny: String?
@@ -22,27 +22,27 @@ public struct PokemonSprites: DataStructure {
     public let frontFemale: String?
     public let frontShiny: String?
     public let frontShinyFemale: String?
-    public let other: PokemonOther
+    public let other: PokemonOtherEntity
 }
 
 @Buildable
 @CodingKeys(.custom(["officialArtwork": "official-artwork"]))
-public struct PokemonOther: DataStructure {
-    public let dreamWorld: PokemonDreamWorld
-    public let home: PokemonHome
-    public let officialArtwork: PokemonOfficialArtwork
+public struct PokemonOtherEntity: DataStructure {
+    public let dreamWorld: PokemonDreamWorldEntity
+    public let home: PokemonHomeEntity
+    public let officialArtwork: PokemonOfficialArtworkEntity
 }
 
 @Buildable
 @CodingKeys(.all)
-public struct PokemonDreamWorld: DataStructure {
+public struct PokemonDreamWorldEntity: DataStructure {
     public let frontDefault: String?
     public let frontFemale: String?
 }
 
 @Buildable
 @CodingKeys(.all)
-public struct PokemonHome: DataStructure {
+public struct PokemonHomeEntity: DataStructure {
     public let frontDefault: String?
     public let frontFemale: String?
     public let frontShiny: String?
@@ -51,7 +51,7 @@ public struct PokemonHome: DataStructure {
 
 @Buildable
 @CodingKeys(.all)
-public struct PokemonOfficialArtwork: DataStructure {
+public struct PokemonOfficialArtworkEntity: DataStructure {
     public let frontDefault: String?
     public let frontShiny: String?
 }

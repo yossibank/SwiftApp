@@ -31,7 +31,7 @@ final class PokemonDataStoreTest: XCTestCase {
             id: 1,
             name: "フシギダネ",
             isDefault: true,
-            sprites: PokemonSpritesBuilder(
+            sprites: PokemonSpritesEntityBuilder(
                 backDefault: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png",
                 backFemale: nil,
                 backShiny: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/1.png",
@@ -40,18 +40,18 @@ final class PokemonDataStoreTest: XCTestCase {
                 frontFemale: nil,
                 frontShiny: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1.png",
                 frontShinyFemale: nil,
-                other: PokemonOtherBuilder(
-                    dreamWorld: PokemonDreamWorldBuilder(
+                other: PokemonOtherEntityBuilder(
+                    dreamWorld: PokemonDreamWorldEntityBuilder(
                         frontDefault: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/1.svg",
                         frontFemale: nil
                     ).build(),
-                    home: PokemonHomeBuilder(
+                    home: PokemonHomeEntityBuilder(
                         frontDefault: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png",
                         frontFemale: nil,
                         frontShiny: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/1.png",
                         frontShinyFemale: nil
                     ).build(),
-                    officialArtwork: PokemonOfficialArtworkBuilder(
+                    officialArtwork: PokemonOfficialArtworkEntityBuilder(
                         frontDefault: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
                         frontShiny: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/1.png"
                     ).build()
@@ -80,8 +80,8 @@ final class PokemonDataStoreTest: XCTestCase {
             id: 1,
             isLegendary: false,
             names: [
-                PokemonNameBuilder(
-                    language: PokemonLanguageBuilder(
+                PokemonNameEntityBuilder(
+                    language: PokemonLanguageEntityBuilder(
                         name: "ja",
                         url: "https://pokeapi.co/api/v2/language/11/"
                     ).build(),

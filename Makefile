@@ -23,8 +23,8 @@ generate-files:
 .PHONY: generate-mock
 generate-mock:
 	make generate-api-test-mock
-	make generate-model-test-mock
 	make generate-pokemonData-test-mock
+	make generate-pokemonDomain-test-mock
 
 .PHONY: generate-api-test-mock
 generate-api-test-mock:
@@ -34,19 +34,19 @@ generate-api-test-mock:
 		--mock-final \
 		--macro "DEBUG"
 
-.PHONY: generate-model-test-mock
-generate-model-test-mock:
-	mint run mockolo mockolo --sourcedirs Package/Sources/Model \
-		--destination Package/Sources/Mock/Generated/ModelMockResults.swift \
-		--testable-imports Model \
-		--mock-final \
-		--macro "DEBUG"
-
 .PHONY: generate-pokemonData-test-mock
 generate-pokemonData-test-mock:
 	mint run mockolo mockolo --sourcedirs Package/Sources/PokemonData \
 		--destination Package/Sources/Mock/Generated/PokemonDataMockResults.swift \
 		--testable-imports PokemonData \
+		--mock-final \
+		--macro "DEBUG"
+
+.PHONY: generate-pokemonDomain-test-mock
+generate-pokemonDomain-test-mock:
+	mint run mockolo mockolo --sourcedirs Package/Sources/PokemonDomain \
+		--destination Package/Sources/Mock/Generated/PokemonDomainMockResults.swift \
+		--testable-imports PokemonDomain \
 		--mock-final \
 		--macro "DEBUG"
 

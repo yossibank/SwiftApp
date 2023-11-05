@@ -3,10 +3,14 @@
 
 import PackageDescription
 
+// MARK: - Library
+
 let ohHttpStubs = Target.Dependency.product(
     name: "OHHTTPStubsSwift",
     package: "OHHTTPStubs"
 )
+
+// MARK: - Macro
 
 let codingKeys = Target.Dependency.product(
     name: "CodingKeys",
@@ -18,6 +22,8 @@ let structBuilderMacro = Target.Dependency.product(
     package: "StructBuilderMacro"
 )
 
+// MARK: - Package
+
 let appLogger = Target.target(
     name: "AppLogger"
 )
@@ -28,22 +34,29 @@ let api = Target.target(
     dependenciesLibraries: [codingKeys, structBuilderMacro]
 )
 
-let model = Target.target(
-    name: "Model",
-    dependencies: [api],
-    dependenciesLibraries: [structBuilderMacro]
-)
-
 let pokemonData = Target.target(
     name: "PokemonData",
     dependencies: [api],
     dependenciesLibraries: [codingKeys, structBuilderMacro]
 )
 
+let appDomain = Target.target(
+    name: "AppDomain",
+    dependencies: [api]
+)
+
+let pokemonDomain = Target.target(
+    name: "PokemonDomain",
+    dependencies: [pokemonData],
+    dependenciesLibraries: [structBuilderMacro]
+)
+
 let mock = Target.target(
     name: "Mock",
-    dependencies: [api, model, pokemonData]
+    dependencies: [api, pokemonData]
 )
+
+// MARK: - Test Package
 
 let appLoggerTest = Target.testTarget(
     name: "AppLoggerTest",
@@ -57,17 +70,24 @@ let apiTest = Target.testTarget(
     resources: [.process("JSON")]
 )
 
-let modelTest = Target.testTarget(
-    name: "ModelTest",
-    dependencies: [model]
-)
-
 let pokemonDataTest = Target.testTarget(
     name: "PokemonDataTest",
     dependencies: [pokemonData, mock],
     dependenciesLibraries: [ohHttpStubs],
     resources: [.process("JSON")]
 )
+
+let appDomainTest = Target.testTarget(
+    name: "AppDomainTest",
+    dependencies: [appDomain]
+)
+
+let pokemonDomainTest = Target.testTarget(
+    name: "PokemonDomainTest",
+    dependencies: [pokemonDomain, mock]
+)
+
+// MARK: - Target
 
 let package = Package.package(
     name: "Package",
@@ -82,16 +102,18 @@ let package = Package.package(
     ],
     targets: [
         api,
+        appDomain,
         appLogger,
         mock,
-        model,
-        pokemonData
+        pokemonData,
+        pokemonDomain
     ],
     testTargets: [
         apiTest,
+        appDomainTest,
         appLoggerTest,
-        modelTest,
-        pokemonDataTest
+        pokemonDataTest,
+        pokemonDomainTest
     ]
 )
 

@@ -46,13 +46,15 @@ targets:
       - package: Package
         product: API
       - package: Package
+        product: AppDomain
+      - package: Package
         product: AppLogger
       - package: Package
         product: Mock
       - package: Package
-        product: Model
-      - package: Package
         product: PokemonData
+      - package: Package
+        product: PokemonDomain
       - package: StructBuilderMacro
         product: StructBuilder
       - package: CodingKeysMacro

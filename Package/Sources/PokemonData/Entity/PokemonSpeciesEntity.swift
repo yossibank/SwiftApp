@@ -7,19 +7,19 @@ import StructBuilder
 public struct PokemonSpeciesEntity: DataStructure {
     public let id: Int
     public let isLegendary: Bool
-    public let names: [PokemonName]
+    public let names: [PokemonNameEntity]
 }
 
 @Buildable
 @CodingKeys(.all)
-public struct PokemonName: DataStructure {
-    public let language: PokemonLanguage
+public struct PokemonNameEntity: DataStructure {
+    public let language: PokemonLanguageEntity
     public let name: String
 }
 
 @Buildable
 @CodingKeys(.all)
-public struct PokemonLanguage: DataStructure {
+public struct PokemonLanguageEntity: DataStructure {
     public let name: String
     public let url: String
 }

@@ -1,5 +1,5 @@
 @testable import API
-@testable import Model
+@testable import AppDomain
 import XCTest
 
 final class AppErrorTest: XCTestCase {
