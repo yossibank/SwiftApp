@@ -1,31 +1,26 @@
-@testable import API
-@testable import Mock
-import OHHTTPStubs
-import OHHTTPStubsSwift
 @testable import PokemonData
+@testable import Mock
 import XCTest
 
-final class PokemonDataStoreTest: XCTestCase {
-    private var apiClient: APIClientProtocolMock!
-    private var dataStore: PokemonDataStore!
+final class PokemonRepositoryTest: XCTestCase {
+    private var dataStore: PokemonDataStoreProtocolMock!
+    private var repository: PokemonRepository!
 
     override func setUp() {
         super.setUp()
 
-        apiClient = .init()
-        dataStore = .init(apiClient: apiClient)
+        dataStore = .init()
+        repository = .init(dataStore: dataStore)
     }
 
     override func tearDown() {
         super.tearDown()
 
-        apiClient = nil
         dataStore = nil
-
-        HTTPStubs.removeAllStubs()
+        repository = nil
     }
 
-    func test_dataStore_fetch_pokemon() async throws {
+    func test_repository_fetch_pokemon() async throws {
         // arrange
         let entity = PokemonEntityBuilder(
             id: 1,
@@ -59,13 +54,13 @@ final class PokemonDataStoreTest: XCTestCase {
             ).build()
         ).build()
 
-        apiClient.requestHandler = { request in
-            XCTAssertTrue(request is PokemonRequest)
+        dataStore.fetchPokemonHandler = { id in
+            XCTAssertEqual(id, 100)
             return entity
         }
 
         // act
-        let actual = try await dataStore.fetchPokemon(id: 1)
+        let actual = try await repository.fetchPokemon(id: 100)
 
         // assert
         XCTAssertEqual(
@@ -74,7 +69,7 @@ final class PokemonDataStoreTest: XCTestCase {
         )
     }
 
-    func test_dataStore_fetch_pokemonSpecies() async throws {
+    func test_repository_fetch_pokemonSpecies() async throws {
         // arrange
         let entity = PokemonSpeciesEntityBuilder(
             id: 1,
@@ -90,13 +85,13 @@ final class PokemonDataStoreTest: XCTestCase {
             ]
         ).build()
 
-        apiClient.requestHandler = { request in
-            XCTAssertTrue(request is PokemonSpeciesRequest)
+        dataStore.fetchSpeciesPokemonHandler = { id in
+            XCTAssertEqual(id, 100)
             return entity
         }
 
         // act
-        let actual = try await dataStore.fetchSpeciesPokemon(id: 1)
+        let actual = try await repository.fetchSpeciesPokemon(id: 100)
 
         // assert
         XCTAssertEqual(
