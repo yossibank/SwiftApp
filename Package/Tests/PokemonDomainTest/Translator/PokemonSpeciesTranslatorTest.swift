@@ -26,7 +26,7 @@ final class PokemonSpeciesTranslatorTest: XCTestCase {
                 PokemonNameEntityBuilder(
                     language: PokemonLanguageEntityBuilder(
                         name: "ja",
-                        url:"https://pokeapi.co/api/v2/language/11/"
+                        url: "https://pokeapi.co/api/v2/language/11/"
                     ).build(),
                     name: "フシギダネ"
                 ).build()
@@ -45,9 +45,9 @@ final class PokemonSpeciesTranslatorTest: XCTestCase {
                 japaneseName: "フシギダネ",
                 names: [
                     PokemonNameModelBuilder(
-                        language:PokemonLanguageModelBuilder(
+                        language: PokemonLanguageModelBuilder(
                             name: "ja",
-                            url: .init(string:"https://pokeapi.co/api/v2/language/11/")
+                            url: .init(string: "https://pokeapi.co/api/v2/language/11/")
                         ).build(),
                         name: "フシギダネ"
                     ).build()

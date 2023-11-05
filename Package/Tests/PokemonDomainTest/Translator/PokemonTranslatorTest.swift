@@ -102,7 +102,7 @@ final class PokemonTranslatorTest: XCTestCase {
                                 string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
                             ),
                             frontShinyURL: .init(
-                                string:"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/1.png"
+                                string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/1.png"
                             )
                         ).build()
                     ).build()
