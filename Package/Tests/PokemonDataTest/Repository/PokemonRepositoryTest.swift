@@ -20,7 +20,7 @@ final class PokemonRepositoryTest: XCTestCase {
         repository = nil
     }
 
-    func test_repository_fetch_pokemon() async throws {
+    func test_fetch_pokemon() async throws {
         // arrange
         let entity = PokemonEntityBuilder(
             id: 1,
@@ -69,7 +69,7 @@ final class PokemonRepositoryTest: XCTestCase {
         )
     }
 
-    func test_repository_fetch_pokemonSpecies() async throws {
+    func test_fetch_pokemonSpecies() async throws {
         // arrange
         let entity = PokemonSpeciesEntityBuilder(
             id: 1,

@@ -23,3 +23,23 @@ public struct PokemonLanguageEntity: DataStructure {
     public let name: String
     public let url: String
 }
+
+#if DEBUG
+    public extension PokemonSpeciesEntity {
+        static func mock() -> PokemonSpeciesEntity {
+            PokemonSpeciesEntityBuilder(
+                id: 1,
+                isLegendary: false,
+                names: [
+                    PokemonNameEntityBuilder(
+                        language: PokemonLanguageEntityBuilder(
+                            name: "ja",
+                            url: "https://pokeapi.co/api/v2/language/11/"
+                        ).build(),
+                        name: "フシギダネ"
+                    ).build()
+                ]
+            ).build()
+        }
+    }
+#endif

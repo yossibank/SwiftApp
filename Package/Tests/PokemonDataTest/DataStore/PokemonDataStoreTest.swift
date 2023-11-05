@@ -25,7 +25,7 @@ final class PokemonDataStoreTest: XCTestCase {
         HTTPStubs.removeAllStubs()
     }
 
-    func test_dataStore_fetch_pokemon() async throws {
+    func test_fetch_pokemon() async throws {
         // arrange
         let entity = PokemonEntityBuilder(
             id: 1,
@@ -74,7 +74,7 @@ final class PokemonDataStoreTest: XCTestCase {
         )
     }
 
-    func test_dataStore_fetch_pokemonSpecies() async throws {
+    func test_fetch_pokemonSpecies() async throws {
         // arrange
         let entity = PokemonSpeciesEntityBuilder(
             id: 1,

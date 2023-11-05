@@ -47,13 +47,13 @@ let appDomain = Target.target(
 
 let pokemonDomain = Target.target(
     name: "PokemonDomain",
-    dependencies: [pokemonData],
+    dependencies: [pokemonData, appDomain],
     dependenciesLibraries: [structBuilderMacro]
 )
 
 let mock = Target.target(
     name: "Mock",
-    dependencies: [api, pokemonData]
+    dependencies: [api, pokemonData, pokemonDomain]
 )
 
 // MARK: - Test Package

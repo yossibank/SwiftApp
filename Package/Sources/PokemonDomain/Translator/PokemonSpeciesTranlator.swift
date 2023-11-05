@@ -2,11 +2,11 @@ import Foundation
 import PokemonData
 
 /// @mockable
-public protocol PokemonSpeciesTranlatorProtocol {
+public protocol PokemonSpeciesTranslatorProtocol {
     func translate(_ entity: PokemonSpeciesEntity) -> PokemonSpeciesModel
 }
 
-public struct PokemonSpeciesTranlator: PokemonSpeciesTranlatorProtocol {
+public struct PokemonSpeciesTranlator: PokemonSpeciesTranslatorProtocol {
     public func translate(_ entity: PokemonSpeciesEntity) -> PokemonSpeciesModel {
         .init(
             id: entity.id,

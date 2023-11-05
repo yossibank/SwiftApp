@@ -55,3 +55,41 @@ public struct PokemonOfficialArtworkEntity: DataStructure {
     public let frontDefault: String?
     public let frontShiny: String?
 }
+
+#if DEBUG
+    public extension PokemonEntity {
+        static func mock() -> PokemonEntity {
+            PokemonEntityBuilder(
+                id: 1,
+                name: "フシギダネ",
+                isDefault: true,
+                sprites: PokemonSpritesEntityBuilder(
+                    backDefault: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png",
+                    backFemale: nil,
+                    backShiny: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/1.png",
+                    backShinyFemale: nil,
+                    frontDefault: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+                    frontFemale: nil,
+                    frontShiny: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1.png",
+                    frontShinyFemale: nil,
+                    other: PokemonOtherEntityBuilder(
+                        dreamWorld: PokemonDreamWorldEntityBuilder(
+                            frontDefault: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/1.svg",
+                            frontFemale: nil
+                        ).build(),
+                        home: PokemonHomeEntityBuilder(
+                            frontDefault: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png",
+                            frontFemale: nil,
+                            frontShiny: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/1.png",
+                            frontShinyFemale: nil
+                        ).build(),
+                        officialArtwork: PokemonOfficialArtworkEntityBuilder(
+                            frontDefault: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
+                            frontShiny: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/1.png"
+                        ).build()
+                    ).build()
+                ).build()
+            ).build()
+        }
+    }
+#endif

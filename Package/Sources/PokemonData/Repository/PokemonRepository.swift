@@ -1,3 +1,4 @@
+/// @mockable
 public protocol PokemonRepositoryProtocol {
     func fetchPokemon(id: Int) async throws -> PokemonEntity
     func fetchSpeciesPokemon(id: Int) async throws -> PokemonSpeciesEntity

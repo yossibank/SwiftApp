@@ -48,3 +48,61 @@ public struct PokemonOfficialArtworkModel: Equatable {
     public let frontDefaultURL: URL?
     public let frontShinyURL: URL?
 }
+
+#if DEBUG
+    public extension PokemonModel {
+        static func mock() -> PokemonModel {
+            PokemonModelBuilder(
+                id: 1,
+                name: "フシギダネ",
+                imageURL: .init(
+                    string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
+                ),
+                sprites: PokemonSpritesModelBuilder(
+                    backDefaultURL: .init(
+                        string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png"
+                    ),
+                    backFemaleURL: nil,
+                    backShinyURL: .init(
+                        string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/1.png"
+                    ),
+                    backShinyFemaleURL: nil,
+                    frontDefaultURL: .init(
+                        string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
+                    ),
+                    frontFemaleURL: nil,
+                    frontShinyURL: .init(
+                        string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1.png"
+                    ),
+                    frontShinyFemaleURL: nil,
+                    other: PokemonOtherModelBuilder(
+                        dreamWorld: PokemonDreamWorldModelBuilder(
+                            frontDefaultURL: .init(
+                                string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/1.svg"
+                            ),
+                            frontFemaleURL: nil
+                        ).build(),
+                        home: PokemonHomeModelBuilder(
+                            frontDefaultURL: .init(
+                                string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1.png"
+                            ),
+                            frontFemaleURL: nil,
+                            frontShinyURL: .init(
+                                string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/1.png"
+                            ),
+                            frontShinyFemaleURL: nil
+                        ).build(),
+                        officialArtwork: PokemonOfficialArtworkModelBuilder(
+                            frontDefaultURL: .init(
+                                string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
+                            ),
+                            frontShinyURL: .init(
+                                string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/1.png"
+                            )
+                        ).build()
+                    ).build()
+                ).build()
+            ).build()
+        }
+    }
+#endif
