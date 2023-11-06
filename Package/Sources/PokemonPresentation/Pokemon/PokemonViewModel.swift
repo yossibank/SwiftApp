@@ -18,7 +18,7 @@ public final class PokemonViewModel: ObservableObject {
 public extension PokemonViewModel {
     func fetch() async {
         do {
-            models = try await (1 ... 151).asyncMap {
+            models = try await (1 ... 151).concurrentMap { [useCase] in
                 try await useCase.fetchPokemon(id: $0)
             }
         } catch {

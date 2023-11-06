@@ -7,6 +7,8 @@ public protocol PokemonTranslatorProtocol {
 }
 
 public struct PokemonTranslator: PokemonTranslatorProtocol {
+    public init() {}
+
     public func translate(_ entity: PokemonEntity) -> PokemonModel {
         .init(
             id: entity.id,

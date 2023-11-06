@@ -33,7 +33,7 @@ public struct PokemonDataStore: PokemonDataStoreProtocol {
 }
 
 public enum PokemonDataStoreFactory {
-    static func provide() -> PokemonDataStoreProtocol {
+    public static func provide() -> PokemonDataStoreProtocol {
         PokemonDataStore(apiClient: APIClient())
     }
 }

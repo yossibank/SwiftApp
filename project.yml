@@ -52,6 +52,8 @@ targets:
       - package: Package
         product: Mock
       - package: Package
+        product: PokemonBuilder
+      - package: Package
         product: PokemonData
       - package: Package
         product: PokemonDomain
