@@ -29,8 +29,8 @@ final class PokemonUseCaseTest: XCTestCase {
 
     func test_fetch_pokemon() async throws {
         // arrange
-        let entity = PokemonEntity.mock()
-        let model = PokemonModel.mock()
+        let entity = PokemonEntity.mock(id: 1)
+        let model = PokemonModel.mock(id: 1)
 
         repository.fetchPokemonHandler = { id in
             XCTAssertEqual(id, 1)

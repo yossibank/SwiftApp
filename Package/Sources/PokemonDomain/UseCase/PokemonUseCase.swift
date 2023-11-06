@@ -28,3 +28,15 @@ public struct PokemonUseCase: PokemonUseCaseProtocol {
         }
     }
 }
+
+#if DEBUG
+    public extension PokemonUseCaseProtocol {
+        func fetchPokemon(id: Int) async throws -> PokemonModel {
+            PokemonModel.mock(id: id)
+        }
+    }
+
+    public struct PokemonUseCaseMock: PokemonUseCaseProtocol {
+        public init() {}
+    }
+#endif

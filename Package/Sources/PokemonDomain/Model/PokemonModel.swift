@@ -2,7 +2,7 @@ import Foundation
 import StructBuilder
 
 @Buildable
-public struct PokemonModel: Equatable {
+public struct PokemonModel: Hashable {
     public let id: Int
     public let name: String
     public let imageURL: URL?
@@ -10,7 +10,7 @@ public struct PokemonModel: Equatable {
 }
 
 @Buildable
-public struct PokemonSpritesModel: Equatable {
+public struct PokemonSpritesModel: Hashable {
     public let backDefaultURL: URL?
     public let backFemaleURL: URL?
     public let backShinyURL: URL?
@@ -23,20 +23,20 @@ public struct PokemonSpritesModel: Equatable {
 }
 
 @Buildable
-public struct PokemonOtherModel: Equatable {
+public struct PokemonOtherModel: Hashable {
     public let dreamWorld: PokemonDreamWorldModel
     public let home: PokemonHomeModel
     public let officialArtwork: PokemonOfficialArtworkModel
 }
 
 @Buildable
-public struct PokemonDreamWorldModel: Equatable {
+public struct PokemonDreamWorldModel: Hashable {
     public let frontDefaultURL: URL?
     public let frontFemaleURL: URL?
 }
 
 @Buildable
-public struct PokemonHomeModel: Equatable {
+public struct PokemonHomeModel: Hashable {
     public let frontDefaultURL: URL?
     public let frontFemaleURL: URL?
     public let frontShinyURL: URL?
@@ -44,17 +44,17 @@ public struct PokemonHomeModel: Equatable {
 }
 
 @Buildable
-public struct PokemonOfficialArtworkModel: Equatable {
+public struct PokemonOfficialArtworkModel: Hashable {
     public let frontDefaultURL: URL?
     public let frontShinyURL: URL?
 }
 
 #if DEBUG
     public extension PokemonModel {
-        static func mock() -> PokemonModel {
+        static func mock(id: Int) -> PokemonModel {
             PokemonModelBuilder(
-                id: 1,
-                name: "フシギダネ",
+                id: id,
+                name: "フシギダネ\(id.description)",
                 imageURL: .init(
                     string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
                 ),

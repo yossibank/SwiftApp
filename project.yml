@@ -55,6 +55,10 @@ targets:
         product: PokemonData
       - package: Package
         product: PokemonDomain
+      - package: Package
+        product: PokemonPresentation
+      - package: Package
+        product: Utility
       - package: StructBuilderMacro
         product: StructBuilder
       - package: CodingKeysMacro

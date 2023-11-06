@@ -58,10 +58,10 @@ public struct PokemonOfficialArtworkEntity: DataStructure {
 
 #if DEBUG
     public extension PokemonEntity {
-        static func mock() -> PokemonEntity {
+        static func mock(id: Int) -> PokemonEntity {
             PokemonEntityBuilder(
-                id: 1,
-                name: "フシギダネ",
+                id: id,
+                name: "フシギダネ\(id.description)",
                 isDefault: true,
                 sprites: PokemonSpritesEntityBuilder(
                     backDefault: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png",

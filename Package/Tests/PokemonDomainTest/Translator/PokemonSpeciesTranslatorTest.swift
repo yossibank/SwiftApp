@@ -19,7 +19,7 @@ final class PokemonSpeciesTranslatorTest: XCTestCase {
 
     func test_translate_pokemonSpeciesEntity_to_pokemonSpeciesModel() {
         // arrange
-        let entity = PokemonSpeciesEntity.mock()
+        let entity = PokemonSpeciesEntity.mock(id: 1)
 
         // act
         let actual = translator.translate(entity)
@@ -27,7 +27,7 @@ final class PokemonSpeciesTranslatorTest: XCTestCase {
         // assert
         XCTAssertEqual(
             actual,
-            PokemonSpeciesModel.mock()
+            PokemonSpeciesModel.mock(id: 1)
         )
     }
 }

@@ -23,18 +23,18 @@ public struct PokemonLanguageModel: Equatable {
 
 #if DEBUG
     public extension PokemonSpeciesModel {
-        static func mock() -> PokemonSpeciesModel {
+        static func mock(id: Int) -> PokemonSpeciesModel {
             PokemonSpeciesModelBuilder(
-                id: 1,
+                id: id,
                 isLegendary: false,
-                japaneseName: "フシギダネ",
+                japaneseName: "フシギダネ\(id.description)",
                 names: [
                     PokemonNameModelBuilder(
                         language: PokemonLanguageModelBuilder(
                             name: "ja",
                             url: .init(string: "https://pokeapi.co/api/v2/language/11/")
                         ).build(),
-                        name: "フシギダネ"
+                        name: "フシギダネ\(id.description)"
                     ).build()
                 ]
             ).build()

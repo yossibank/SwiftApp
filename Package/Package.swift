@@ -28,15 +28,13 @@ let appLogger = Target.target(
     name: "AppLogger"
 )
 
+let utility = Target.target(
+    name: "Utility"
+)
+
 let api = Target.target(
     name: "API",
     dependencies: [appLogger],
-    dependenciesLibraries: [codingKeys, structBuilderMacro]
-)
-
-let pokemonData = Target.target(
-    name: "PokemonData",
-    dependencies: [api],
     dependenciesLibraries: [codingKeys, structBuilderMacro]
 )
 
@@ -45,10 +43,21 @@ let appDomain = Target.target(
     dependencies: [api]
 )
 
+let pokemonData = Target.target(
+    name: "PokemonData",
+    dependencies: [api],
+    dependenciesLibraries: [codingKeys, structBuilderMacro]
+)
+
 let pokemonDomain = Target.target(
     name: "PokemonDomain",
     dependencies: [pokemonData, appDomain],
     dependenciesLibraries: [structBuilderMacro]
+)
+
+let pokemonPresentation = Target.target(
+    name: "PokemonPresentation",
+    dependencies: [pokemonDomain, appDomain, utility]
 )
 
 let mock = Target.target(
@@ -63,16 +72,14 @@ let appLoggerTest = Target.testTarget(
     dependencies: [appLogger]
 )
 
+let utilityTest = Target.testTarget(
+    name: "UtilityTest",
+    dependencies: [utility]
+)
+
 let apiTest = Target.testTarget(
     name: "APITest",
     dependencies: [api],
-    dependenciesLibraries: [ohHttpStubs],
-    resources: [.process("JSON")]
-)
-
-let pokemonDataTest = Target.testTarget(
-    name: "PokemonDataTest",
-    dependencies: [pokemonData, mock],
     dependenciesLibraries: [ohHttpStubs],
     resources: [.process("JSON")]
 )
@@ -82,9 +89,21 @@ let appDomainTest = Target.testTarget(
     dependencies: [appDomain]
 )
 
+let pokemonDataTest = Target.testTarget(
+    name: "PokemonDataTest",
+    dependencies: [pokemonData, mock],
+    dependenciesLibraries: [ohHttpStubs],
+    resources: [.process("JSON")]
+)
+
 let pokemonDomainTest = Target.testTarget(
     name: "PokemonDomainTest",
     dependencies: [pokemonDomain, mock]
+)
+
+let pokemonPresentationTest = Target.testTarget(
+    name: "PokemonPresentationTest",
+    dependencies: [pokemonPresentation, mock]
 )
 
 // MARK: - Target
@@ -106,14 +125,18 @@ let package = Package.package(
         appLogger,
         mock,
         pokemonData,
-        pokemonDomain
+        pokemonDomain,
+        pokemonPresentation,
+        utility
     ],
     testTargets: [
         apiTest,
         appDomainTest,
         appLoggerTest,
         pokemonDataTest,
-        pokemonDomainTest
+        pokemonDomainTest,
+        pokemonPresentationTest,
+        utilityTest
     ]
 )
 
