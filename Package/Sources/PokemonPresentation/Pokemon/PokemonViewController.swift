@@ -2,12 +2,12 @@ import SwiftUI
 import UIKit
 import Utility
 
-public final class PokemonViewController: UIViewController {
+public final class PokemonViewController: SwiftUIViewController<PokemonView> {
     private let viewModel: PokemonViewModel
 
     public init(viewModel: PokemonViewModel) {
         self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
+        super.init(contentView: .init(viewModel: viewModel))
     }
 
     @available(*, unavailable)
@@ -15,9 +15,7 @@ public final class PokemonViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override public func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
-
-        setView(PokemonView(viewModel: viewModel))
     }
 }
