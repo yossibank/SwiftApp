@@ -13,7 +13,9 @@ public struct PokemonTranslator: PokemonTranslatorProtocol {
         .init(
             id: entity.id,
             name: entity.name,
-            imageURL: .init(string: entity.sprites.other.officialArtwork.frontDefault ?? ""),
+            imageURL: .init(
+                string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/\(entity.id.description).png"
+            ),
             sprites: translate(sprites: entity.sprites)
         )
     }
