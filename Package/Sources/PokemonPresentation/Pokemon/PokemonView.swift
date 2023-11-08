@@ -10,7 +10,7 @@ public struct PokemonView: View {
 
     public var body: some View {
         ScrollView {
-            LazyVStack(alignment: .leading, spacing: 32) {
+            LazyVStack(alignment: .leading) {
                 ForEach(viewModel.models, id: \.id) { model in
                     HStack(spacing: 32) {
                         VStack(spacing: 12) {
@@ -25,6 +25,8 @@ public struct PokemonView: View {
                         }
                         .frame(width: 100, height: 100)
                     }
+
+                    Divider()
                 }
             }
             .padding(.leading, 48)
