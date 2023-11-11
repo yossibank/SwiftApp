@@ -14,7 +14,7 @@ open class SwiftUIViewController<SwiftUIView: View>: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         setView(contentView)
     }
 }
