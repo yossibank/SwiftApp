@@ -8,7 +8,7 @@ struct StateView: View {
             Button(isPlaying ? "Pause" : "Play") {
                 isPlaying.toggle()
             }
- 
+
             BindingView(isPlaying: $isPlaying)
         }
     }
