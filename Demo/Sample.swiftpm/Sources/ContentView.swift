@@ -9,6 +9,7 @@ struct ContentView: View {
             ObservedObjectView()
             StateObjectView()
             EnvironmentObjectView()
+            EnvironmentView()
 
             Button("TAP [+2]") {
                 dataSource.count += 2
