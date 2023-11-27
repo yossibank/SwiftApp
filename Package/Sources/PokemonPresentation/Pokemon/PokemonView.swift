@@ -10,26 +10,43 @@ public struct PokemonView: View {
 
     public var body: some View {
         ScrollView {
-            LazyVStack(alignment: .leading) {
-                ForEach(viewModel.models, id: \.id) { model in
-                    HStack(spacing: 32) {
-                        VStack(spacing: 12) {
-                            Text("図鑑番号: No\(model.id.description)")
-                            Text(model.name)
-                        }
+            switch viewModel.state {
+            case .initial:
+                EmptyView()
 
-                        AsyncImage(url: model.imageURL) { image in
-                            image.resizable()
-                        } placeholder: {
-                            ProgressView()
+            case .loading:
+                EmptyView()
+
+            case let .error(appError):
+                EmptyView()
+
+            case .empty:
+                EmptyView()
+
+            case let .loaded(viewData):
+                ScrollView {
+                    LazyVStack(alignment: .leading) {
+                        ForEach(viewData, id: \.id) { data in
+                            HStack(spacing: 32) {
+                                VStack(spacing: 12) {
+                                    Text("図鑑番号: No\(data.id.description)")
+                                    Text(data.name)
+                                }
+
+                                AsyncImage(url: data.imageURL) { image in
+                                    image.resizable()
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                .frame(width: 100, height: 100)
+                            }
+
+                            Divider()
                         }
-                        .frame(width: 100, height: 100)
                     }
-
-                    Divider()
+                    .padding(.leading, 48)
                 }
             }
-            .padding(.leading, 48)
         }
         .onAppear {
             Task {

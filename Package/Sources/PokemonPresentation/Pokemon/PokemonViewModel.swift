@@ -5,7 +5,7 @@ import Utility
 
 @MainActor
 public final class PokemonViewModel: ObservableObject {
-    @Published private(set) var models: [PokemonModel] = []
+    @Published private(set) var state: AppState<[PokemonModel]> = .initial
     @Published private(set) var appError: AppError?
 
     private let useCase: PokemonUseCaseProtocol
@@ -17,12 +17,15 @@ public final class PokemonViewModel: ObservableObject {
 
 public extension PokemonViewModel {
     func fetch() async {
+        state = .loading
+
         do {
-            models = try await (1 ... 151).concurrentMap { [useCase] in
+            let models = try await (1 ... 151).concurrentMap { [useCase] in
                 try await useCase.fetchPokemon(id: $0)
             }
+            state = models.isEmpty ? .empty : .loaded(models)
         } catch {
-            appError = AppError.parse(error)
+            state = .error(AppError.parse(error))
         }
     }
 }
