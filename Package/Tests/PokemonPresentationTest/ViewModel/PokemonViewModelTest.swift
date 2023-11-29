@@ -33,9 +33,14 @@ final class PokemonViewModelTest: XCTestCase {
         await viewModel.fetch()
 
         // assert
-        XCTAssertEqual(viewModel.models.count, 151)
-        XCTAssertEqual(viewModel.models.first!.name, "フシギダネ1")
-        XCTAssertEqual(viewModel.models.last!.name, "フシギダネ151")
+        switch viewModel.state {
+        case let .loaded(viewData):
+            XCTAssertEqual(viewData.count, 151)
+            XCTAssertEqual(viewData.first!.name, "フシギダネ1")
+            XCTAssertEqual(viewData.last!.name, "フシギダネ151")
+        default:
+            XCTFail("failed to fetch")
+        }
     }
 
     func test_fetch_failure() async {
@@ -49,8 +54,8 @@ final class PokemonViewModelTest: XCTestCase {
 
         // assert
         XCTAssertEqual(
-            viewModel.appError,
-            .init(apiError: .urlSessionError)
+            viewModel.state,
+            .error(.init(apiError: .urlSessionError))
         )
     }
 }

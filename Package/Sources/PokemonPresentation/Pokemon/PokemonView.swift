@@ -1,5 +1,6 @@
 import PokemonDomain
 import SwiftUI
+import Utility
 
 public struct PokemonView: View {
     @StateObject var viewModel: PokemonViewModel
@@ -9,19 +10,20 @@ public struct PokemonView: View {
     }
 
     public var body: some View {
-        ScrollView {
+        VStack {
             switch viewModel.state {
             case .initial:
-                EmptyView()
+                InitialView()
 
             case .loading:
-                EmptyView()
+                LoadingView()
 
             case let .error(appError):
-                EmptyView()
-
-            case .empty:
-                EmptyView()
+                ErrorView(errorDescription: appError.errorDescription) {
+                    Task {
+                        await viewModel.fetch()
+                    }
+                }
 
             case let .loaded(viewData):
                 ScrollView {
