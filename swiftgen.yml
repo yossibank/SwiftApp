@@ -1,0 +1,7 @@
+xcassets:
+  - inputs: Package/Sources/AppResources/Images/Utility.xcassets
+    outputs:
+      templateName: swift5
+      params:
+          publicAccess: true
+      output: Package/Sources/AppResources/Generated/ImageUtility+Generated.swift

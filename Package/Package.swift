@@ -28,8 +28,14 @@ let appLogger = Target.target(
     name: "AppLogger"
 )
 
+let appResources = Target.target(
+    name: "AppResources",
+    resources: [.process("Images")]
+)
+
 let utility = Target.target(
-    name: "Utility"
+    name: "Utility",
+    dependencies: [appResources]
 )
 
 let api = Target.target(
@@ -123,6 +129,7 @@ let package = Package.package(
         api,
         appDomain,
         appLogger,
+        appResources,
         mock,
         pokemonBuilder,
         pokemonData,

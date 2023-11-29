@@ -4,6 +4,7 @@ setup:
 	mint bootstrap
 	make run-format
 	make generate-files
+	make generate-resources
 	make generate-mock
 	make generate-xcodegen
 	make open
@@ -18,7 +19,12 @@ run-format:
 
 .PHONY: generate-files
 generate-files:
+	mkdir -p Package/Sources/AppResources/Generated
 	mkdir -p Package/Sources/Mock/Generated
+
+.PHONY: generate-resources
+generate-resources:
+	mint run swiftgen config run --config swiftgen.yml
 
 .PHONY: generate-mock
 generate-mock:

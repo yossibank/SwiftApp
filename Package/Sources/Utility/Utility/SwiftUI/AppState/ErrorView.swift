@@ -1,3 +1,4 @@
+import AppResources
 import SwiftUI
 
 public struct ErrorView: View {
@@ -14,7 +15,7 @@ public struct ErrorView: View {
 
     public var body: some View {
         VStack(spacing: 24) {
-            Image("Error", bundle: .module)
+            Asset.error.swiftUIImage
                 .resizable()
                 .frame(width: 80, height: 80)
 
@@ -32,7 +33,7 @@ public struct ErrorView: View {
             }
 
             Button {
-
+                didTapReloadButton()
             } label: {
                 Text("再読み込み")
                     .font(.subheadline)
