@@ -19,15 +19,15 @@ public struct ErrorView: View {
                 .resizable()
                 .frame(width: 80, height: 80)
 
-            Text("エラーが発生しました")
+            Text(L10n.Utility.errorOccurred)
                 .font(.headline)
 
             VStack(spacing: 8) {
-                Text("【原因】")
+                Text(L10n.Utility.cause)
                     .font(.subheadline)
                     .bold()
 
-                Text(errorDescription ?? "不明なエラー")
+                Text(errorDescription ?? L10n.Utility.unknownError)
                     .font(.subheadline)
                     .bold()
             }
@@ -35,7 +35,7 @@ public struct ErrorView: View {
             Button {
                 didTapReloadButton()
             } label: {
-                Text("再読み込み")
+                Text(L10n.Utility.reload)
                     .font(.subheadline)
                     .bold()
                     .foregroundStyle(.pink)

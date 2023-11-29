@@ -1,0 +1,4 @@
+"utility.errorOccurred" = "エラーが発生しました";
+"utility.cause" = "【原因】";
+"utility.unknownError" = "不明なエラー";
+"utility.reload" = "再読み込み";

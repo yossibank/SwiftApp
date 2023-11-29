@@ -3,5 +3,13 @@ xcassets:
     outputs:
       templateName: swift5
       params:
-          publicAccess: true
+        publicAccess: true
       output: Package/Sources/AppResources/Generated/ImageUtility+Generated.swift
+
+strings:
+  - inputs: Package/Sources/AppResources/Strings/Utility.strings
+    outputs:
+      templateName: structured-swift4
+      params:
+        publicAccess: true
+      output: Package/Sources/AppResources/Generated/StringUtility+Generated.swift

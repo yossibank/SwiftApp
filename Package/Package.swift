@@ -30,7 +30,10 @@ let appLogger = Target.target(
 
 let appResources = Target.target(
     name: "AppResources",
-    resources: [.process("Images")]
+    resources: [
+        .process("Images"),
+        .process("Strings")
+    ]
 )
 
 let utility = Target.target(
