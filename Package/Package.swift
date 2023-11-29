@@ -5,6 +5,11 @@ import PackageDescription
 
 // MARK: - Library
 
+let theComposableArchitecture = Target.Dependency.product(
+    name: "ComposableArchitecture",
+    package: "swift-composable-architecture"
+)
+
 let ohHttpStubs = Target.Dependency.product(
     name: "OHHTTPStubsSwift",
     package: "OHHTTPStubs"
@@ -74,6 +79,11 @@ let pokemonBuilder = Target.target(
     dependencies: [pokemonData, pokemonDomain, pokemonPresentation]
 )
 
+let tca = Target.target(
+    name: "TCA",
+    dependenciesLibraries: [theComposableArchitecture]
+)
+
 let mock = Target.target(
     name: "Mock",
     dependencies: [api, pokemonData, pokemonDomain]
@@ -115,6 +125,11 @@ let pokemonPresentationTest = Target.testTarget(
     dependencies: [pokemonPresentation, mock]
 )
 
+let tcaTest = Target.testTarget(
+    name: "TCATest",
+    dependencies: [tca]
+)
+
 // MARK: - Target
 
 let package = Package.package(
@@ -124,6 +139,7 @@ let package = Package.package(
     ],
     dependencies: [
         .package(url: "https://github.com/nicklockwood/SwiftFormat", from: "0.52.4"),
+        .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.5.0"),
         .package(url: "https://github.com/AliSoftware/OHHTTPStubs", from: "9.1.0"),
         .package(path: "../CodingKeysMacro"),
         .package(path: "../StructBuilderMacro")
@@ -138,6 +154,7 @@ let package = Package.package(
         pokemonData,
         pokemonDomain,
         pokemonPresentation,
+        tca,
         utility
     ],
     testTargets: [
@@ -146,6 +163,7 @@ let package = Package.package(
         pokemonDataTest,
         pokemonDomainTest,
         pokemonPresentationTest,
+        tcaTest,
         utilityTest
     ]
 )
