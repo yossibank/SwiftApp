@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Demo/Flux.swiftpm">
+   </FileRef>
+   <FileRef
+      location = "group:Demo/TheComposableArchitecture.swiftpm">
+   </FileRef>
+   <FileRef
       location = "group:Demo/Sample.swiftpm">
    </FileRef>
    <FileRef

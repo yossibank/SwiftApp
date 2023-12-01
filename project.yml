@@ -50,6 +50,8 @@ targets:
       - package: Package
         product: AppLogger
       - package: Package
+        product: AppResources
+      - package: Package
         product: Mock
       - package: Package
         product: PokemonBuilder
@@ -59,6 +61,8 @@ targets:
         product: PokemonDomain
       - package: Package
         product: PokemonPresentation
+      - package: Package
+        product: TCA
       - package: Package
         product: Utility
       - package: StructBuilderMacro
