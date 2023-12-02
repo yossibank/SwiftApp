@@ -7,7 +7,7 @@ final class GitHubListDispatcher {
 
     private let actionSubject = PassthroughSubject<GitHubListAction, Never>()
 
-    func register(callback: @escaping (GitHubListAction) -> ()) {
+    func register(callback: @escaping (GitHubListAction) -> Void) {
         let actionStream = actionSubject.sink(receiveValue: callback)
         cancellables += [actionStream]
     }
