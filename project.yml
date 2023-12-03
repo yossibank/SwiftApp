@@ -2,7 +2,7 @@ name: SwiftApp
 
 settings:
   base:
-    IPHONEOS_DEPLOYMENT_TARGET: 15.0
+    IPHONEOS_DEPLOYMENT_TARGET: 17.0
     MARKETING_VERSION: &marketing_version 1.0.0
     CURRENT_PROJECT_VERSION: &project_version 1.0
   configs:
@@ -15,7 +15,7 @@ options:
   bundleIdPrefix: y.kamiyama
   developmentLanguage: ja
   deploymentTarget:
-    iOS: 15.0
+    iOS: 17.0
 
 configs:
   Debug: debug
