@@ -65,10 +65,6 @@ targets:
         product: TCA
       - package: Package
         product: Utility
-      - package: StructBuilderMacro
-        product: StructBuilder
-      - package: CodingKeysMacro
-        product: CodingKeys
 
 schemeTemplates:
   Scheme:
