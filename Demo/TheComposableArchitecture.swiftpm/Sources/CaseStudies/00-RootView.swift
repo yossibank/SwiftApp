@@ -9,6 +9,9 @@ struct RootView: View {
                     NavigationLink("Counter") {
                         CounterDemoView()
                     }
+                    NavigationLink("TwoCounters Combining Reducers") {
+                        TwoCountersView()
+                    }
                 } header: {
                     Text("基本的な使い方")
                 }
