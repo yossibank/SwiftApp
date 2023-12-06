@@ -32,7 +32,7 @@ struct TwoCounters {
     }
 }
 
-// MARK: - Feature View
+// MARK: - Feature view
 
 struct TwoCountersView: View {
     @State private var store = Store(initialState: TwoCounters.State()) {

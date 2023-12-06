@@ -26,6 +26,7 @@ struct Counter {
                 state.count -= 1
                 // Effectを返す、何かしらの外部影響が発生するか
                 return .none
+
             case .incrementButtonTapped:
                 state.count += 1
                 // Effectを返す、何かしらの外部影響が発生するか
@@ -35,7 +36,7 @@ struct Counter {
     }
 }
 
-// MARK: - Feature View
+// MARK: - Feature view
 
 struct CounterView: View {
     let store: StoreOf<Counter>
