@@ -12,8 +12,11 @@ struct RootView: View {
                     NavigationLink("TwoCounters Combining Reducers") {
                         TwoCountersView()
                     }
-                    NavigationLink("Bindings") {
+                    NavigationLink("Bindings Basic") {
                         BindingBasicsView()
+                    }
+                    NavigationLink("Bindings Form") {
+                        BindingFormView()
                     }
                 } header: {
                     Text("基本的な使い方")
