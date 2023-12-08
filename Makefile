@@ -1,17 +1,29 @@
 .PHONY: setup
 setup:
-	brew bundle
-	mint bootstrap
-	make run-format
-	make generate-files
-	make generate-resources
-	make generate-mock
-	make generate-xcodegen
-	make open
+	$(MAKE) brew-bundle
+	$(MAKE) install-mint-packages
+	$(MAKE) run-format
+	$(MAKE) generate-files
+	$(MAKE) generate-resources
+	$(MAKE) generate-mock
+	$(MAKE) generate-xcodegen
+	$(MAKE) open
 
 .PHONY: open
 open:
 	open SwiftApp.xcworkspace
+
+.PHONY: brew-bundle
+brew-bundle:
+	brew bundle
+
+.PHONY: install-bundler
+install-bundler:
+	bundle install
+
+.PHONY: install-mint-packages
+install-mint-packages:
+	mint bootstrap --overwrite y
 
 .PHONY: run-format
 run-format:

@@ -18,6 +18,15 @@ struct RootView: View {
                     NavigationLink("Bindings Form") {
                         BindingFormView()
                     }
+                    NavigationLink("Alerts & Confirmation Dialogs") {
+                        AlertAndConfirmationDialogView()
+                    }
+                    NavigationLink("Optional State") {
+                        OptionalBasicsView()
+                    }
+                    NavigationLink("Shared State") {
+                        SharedStateView()
+                    }
                 } header: {
                     Text("基本的な使い方")
                 }
