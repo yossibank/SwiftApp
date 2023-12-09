@@ -118,8 +118,8 @@ struct SharedState {
                     state.alert = AlertState {
                         TextState(
                             isPrime(state.count)
-                            ? "👍 The number \(state.count) is prime!"
-                            : "👎 The number \(state.count) is not prime :("
+                                ? "👍 The number \(state.count) is prime!"
+                                : "👎 The number \(state.count) is not prime :("
                         )
                     }
                     return .none
@@ -289,12 +289,19 @@ struct SharedStateProfileView: View {
 // MARK: - Private helpers
 
 private func isPrime(_ p: Int) -> Bool {
-    if p <= 1 { return false }
-    if p <= 3 { return true }
+    if p <= 1 {
+        return false
+    }
+
+    if p <= 3 {
+        return true
+    }
 
     // 平方根出力
     for i in 2 ... Int(sqrtf(Float(p))) {
-        if p % i == 0 { return false }
+        if p % i == 0 {
+            return false
+        }
     }
 
     return true

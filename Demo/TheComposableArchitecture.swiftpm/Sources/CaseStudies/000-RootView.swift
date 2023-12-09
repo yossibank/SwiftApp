@@ -27,6 +27,9 @@ struct RootView: View {
                     NavigationLink("Shared State") {
                         SharedStateView()
                     }
+                    NavigationLink("Focus State") {
+                        FocusDemoView()
+                    }
                 } header: {
                     Text("基本的な使い方")
                 }
