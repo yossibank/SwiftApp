@@ -30,6 +30,9 @@ struct RootView: View {
                     NavigationLink("Focus State") {
                         FocusDemoView()
                     }
+                    NavigationLink("Animations") {
+                        AnimationsView()
+                    }
                 } header: {
                     Text("基本的な使い方")
                 }
