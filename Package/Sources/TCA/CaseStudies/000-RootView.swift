@@ -1,8 +1,10 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct RootView: View {
-    var body: some View {
+public struct ComposableArchitectureRootView: View {
+    public init() {}
+
+    public var body: some View {
         NavigationStack {
             Form {
                 Section {

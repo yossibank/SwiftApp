@@ -135,7 +135,7 @@ let tcaTest = Target.testTarget(
 let package = Package.package(
     name: "Package",
     platforms: [
-        .iOS(.v15)
+        .iOS(.v17)
     ],
     dependencies: [
         .package(url: "https://github.com/nicklockwood/SwiftFormat", from: "0.52.4"),
