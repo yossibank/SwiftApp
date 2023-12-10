@@ -3,6 +3,7 @@ import SwiftUI
 
 private let description = """
 Composable ArchitectureでSwiftUIの`@FocusState`を使用する方法を示しています。
+
 `bind`ビューモディファイアを使用することで、空のフィールドがある場合に「サインイン」ボタンをタップすると、そのフィールドにフォーカスが移動します。
 """
 

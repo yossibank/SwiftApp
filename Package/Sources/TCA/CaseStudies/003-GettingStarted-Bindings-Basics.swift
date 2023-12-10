@@ -3,11 +3,14 @@ import SwiftUI
 
 private let description = """
 双方向バインディングを扱う方法を示しています。
+
 SwiftUIの双方向バインディングは強力ですが、Composable Architectureの「一方向データフロー」とは異なります。これは、どのようなものでも、いつでも値を変更できるためです。
 
 一方で、Composable Architectureでは、変更はストアへのアクションの送信によってのみ行われることが要求されます。これは、機能の状態がどのように変化するかを確認できる場所が、リデューサーであることを意味します。
 
-Bindingを必要とする任意のSwiftUIコンポーネントは、Composable Architectureで使用できます。bindingメソッドを使用して、ViewStoreからBindingを導出することができます。これにより、コンポーネントを描画するための状態と、コンポーネントが変更されたときに送信するアクションを指定できます。これは、機能に一方向スタイルを維持することができることを意味します。
+Bindingを必要とする任意のSwiftUIコンポーネントは、Composable Architectureで使用できます。bindingメソッドを使用して、ViewStoreからBindingを導出することができます。
+
+これにより、コンポーネントを描画するための状態と、コンポーネントが変更されたときに送信するアクションを指定できます。これは、機能に一方向スタイルを維持することができることを意味します。
 """
 
 // MARK: - Feature domain

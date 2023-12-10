@@ -2,7 +2,9 @@ import ComposableArchitecture
 import SwiftUI
 
 private let description = """
-アプリケーションの状態の変更がアニメーションを駆動する方法を示しています。`Store`は送信されたアクションを同期的に処理するため、Composable Architectureで通常のSwiftUIと同様にアニメーションを実行することができます。
+アプリケーションの状態の変更がアニメーションを駆動する方法を示しています。
+
+`Store`は送信されたアクションを同期的に処理するため、Composable Architectureで通常のSwiftUIと同様にアニメーションを実行することができます。
 
 ストアにアクションが送信されたときに状態の変更をアニメーションするには、明示的なアニメーションを伴って渡すことができますし、または`withAnimation`ブロック内で`viewStore.send`を呼び出すこともできます。
 
@@ -17,10 +19,6 @@ private let description = """
 
 @Reducer
 struct Animations {
-    private enum CancelID {
-        case rainbow
-    }
-
     @Dependency(\.continuousClock) var clock
 
     struct State: Equatable {
@@ -41,6 +39,10 @@ struct Animations {
         enum Alert: Sendable {
             case resetConfirmationButtonTapped
         }
+    }
+
+    private enum CancelID {
+        case rainbow
     }
 
     var body: some Reducer<State, Action> {

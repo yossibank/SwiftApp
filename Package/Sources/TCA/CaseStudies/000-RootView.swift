@@ -38,6 +38,14 @@ public struct ComposableArchitectureRootView: View {
                 } header: {
                     Text("基本的な使い方")
                 }
+
+                Section {
+                    NavigationLink("Effects") {
+                        EffectsBasicsView()
+                    }
+                } header: {
+                    Text("Effectsについて")
+                }
             }
             .navigationTitle("Case Studies")
         }
