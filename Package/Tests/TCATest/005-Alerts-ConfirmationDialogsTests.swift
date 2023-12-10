@@ -3,7 +3,7 @@ import ComposableArchitecture
 import XCTest
 
 @MainActor
-final class AlertAndConfirmationDialogTest: XCTestCase {
+final class AlertAndConfirmationDialogTests: XCTestCase {
     func testAlert() async {
         let store = TestStore(initialState: AlertAndConfirmationDialog.State()) {
             AlertAndConfirmationDialog()

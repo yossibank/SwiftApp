@@ -3,7 +3,7 @@ import ComposableArchitecture
 import XCTest
 
 @MainActor
-final class AnimationsTest: XCTestCase {
+final class AnimationsTests: XCTestCase {
     func testRainbow() async {
         let clock = TestClock()
 

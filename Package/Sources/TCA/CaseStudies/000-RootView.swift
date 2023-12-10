@@ -43,6 +43,9 @@ public struct ComposableArchitectureRootView: View {
                     NavigationLink("Effects") {
                         EffectsBasicsView()
                     }
+                    NavigationLink("Cancellation") {
+                        EffectsCancellationView()
+                    }
                 } header: {
                     Text("Effectsについて")
                 }

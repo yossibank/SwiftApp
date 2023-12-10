@@ -3,7 +3,7 @@ import ComposableArchitecture
 import XCTest
 
 @MainActor
-final class BindingFormTest: XCTestCase {
+final class BindingFormTests: XCTestCase {
     func testBindingForm() async {
         let store = TestStore(initialState: BindingForm.State()) {
             BindingForm()

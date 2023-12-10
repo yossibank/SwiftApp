@@ -3,7 +3,7 @@ import ComposableArchitecture
 import XCTest
 
 @MainActor
-final class EffectsBasicsTest: XCTestCase {
+final class EffectsBasicsTests: XCTestCase {
     func testCountDown() async {
         let store = TestStore(initialState: EffectsBasics.State()) {
             EffectsBasics()

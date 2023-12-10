@@ -3,7 +3,7 @@ import ComposableArchitecture
 import XCTest
 
 @MainActor
-final class SharedStateTest: XCTestCase {
+final class SharedStateTests: XCTestCase {
     func testTabRestoredOnReset() async {
         let store = TestStore(initialState: SharedState.State()) {
             SharedState()

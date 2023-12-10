@@ -3,7 +3,7 @@ import ComposableArchitecture
 import XCTest
 
 @MainActor
-final class CounterTest: XCTestCase {
+final class CounterTests: XCTestCase {
     func testCount() async {
         let store = TestStore(initialState: Counter.State()) {
             Counter()
