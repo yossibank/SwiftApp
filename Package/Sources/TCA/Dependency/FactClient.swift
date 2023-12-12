@@ -32,6 +32,7 @@ extension FactClient: DependencyKey {
 
     /// テスト用のdependencyの作成
     /// dependencyが必要ないことを証明できる
+    /// テスト側でDIをしていないと、この処理を通ってXCTFailが実行される
     static var testValue = Self(
         fetch: unimplemented("\(Self.self).fetch")
     )

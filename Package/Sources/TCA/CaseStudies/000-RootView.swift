@@ -49,6 +49,9 @@ public struct ComposableArchitectureRootView: View {
                     NavigationLink("Long-Living") {
                         EffectsLongLivingView()
                     }
+                    NavigationLink("Refreshable") {
+                        RefreshableView()
+                    }
                 } header: {
                     Text("Effectsについて")
                 }
