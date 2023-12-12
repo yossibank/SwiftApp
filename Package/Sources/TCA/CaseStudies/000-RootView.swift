@@ -52,6 +52,9 @@ public struct ComposableArchitectureRootView: View {
                     NavigationLink("Refreshable") {
                         RefreshableView()
                     }
+                    NavigationLink("Timers") {
+                        TimersView()
+                    }
                 } header: {
                     Text("Effectsについて")
                 }

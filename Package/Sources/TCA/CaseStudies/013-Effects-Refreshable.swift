@@ -137,5 +137,7 @@ struct RefreshableView: View {
 // MARK: - Preview
 
 #Preview {
-    RefreshableView()
+    NavigationStack {
+        RefreshableView()
+    }
 }
