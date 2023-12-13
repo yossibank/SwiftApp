@@ -61,6 +61,17 @@ public struct ComposableArchitectureRootView: View {
                 } header: {
                     Text("Effectsについて")
                 }
+
+                Section {
+                    NavigationLink("Navigate and load data") {
+                        NavigateAndLoadView()
+                    }
+                    NavigationLink("Lists: Navigate and load data") {
+                        NavigateAndLoadListView()
+                    }
+                } header: {
+                    Text("Navigation")
+                }
             }
             .navigationTitle("Case Studies")
         }
