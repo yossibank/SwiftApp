@@ -1,13 +1,6 @@
 import ComposableArchitecture
 import SwiftUI
 
-extension DependencyValues {
-    var screenshots: @Sendable () async -> AsyncStream<Void> {
-        get { self[ScreenShotsKey.self] }
-        set { self[ScreenShotsKey.self] = newValue }
-    }
-}
-
 private enum ScreenShotsKey: DependencyKey {
     static let liveValue: @Sendable () async -> AsyncStream<Void> = {
         await AsyncStream(
@@ -21,4 +14,11 @@ private enum ScreenShotsKey: DependencyKey {
         #"@Dependency(\.screenshots)"#,
         placeholder: .finished
     )
+}
+
+extension DependencyValues {
+    var screenshots: @Sendable () async -> AsyncStream<Void> {
+        get { self[ScreenShotsKey.self] }
+        set { self[ScreenShotsKey.self] = newValue }
+    }
 }

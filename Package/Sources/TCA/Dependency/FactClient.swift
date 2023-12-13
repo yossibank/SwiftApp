@@ -5,13 +5,6 @@ struct FactClient {
     var fetch: @Sendable (Int) async throws -> String
 }
 
-extension DependencyValues {
-    var factClient: FactClient {
-        get { self[FactClient.self] }
-        set { self[FactClient.self] = newValue }
-    }
-}
-
 extension FactClient: DependencyKey {
     /// APIにアクセスして結果を取得するdependency
     /// 通常、この実装は独自のモジュール内に存在し、
@@ -36,4 +29,11 @@ extension FactClient: DependencyKey {
     static var testValue = Self(
         fetch: unimplemented("\(Self.self).fetch")
     )
+}
+
+extension DependencyValues {
+    var factClient: FactClient {
+        get { self[FactClient.self] }
+        set { self[FactClient.self] = newValue }
+    }
 }

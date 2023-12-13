@@ -55,6 +55,9 @@ public struct ComposableArchitectureRootView: View {
                     NavigationLink("Timers") {
                         TimersView()
                     }
+                    NavigationLink("Web Socket") {
+                        WebSocketView()
+                    }
                 } header: {
                     Text("Effectsについて")
                 }
