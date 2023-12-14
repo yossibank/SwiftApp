@@ -2,6 +2,8 @@ import ComposableArchitecture
 import SwiftUI
 
 public struct ComposableArchitectureRootView: View {
+    @State private var isNavigationStackCaseStudyPresented = false
+
     public init() {}
 
     public var body: some View {
@@ -75,11 +77,21 @@ public struct ComposableArchitectureRootView: View {
                     NavigationLink("Sheets: Load data then present") {
                         LoadThenPresentView()
                     }
+                    NavigationLink("Multiple destinations") {
+                        MultipleDestinationsView()
+                    }
+                    Button("Stack") {
+                        isNavigationStackCaseStudyPresented = true
+                    }
+                    .buttonStyle(.plain)
                 } header: {
                     Text("Navigation")
                 }
             }
             .navigationTitle("Case Studies")
+            .sheet(isPresented: $isNavigationStackCaseStudyPresented) {
+                NavigationDemoView()
+            }
         }
     }
 }
