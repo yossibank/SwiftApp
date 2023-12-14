@@ -69,6 +69,12 @@ public struct ComposableArchitectureRootView: View {
                     NavigationLink("Lists: Navigate and load data") {
                         NavigateAndLoadListView()
                     }
+                    NavigationLink("Sheets: Present and load data") {
+                        PresentAndLoadView()
+                    }
+                    NavigationLink("Sheets: Load data then present") {
+                        LoadThenPresentView()
+                    }
                 } header: {
                     Text("Navigation")
                 }
