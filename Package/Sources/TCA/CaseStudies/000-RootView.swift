@@ -87,6 +87,20 @@ public struct ComposableArchitectureRootView: View {
                 } header: {
                     Text("Navigation")
                 }
+
+                Section {
+                    NavigationLink("Reusalbe favoriting component") {
+                        EpisodesView()
+                    }
+                    NavigationLink("Reusable offline download component") {
+                        CitiesView()
+                    }
+                    NavigationLink("Recursive state and actions") {
+                        NestedView()
+                    }
+                } header: {
+                    Text("Higher-order reducers")
+                }
             }
             .navigationTitle("Case Studies")
             .sheet(isPresented: $isNavigationStackCaseStudyPresented) {
