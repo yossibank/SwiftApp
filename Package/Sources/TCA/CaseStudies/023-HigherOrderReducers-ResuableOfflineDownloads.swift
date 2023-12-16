@@ -88,7 +88,7 @@ struct DownloadComponent {
             case .alert(.presented(.stopButtonTapped)):
                 state.alert = nil
                 state.mode = .notDownloaded
-                return .none
+                return .cancel(id: state.id)
 
             case .alert:
                 return .none
@@ -112,6 +112,11 @@ struct DownloadComponent {
                                 animation: .default
                             )
                         }
+                    } catch: { error, send in
+                        await send(
+                            .downloadClient(.failure(error)),
+                            animation: .default
+                        )
                     }
                     .cancellable(id: state.id)
 
