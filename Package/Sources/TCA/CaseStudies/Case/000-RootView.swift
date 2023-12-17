@@ -101,6 +101,16 @@ public struct ComposableArchitectureRootView: View {
                 } header: {
                     Text("Higher-order reducers")
                 }
+
+                Section {
+                    NavigationLink("Todos") {
+                        TodosView(store: Store(initialState: Todos.State()) {
+                            Todos()._printChanges()
+                        })
+                    }
+                } header: {
+                    Text("Todos")
+                }
             }
             .navigationTitle("Case Studies")
             .sheet(isPresented: $isNavigationStackCaseStudyPresented) {
