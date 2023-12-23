@@ -75,6 +75,23 @@ struct CounterDescriptionView: View {
     }
 }
 
+struct CounterDemoDescriptionView: View {
+    @State private var store = Store(initialState: CounterDescription.State()) {
+        CounterDescription()
+    }
+
+    var body: some View {
+        Form {
+            Section {
+                CounterDescriptionView(store: store)
+                    .frame(maxWidth: .infinity)
+            }
+        }
+        .buttonStyle(.borderless)
+        .navigationTitle("Counter Demo")
+    }
+}
+
 // MARK: - Preview
 
 #Preview {
