@@ -2,12 +2,12 @@ import SwiftUI
 import UIKit
 import Utility
 
-public final class PokemonViewController: SwiftUIViewController<PokemonView> {
+public final class PokemonViewController: UIHostingController<PokemonView> {
     private let viewModel: PokemonViewModel
 
     public init(viewModel: PokemonViewModel) {
         self.viewModel = viewModel
-        super.init(contentView: .init(viewModel: viewModel))
+        super.init(rootView: .init(viewModel: viewModel))
     }
 
     @available(*, unavailable)
