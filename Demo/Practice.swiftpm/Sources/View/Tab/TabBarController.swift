@@ -3,20 +3,20 @@ import UIKit
 
 final class TabBarController: UITabBarController {
     private enum TabItem: Int, CaseIterable {
-        case todo
-        case news
+        case home
+        case list
 
         private var title: String {
             switch self {
-            case .todo: "TODO"
-            case .news: "NEWS"
+            case .home: "HOME"
+            case .list: "LIST"
             }
         }
 
         private var image: UIImage {
             switch self {
-            case .todo: UIImage(systemName: "list.bullet.circle") ?? .init()
-            case .news: UIImage(systemName: "newspaper.circle") ?? .init()
+            case .home: UIImage(systemName: "house.fill") ?? .init()
+            case .list: UIImage(systemName: "list.dash") ?? .init()
             }
         }
 
@@ -24,13 +24,13 @@ final class TabBarController: UITabBarController {
             let viewController: UIViewController
 
             switch self {
-            case .todo:
-                viewController = ToDoViewController()
-                viewController.title = "やることリスト"
+            case .home:
+                viewController = HomeViewController()
+                viewController.title = "ホーム"
 
-            case .news:
-                viewController = NewsViewController()
-                viewController.title = "ニュースリスト"
+            case .list:
+                viewController = ListViewController()
+                viewController.title = "リスト"
             }
 
             return viewController
@@ -60,5 +60,15 @@ final class TabBarController: UITabBarController {
             TabItem.allCases.map(\.rootViewController),
             animated: false
         )
+    }
+}
+
+private extension UIImage {
+    func resized(size: CGSize) -> UIImage {
+        let renderer = UIGraphicsImageRenderer(size: size)
+
+        return renderer.image { _ in
+            draw(in: .init(origin: .zero, size: size))
+        }
     }
 }

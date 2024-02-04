@@ -1,9 +1,9 @@
 import SwiftUI
 import UIKit
 
-final class ToDoViewController: UIHostingController<ToDoView> {
+final class ListViewController: UIHostingController<ListView> {
     init() {
-        super.init(rootView: ToDoView())
+        super.init(rootView: ListView())
     }
 
     @available(*, unavailable)

@@ -1,9 +1,9 @@
 import SwiftUI
 import UIKit
 
-final class NewsViewController: UIHostingController<NewsView> {
+final class HomeViewController: UIHostingController<HomeView> {
     init() {
-        super.init(rootView: NewsView())
+        super.init(rootView: HomeView())
     }
 
     @available(*, unavailable)
