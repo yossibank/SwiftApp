@@ -202,7 +202,7 @@ final class APIClientTest: XCTestCase {
         }
     }
 
-    func test_receive_failure_urlSession_error() async throws {
+    func test_receive_failure_noConnectInternet_error() async throws {
         // arrange
         stub(condition: isPath("/request")) { _ in
             let error = NSError(
@@ -221,7 +221,7 @@ final class APIClientTest: XCTestCase {
             // assert
             XCTAssertEqual(
                 error as! APIError,
-                .urlSessionError
+                .noConnectInternet
             )
         }
     }

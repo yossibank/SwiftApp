@@ -1,6 +1,7 @@
 import Foundation
 
-public enum APIError: Error, Equatable {
+/// APIにリクエストを送信して、エラーが返ってきた際にどのようなエラーなのかを判定するためのenum
+enum APIError: Error, Equatable {
     case decodeError
     case timeoutError
     case noConnectInternet
@@ -12,7 +13,7 @@ public enum APIError: Error, Equatable {
 }
 
 extension APIError: LocalizedError {
-    public var errorDescription: String? {
+    var errorDescription: String? {
         switch self {
         case .decodeError: "デコードエラー"
         case .timeoutError: "タイムアウトエラー"
@@ -20,13 +21,14 @@ extension APIError: LocalizedError {
         case .emptyData: "空データ"
         case .emptyResponse: "空レスポンス"
         case .invalidRequest: "無効リクエスト"
-        case let .invalidStatusCode(code): "無効ステータスコード: \(code.description)"
+        case let .invalidStatusCode(code): "無効ステータスコード: \(code)"
         case .unknown: "不明エラー"
         }
     }
 }
 
-public extension APIError {
+extension APIError {
+    /// APIから返ってくる際のエラーの型はErrorのためAPIErrorに変換する
     static func parse(_ error: Error) -> APIError {
         if error is DecodingError {
             return .decodeError

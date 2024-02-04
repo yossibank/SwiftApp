@@ -30,9 +30,9 @@ final class APIErrorTest: XCTestCase {
         )
     }
 
-    func test_urlSessionError_errorDescription() {
+    func test_noConnectInternet_errorDescription() {
         // arrange
-        let error = APIError.urlSessionError
+        let error = APIError.noConnectInternet
 
         // act
         let description = error.errorDescription
@@ -40,7 +40,7 @@ final class APIErrorTest: XCTestCase {
         // assert
         XCTAssertEqual(
             description,
-            "URLSessionエラー"
+            "インターネット通信エラー"
         )
     }
 

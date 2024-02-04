@@ -1,15 +1,7 @@
-import AppLogger
 import Foundation
 
-/// @mockable
-public protocol APIClientProtocol {
-    func request<T>(item: some Request<T>) async throws -> T
-}
-
-public struct APIClient: APIClientProtocol {
-    public init() {}
-
-    public func request<T>(item: some Request<T>) async throws -> T {
+struct APIClient {
+    func request<T>(item: some Request<T>) async throws -> T {
         guard let urlRequest = createURLRequest(item) else {
             throw APIError.invalidRequest
         }
@@ -35,8 +27,8 @@ public struct APIClient: APIClientProtocol {
     }
 }
 
-private extension APIClient {
-    func createURLRequest(_ requestItem: some Request) -> URLRequest? {
+extension APIClient {
+    private func createURLRequest(_ requestItem: some Request) -> URLRequest? {
         guard let fullPath = URL(string: requestItem.baseURL + requestItem.path) else {
             return nil
         }
@@ -66,8 +58,6 @@ private extension APIClient {
         requestItem.headers.forEach {
             urlRequest.addValue($1, forHTTPHeaderField: $0)
         }
-
-        AppLogger.debug(message: urlRequest.curlString)
 
         return urlRequest
     }
