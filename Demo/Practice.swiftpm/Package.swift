@@ -10,7 +10,7 @@ import PackageDescription
 let package = Package(
     name: "Practice",
     platforms: [
-        .iOS("16.0")
+        .iOS("17.0")
     ],
     products: [
         .iOSApplication(
@@ -34,9 +34,15 @@ let package = Package(
             ]
         )
     ],
+    dependencies: [
+        .package(name: "Package", path: "../../Package")
+    ],
     targets: [
         .executableTarget(
             name: "Practice",
+            dependencies: [
+                .product(name: "AppLogger", package: "Package", condition: nil)
+            ],
             path: "Sources"
         )
     ]
