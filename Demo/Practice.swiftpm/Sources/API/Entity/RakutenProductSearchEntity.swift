@@ -30,7 +30,7 @@ struct RakutenProductSearchEntity: DataStructure {
         case pageCount
     }
 
-    struct RakutenItem: DataStructure {
+    struct RakutenItem: DataStructure, Hashable {
         /// [商品名] 従来の商品名は「catchCopy + itemName」で表示される
         let itemName: String
         /// [キャッチコピー] 従来の商品名は「catchCopy + itemName」で表示される
