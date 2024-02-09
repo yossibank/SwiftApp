@@ -104,24 +104,6 @@ extension Request {
     }
 }
 
-extension Request where Parameters == EmptyParameters {
-    init(pathComponent: PathComponent) {
-        self.init(
-            parameters: .init(),
-            pathComponent: pathComponent
-        )
-    }
-}
-
-extension Request where PathComponent == EmptyPathComponent {
-    init(parameters: Parameters) {
-        self.init(
-            parameters: parameters,
-            pathComponent: .init()
-        )
-    }
-}
-
 private extension Encodable {
     var dictionary: [String: CustomStringConvertible?] {
         // JSONEncoder().encode(self) → Encodableに準拠されたデータ自身をJSONに変換する

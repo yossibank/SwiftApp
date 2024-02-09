@@ -18,6 +18,9 @@ struct APIClient {
                 throw APIError.invalidStatusCode(response.statusCode)
             }
 
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+
             return try JSONDecoder().decode(
                 T.self,
                 from: data

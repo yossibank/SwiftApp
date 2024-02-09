@@ -43,7 +43,10 @@ let package = Package(
             dependencies: [
                 .product(name: "AppLogger", package: "Package", condition: nil)
             ],
-            path: "Sources"
+            path: "Sources",
+            resources: [
+                .process("Images")
+            ]
         )
     ]
 )
