@@ -2,8 +2,11 @@ import SwiftUI
 import UIKit
 
 final class SearchViewController: UIHostingController<SearchView> {
-    init() {
-        super.init(rootView: SearchView())
+    private let viewModel: SearchViewModel
+
+    init(viewModel: SearchViewModel) {
+        self.viewModel = viewModel
+        super.init(rootView: SearchView(viewModel: viewModel))
     }
 
     @available(*, unavailable)
@@ -13,5 +16,10 @@ final class SearchViewController: UIHostingController<SearchView> {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
+    }
+
+    private func setupView() {
+        title = "検索"
     }
 }

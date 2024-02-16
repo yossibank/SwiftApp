@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct SearchView: View {
+    @StateObject var viewModel: SearchViewModel
+
     @State private var keyword = ""
     @State private var items: [RakutenProductSearchEntity.RakutenItem] = []
     @State private var searchEngines = SearchEngine.allCases
@@ -9,6 +11,10 @@ struct SearchView: View {
     enum SearchEngine: CaseIterable {
         case yahoo
         case rakuten
+    }
+
+    init(viewModel: SearchViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
     }
 
     var body: some View {
@@ -130,5 +136,10 @@ struct SearchView: View {
 }
 
 #Preview {
-    SearchView()
+    SearchView(
+        viewModel: SearchViewModel(
+            state: .init(),
+            dependency: .init()
+        )
+    )
 }

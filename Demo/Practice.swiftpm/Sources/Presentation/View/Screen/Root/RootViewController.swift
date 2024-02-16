@@ -18,19 +18,32 @@ final class RootViewController: UIHostingController<RootView> {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
         setupBinding()
+    }
+
+    private func setupView() {
+        title = "ホーム"
     }
 
     private func setupBinding() {
         viewModel.output
             .receive(on: DispatchQueue.main)
-            .sink { output in
+            .sink { [weak self] output in
                 switch output {
                 case .create:
                     print("作成画面遷移")
 
                 case .search:
-                    print("検索画面遷移")
+                    self?.navigationController?.pushViewController(
+                        SearchViewController(
+                            viewModel: SearchViewModel(
+                                state: .init(),
+                                dependency: .init()
+                            )
+                        ),
+                        animated: true
+                    )
                 }
             }
             .store(in: &cancellables)
@@ -42,7 +55,6 @@ struct RootViewControllerRepresentable: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> some UIViewController {
         let rootViewController = RootViewController(viewModel: viewModel)
-        rootViewController.title = "ホーム"
         return UINavigationController(rootViewController: rootViewController)
     }
 
