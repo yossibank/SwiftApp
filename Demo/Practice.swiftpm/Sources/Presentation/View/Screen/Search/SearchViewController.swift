@@ -1,9 +1,9 @@
 import SwiftUI
 import UIKit
 
-final class ListViewController: UIHostingController<ListView> {
+final class SearchViewController: UIHostingController<SearchView> {
     init() {
-        super.init(rootView: ListView())
+        super.init(rootView: SearchView())
     }
 
     @available(*, unavailable)

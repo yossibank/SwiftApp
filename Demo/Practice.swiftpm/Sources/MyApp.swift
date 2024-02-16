@@ -7,7 +7,9 @@ struct MyApp: App {
 
     var body: some Scene {
         WindowGroup {
-            TabBarView()
+            RootViewControllerRepresentable(
+                viewModel: RootViewModel(state: .init())
+            )
         }
     }
 }

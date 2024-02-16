@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct HomeView: View {
+struct SearchView: View {
     @State private var keyword = ""
     @State private var items: [RakutenProductSearchEntity.RakutenItem] = []
     @State private var searchEngines = SearchEngine.allCases
@@ -130,5 +130,5 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView()
+    SearchView()
 }
