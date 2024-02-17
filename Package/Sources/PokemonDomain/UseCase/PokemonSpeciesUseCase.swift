@@ -1,5 +1,6 @@
-@testable import AppDomain
-@testable import PokemonData
+import API
+import AppDomain
+import PokemonData
 
 /// @mockable
 public protocol PokemonSpeciesUseCaseProtocol {
@@ -24,7 +25,7 @@ public struct PokemonSpeciesUseCase: PokemonSpeciesUseCaseProtocol {
             let model = translator.translate(entity)
             return model
         } catch {
-            throw AppError.parse(error)
+            throw APIError.parse(error)
         }
     }
 }

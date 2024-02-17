@@ -11,11 +11,11 @@ public struct AppError: Error, Equatable {
 
 public extension AppError {
     static func parse(_ error: Error) -> AppError {
-        guard let appError = error as? AppError else {
+        guard let apiError = error as? APIError else {
             return .init(apiError: .unknown)
         }
 
-        return appError
+        return .init(apiError: apiError)
     }
 }
 

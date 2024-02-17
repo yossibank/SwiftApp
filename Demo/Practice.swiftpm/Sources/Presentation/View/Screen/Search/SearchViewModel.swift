@@ -25,9 +25,13 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
                         parameters: .init(keyword: state.keyword)
                     )
                 )
-                state.items = dependency.translator.translate(entity)
+                state.viewState = .loaded(
+                    dependency.translator.translate(entity)
+                )
             } catch {
-                print(error)
+                state.viewState = .error(
+                    AppError.parse(error: error)
+                )
             }
 
         case [.yahoo]:
@@ -37,9 +41,13 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
                         parameters: .init(query: state.keyword)
                     )
                 )
-                state.items = dependency.translator.translate(entity)
+                state.viewState = .loaded(
+                    dependency.translator.translate(entity)
+                )
             } catch {
-                print(error)
+                state.viewState = .error(
+                    AppError.parse(error: error)
+                )
             }
 
         default:
@@ -58,10 +66,10 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
 
 extension SearchViewModel {
     struct State {
+        var viewState: ViewState<[ProductModel]> = .initial
         var searchEngines = SearchEngine.allCases
         var isEmptySearchEngine = false
         var keyword = ""
-        var items: [ProductModel] = []
     }
 
     struct Dependency: Sendable {
