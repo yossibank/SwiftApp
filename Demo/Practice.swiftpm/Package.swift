@@ -45,7 +45,7 @@ let package = Package(
             ],
             path: "Sources",
             resources: [
-                .process("Images")
+                .process("Resources")
             ]
         )
     ]
