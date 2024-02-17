@@ -39,7 +39,10 @@ final class RootViewController: UIHostingController<RootView> {
                         SearchViewController(
                             viewModel: SearchViewModel(
                                 state: .init(),
-                                dependency: .init()
+                                dependency: .init(
+                                    apiClient: .init(),
+                                    translator: .init()
+                                )
                             )
                         ),
                         animated: true

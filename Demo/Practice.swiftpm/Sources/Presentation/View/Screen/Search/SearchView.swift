@@ -3,16 +3,6 @@ import SwiftUI
 struct SearchView: View {
     @StateObject var viewModel: SearchViewModel
 
-    @State private var keyword = ""
-    @State private var items: [RakutenProductSearchEntity.RakutenItem] = []
-    @State private var searchEngines = SearchEngine.allCases
-    @State private var isEmptySearchEngine = false
-
-    enum SearchEngine: CaseIterable {
-        case yahoo
-        case rakuten
-    }
-
     init(viewModel: SearchViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
@@ -21,7 +11,7 @@ struct SearchView: View {
         VStack(spacing: 16) {
             filteringView
 
-            if isEmptySearchEngine {
+            if viewModel.state.isEmptySearchEngine {
                 filteringEmptyView
             } else {
                 searchItemsView
@@ -30,25 +20,20 @@ struct SearchView: View {
             Spacer()
         }
         .searchable(
-            text: $keyword,
+            text: .init(
+                get: {
+                    viewModel.state.keyword
+                },
+                set: { text in
+                    viewModel.state.keyword = text
+                }
+            ),
             placement: .navigationBarDrawer(displayMode: .always),
             prompt: "商品検索"
         )
         .onSubmit(of: .search) {
-            isEmptySearchEngine = searchEngines.isEmpty
-
-            guard !isEmptySearchEngine else {
-                return
-            }
-
             Task { @MainActor in
-                let response = try await APIClient().request(
-                    item: RakutenProductSearchRequest(
-                        parameters: .init(keyword: keyword)
-                    )
-                )
-
-                items = response.items
+                await viewModel.search()
             }
         }
     }
@@ -60,11 +45,7 @@ struct SearchView: View {
 
             HStack(spacing: 12) {
                 Button {
-                    if searchEngines.contains(.yahoo) {
-                        searchEngines.removeAll(where: { $0 == .yahoo })
-                    } else {
-                        searchEngines.append(.yahoo)
-                    }
+                    viewModel.select(engine: .yahoo)
                 } label: {
                     Label(
                         title: {
@@ -79,15 +60,13 @@ struct SearchView: View {
                     )
                 }
                 .buttonStyle(
-                    BorderedRoundedButtonStyle(isSelected: searchEngines.contains(.yahoo))
+                    BorderedRoundedButtonStyle(
+                        isSelected: viewModel.state.searchEngines.contains(.yahoo)
+                    )
                 )
 
                 Button {
-                    if searchEngines.contains(.rakuten) {
-                        searchEngines.removeAll(where: { $0 == .rakuten })
-                    } else {
-                        searchEngines.append(.rakuten)
-                    }
+                    viewModel.select(engine: .rakuten)
                 } label: {
                     Label(
                         title: {
@@ -102,7 +81,9 @@ struct SearchView: View {
                     )
                 }
                 .buttonStyle(
-                    BorderedRoundedButtonStyle(isSelected: searchEngines.contains(.rakuten))
+                    BorderedRoundedButtonStyle(
+                        isSelected: viewModel.state.searchEngines.contains(.rakuten)
+                    )
                 )
             }
         }
@@ -118,15 +99,12 @@ struct SearchView: View {
     private var searchItemsView: some View {
         ScrollView {
             LazyVStack(spacing: 16) {
-                ForEach(items, id: \.self) { item in
-                    Text(item.itemName)
-                    Text(String(describing: item.itemPrice))
-                    HStack {
-                        ForEach(item.mediumImageUrls.map { URL(string: $0) }, id: \.self) { url in
-                            AsyncImage(url: url)
-                                .frame(width: 128, height: 128)
-                        }
-                    }
+                ForEach(viewModel.state.items, id: \.self) { item in
+                    Text(item.name)
+                    Text(item.description)
+                    Text(String(describing: item.price))
+                    AsyncImage(url: item.imageUrl)
+                        .frame(width: 128, height: 128)
                     Divider()
                 }
             }
@@ -139,7 +117,10 @@ struct SearchView: View {
     SearchView(
         viewModel: SearchViewModel(
             state: .init(),
-            dependency: .init()
+            dependency: .init(
+                apiClient: .init(),
+                translator: .init()
+            )
         )
     )
 }

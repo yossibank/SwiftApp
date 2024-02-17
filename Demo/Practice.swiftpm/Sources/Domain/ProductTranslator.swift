@@ -1,10 +1,10 @@
 import Foundation
 
 struct ProductTranslator {
-    func translate(rakutenEntity: RakutenProductSearchEntity) -> [ProductModel] {
-        rakutenEntity.items.map {
+    func translate(_ entity: RakutenProductSearchEntity) -> [ProductModel] {
+        entity.items.map {
             .init(
-                name: $0.itemName + " " + $0.catchcopy,
+                name: $0.itemName,
                 description: $0.itemCaption,
                 price: $0.itemPrice,
                 imageUrl: $0.mediumImageUrls.compactMap {
@@ -14,11 +14,11 @@ struct ProductTranslator {
         }
     }
 
-    func translate(yahooEntity: YahooProductSearchEntity) -> [ProductModel] {
-        yahooEntity.hits.map {
+    func translate(_ entity: YahooProductSearchEntity) -> [ProductModel] {
+        entity.hits.map {
             .init(
                 name: $0.name,
-                description: $0.description,
+                description: $0.description ?? "",
                 price: $0.price,
                 imageUrl: .init(string: $0.image.medium)
             )

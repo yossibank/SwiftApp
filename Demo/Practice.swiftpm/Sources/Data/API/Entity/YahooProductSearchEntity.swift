@@ -14,62 +14,18 @@ struct YahooProductSearchEntity: DataStructure {
     let hits: [YahooItem]
 
     struct YahooItem: DataStructure {
-        /// [検索結果の順番]
-        let index: Int
         /// [商品名]
         let name: String
         /// [商品説明]
-        let description: String
+        let description: String?
         /// [キャッチコピー]
         let headLine: String
-        /// [在庫情報] true:在庫ありのみ false:在庫なしのみ
-        let inStock: Bool
         /// [商品URL]
         let url: String
-        /// [画像ID]
-        let imageId: String
         /// [商品画像]
         let image: YahooImage
-        /// [商品コード] seller_managed_item_id
-        let code: String
-        /// [JANコード]
-        let janCode: String
-        /// [支払いコード]
-        let payment: String
-        /// [発売日]
-        let releaseDate: Int?
-        /// [商品状態] new:新品 used:中古
-        let condition: String
-        /// [アフィリエイト料率] 0.1刻み
-        let affiliateRate: Int
         /// [価格]
         let price: Int
-        /// [プレミアム会員価格]
-        let premiumPrice: Int
-        /// [プレミアム割引種別] normal・original・sale
-        let premiumDiscountType: String?
-        /// [プレミアム割引率]
-        let premiumDiscountRate: Int?
-        /// [レビュー]
-        let review: YahooReview
-        /// [価格情報]
-        let priceLabel: YahooPriceLabel
-        /// [ポイント情報]
-        let point: YahooPoint
-        /// [送料情報]
-        let shipping: YahooShipping
-        /// [ジャンルカテゴリー情報]
-        let genreCategory: YahooGenreCategory
-        /// [親ジャンルカテゴリー情報]
-        let parentGenreCategories: [YahooGenreCategory]
-        /// [ブランド情報]
-        let brand: YahooBrand
-        /// [親ブランド情報]
-        let parentBrands: [YahooBrand]
-        /// [販売者情報]
-        let seller: YahooSeller
-        /// [配送情報]
-        let delivery: YahooDelivery
     }
 
     struct YahooRequest: DataStructure {
@@ -135,9 +91,9 @@ struct YahooProductSearchEntity: DataStructure {
 
     struct YahooBrand: DataStructure {
         /// [ブランドID]
-        let id: Int
+        let id: Int?
         /// [ブランド名]
-        let name: String
+        let name: String?
     }
 
     struct YahooSeller: DataStructure {
