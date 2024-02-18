@@ -8,52 +8,49 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
     }
 
     func search() async {
+        state.loadedItems = []
         state.isEmptySearchEngine = state.searchEngines.isEmpty
 
         guard !state.isEmptySearchEngine else {
             return
         }
 
-        state.viewState = .loading
+        state.viewState = .loading(loaded: state.loadedItems)
 
-        switch state.searchEngines {
-        case [.rakuten, .yahoo]:
-            print("LP")
+        var newItems: [ProductModel]
 
-        case [.rakuten]:
+        for searchEngine in state.searchEngines {
             do {
-                let entity = try await dependency.apiClient.request(
-                    item: RakutenProductSearchRequest(
-                        parameters: .init(keyword: state.keyword)
+                switch searchEngine {
+                case .rakuten:
+                    let entity = try await dependency.apiClient.request(
+                        item: RakutenProductSearchRequest(
+                            parameters: .init(keyword: state.keyword)
+                        )
                     )
-                )
-                state.viewState = .loaded(
-                    dependency.translator.translate(entity)
-                )
+                    newItems = dependency.translator.translate(entity)
+
+                case .yahoo:
+                    let entity = try await dependency.apiClient.request(
+                        item: YahooProductSearchRequest(
+                            parameters: .init(query: state.keyword)
+                        )
+                    )
+                    newItems = dependency.translator.translate(entity)
+                }
+                let newLoadedItems = state.loadedItems + newItems
+                state.loadedItems.append(contentsOf: newLoadedItems)
+
+                if newLoadedItems.isEmpty {
+                    state.viewState = .empty
+                } else {
+                    state.viewState = .loaded(newLoadedItems)
+                }
             } catch {
                 state.viewState = .error(
                     AppError.parse(error: error)
                 )
             }
-
-        case [.yahoo]:
-            do {
-                let entity = try await dependency.apiClient.request(
-                    item: YahooProductSearchRequest(
-                        parameters: .init(query: state.keyword)
-                    )
-                )
-                state.viewState = .loaded(
-                    dependency.translator.translate(entity)
-                )
-            } catch {
-                state.viewState = .error(
-                    AppError.parse(error: error)
-                )
-            }
-
-        default:
-            state.viewState = .loaded([])
         }
     }
 
@@ -68,7 +65,8 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
 
 extension SearchViewModel {
     struct State {
-        var viewState: ViewState<[ProductModel]> = .initial
+        var viewState: UIPagingState<[ProductModel]> = .initial
+        var loadedItems: [ProductModel] = []
         var searchEngines = SearchEngine.allCases
         var isEmptySearchEngine = false
         var keyword = ""

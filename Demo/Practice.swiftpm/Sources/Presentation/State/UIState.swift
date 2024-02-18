@@ -1,6 +1,6 @@
 import Foundation
 
-enum ViewState<T: Equatable>: Equatable {
+enum UIState<T: Equatable>: Equatable {
     case initial
     case loading
     case error(AppError)

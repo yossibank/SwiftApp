@@ -63,9 +63,13 @@ struct SearchView: View {
             case .initial:
                 InitialView()
 
-            case .loading:
-                CenterView {
-                    LoadingView()
+            case let .loading(items):
+                VStack {
+                    SearchItemView(items: items)
+
+                    CenterView {
+                        LoadingView()
+                    }
                 }
 
             case let .error(appError):
@@ -80,18 +84,17 @@ struct SearchView: View {
                     )
                 }
 
+            case .empty:
+                CenterView {
+                    NoResultView(title: "検索した商品が見つかりませんでした")
+                }
+
             case let .loaded(items):
                 VStack(spacing: 16) {
                     if viewModel.state.isEmptySearchEngine {
                         FilteringEmptyView()
                     } else {
-                        if items.isEmpty {
-                            CenterView {
-                                NoResultView(title: "検索した商品が見つかりませんでした")
-                            }
-                        } else {
-                            SearchItemView(items: items)
-                        }
+                        SearchItemView(items: items)
                     }
                 }
             }
@@ -133,7 +136,6 @@ struct SearchView: View {
                 LazyVStack(spacing: 16) {
                     ForEach(items, id: \.self) { item in
                         Text(item.name)
-                        Text(item.description)
                         Text(String(describing: item.price))
                         AsyncImage(url: item.imageUrl)
                             .frame(width: 128, height: 128)
