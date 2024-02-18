@@ -32,7 +32,10 @@ final class RootViewController: UIHostingController<RootView> {
             .sink { [weak self] output in
                 switch output {
                 case .create:
-                    print("作成画面遷移")
+                    self?.navigationController?.pushViewController(
+                        CreateViewController(),
+                        animated: true
+                    )
 
                 case .search:
                     self?.navigationController?.pushViewController(
