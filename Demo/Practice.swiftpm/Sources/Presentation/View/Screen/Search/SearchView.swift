@@ -8,7 +8,7 @@ struct SearchView: View {
     }
 
     var body: some View {
-        VStack {
+        VStack(spacing: 32) {
             HStack(spacing: 16) {
                 Text("検索サイト")
                     .font(.system(size: 14, weight: .bold))
@@ -64,16 +64,12 @@ struct SearchView: View {
                 InitialView()
 
             case .loading:
-                VStack {
-                    Spacer()
+                CenterView {
                     LoadingView()
-                    Spacer()
                 }
 
             case let .error(appError):
-                VStack {
-                    Spacer()
-
+                CenterView {
                     ErrorView(
                         errorDescription: appError.errorDescription,
                         didTapReloadButton: {
@@ -82,8 +78,6 @@ struct SearchView: View {
                             }
                         }
                     )
-
-                    Spacer()
                 }
 
             case let .loaded(items):
@@ -91,12 +85,18 @@ struct SearchView: View {
                     if viewModel.state.isEmptySearchEngine {
                         FilteringEmptyView()
                     } else {
-                        SearchItemView(items: items)
+                        if items.isEmpty {
+                            CenterView {
+                                NoResultView(title: "検索した商品が見つかりませんでした")
+                            }
+                        } else {
+                            SearchItemView(items: items)
+                        }
                     }
-
-                    Spacer()
                 }
             }
+
+            Spacer()
         }
         .searchable(
             text: .init(

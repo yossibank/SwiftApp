@@ -6,7 +6,7 @@ struct ErrorView: View {
 
     var body: some View {
         VStack(spacing: 24) {
-            Image("Error", bundle: .module)
+            Image("error", bundle: .module)
                 .resizable()
                 .frame(width: 80, height: 80)
 

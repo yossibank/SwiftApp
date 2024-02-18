@@ -14,6 +14,8 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
             return
         }
 
+        state.viewState = .loading
+
         switch state.searchEngines {
         case [.rakuten, .yahoo]:
             print("LP")
@@ -51,7 +53,7 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
             }
 
         default:
-            break
+            state.viewState = .loaded([])
         }
     }
 
