@@ -64,15 +64,19 @@ struct SearchView: View {
                 InitialView()
 
             case let .loading(items):
-                VStack {
-                    SearchItemView(items: items)
-
+                if items.isEmpty {
                     CenterView {
+                        LoadingView()
+                    }
+                } else {
+                    VStack {
+                        SearchItemView(items: items)
+
                         LoadingView()
                     }
                 }
 
-            case let .error(appError):
+            case let .initialError(appError):
                 CenterView {
                     ErrorView(
                         errorDescription: appError.errorDescription,
@@ -83,6 +87,9 @@ struct SearchView: View {
                         }
                     )
                 }
+
+            case let .loadingError(appError):
+                Text("エラー")
 
             case .empty:
                 CenterView {
@@ -151,7 +158,7 @@ struct SearchView: View {
 #Preview {
     SearchView(
         viewModel: SearchViewModel(
-            state: .init(),
+            state: .init(viewState: .empty),
             dependency: .init(
                 apiClient: .init(),
                 translator: .init()

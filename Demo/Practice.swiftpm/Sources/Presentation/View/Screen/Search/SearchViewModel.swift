@@ -47,9 +47,16 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
                     state.viewState = .loaded(newLoadedItems)
                 }
             } catch {
-                state.viewState = .error(
-                    AppError.parse(error: error)
-                )
+                if state.loadedItems.isEmpty {
+                    state.viewState = .initialError(
+                        AppError.parse(error: error)
+                    )
+                } else {
+                    state.viewState = .loadingError(
+                        AppError.parse(error: error)
+                    )
+                    state.viewState = .loaded(state.loadedItems)
+                }
             }
         }
     }

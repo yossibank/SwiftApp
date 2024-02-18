@@ -30,6 +30,7 @@ struct ErrorView: View {
                     .font(.subheadline)
                     .bold()
                     .foregroundStyle(.pink)
+                    .frame(width: 96, height: 28)
                     .padding(8)
                     .overlay {
                         RoundedRectangle(cornerRadius: 16)
