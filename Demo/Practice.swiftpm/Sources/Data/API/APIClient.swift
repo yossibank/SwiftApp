@@ -31,8 +31,8 @@ struct APIClient {
     }
 }
 
-extension APIClient {
-    private func createURLRequest(_ requestItem: some Request) -> URLRequest? {
+private extension APIClient {
+    func createURLRequest(_ requestItem: some Request) -> URLRequest? {
         guard let fullPath = URL(string: requestItem.baseURL + requestItem.path) else {
             return nil
         }

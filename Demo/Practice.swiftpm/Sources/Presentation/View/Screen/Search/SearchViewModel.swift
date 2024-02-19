@@ -23,7 +23,7 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
             do {
                 switch searchEngine {
                 case .rakuten:
-                    let entity = try await dependency.apiClient.request(
+                    let entity = try await dependency.apiClient().request(
                         item: RakutenProductSearchRequest(
                             parameters: .init(keyword: state.keyword)
                         )
@@ -31,7 +31,7 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
                     newItems = dependency.translator.translate(entity)
 
                 case .yahoo:
-                    let entity = try await dependency.apiClient.request(
+                    let entity = try await dependency.apiClient().request(
                         item: YahooProductSearchRequest(
                             parameters: .init(query: state.keyword)
                         )
@@ -80,7 +80,8 @@ extension SearchViewModel {
     }
 
     struct Dependency: Sendable {
-        let apiClient: APIClient
+        let apiClient: @Sendable () -> APIClient
+        let userDefaultsClient: @Sendable () -> UserDefaultsClient
         let translator: ProductTranslator
     }
 
