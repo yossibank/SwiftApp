@@ -20,4 +20,3 @@ struct NoResultView: View {
 #Preview {
     NoResultView(title: "該当する商品が見つかりませんでした")
 }
-
