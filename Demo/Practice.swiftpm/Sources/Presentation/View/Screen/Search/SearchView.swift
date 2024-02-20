@@ -186,7 +186,7 @@ struct SearchView: View {
                                     Spacer()
 
                                     Button {
-                                        print(item.name)
+                                        viewModel.save(item)
                                     } label: {
                                         Text("追加")
                                     }
@@ -225,7 +225,7 @@ struct SearchView: View {
 
 #Preview {
     SearchView(
-        viewModel: SearchViewModel(
+        viewModel: .init(
             state: .init(viewState: .empty),
             dependency: .init(
                 apiClient: .init(),

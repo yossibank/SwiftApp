@@ -63,6 +63,12 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
             state.searchEngines.append(engine)
         }
     }
+
+    func save(_ item: ProductModel) {
+        var itemList = dependency.userDefaultsClient.value(for: \.itemList)
+        itemList.append(item)
+        dependency.userDefaultsClient.setValue(for: \.itemList, value: itemList)
+    }
 }
 
 extension SearchViewModel {

@@ -8,7 +8,7 @@ struct MyApp: App {
     var body: some Scene {
         WindowGroup {
             RootViewControllerRepresentable(
-                viewModel: RootViewModel(
+                viewModel: .init(
                     state: .init(),
                     dependency: .init(userDefaultsClient: .init())
                 )

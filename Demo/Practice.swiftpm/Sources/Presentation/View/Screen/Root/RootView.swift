@@ -9,8 +9,13 @@ struct RootView: View {
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
-            Text("HOGE")
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            ScrollView {
+                LazyVStack {
+                    ForEach(viewModel.state.itemList, id: \.self) { item in
+                        Text(item.name)
+                    }
+                }
+            }
 
             HStack(spacing: 24) {
                 SystemImageButton(
@@ -45,4 +50,13 @@ struct RootView: View {
             )
         }
     }
+}
+
+#Preview {
+    RootView(
+        viewModel: .init(
+            state: .init(),
+            dependency: .init(userDefaultsClient: .init())
+        )
+    )
 }

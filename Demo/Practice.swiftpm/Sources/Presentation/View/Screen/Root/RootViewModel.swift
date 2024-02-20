@@ -13,6 +13,11 @@ final class RootViewModel: BaseViewModel<RootViewModel> {
             state: state,
             dependency: dependency
         )
+
+        dependency.userDefaultsClient.value(for: \.$itemList)
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.state.itemList, on: self)
+            .store(in: &cancellables)
     }
 
     func didTapCreateButton() {
@@ -25,7 +30,9 @@ final class RootViewModel: BaseViewModel<RootViewModel> {
 }
 
 extension RootViewModel {
-    struct State {}
+    struct State {
+        var itemList: [ProductModel] = []
+    }
 
     struct Dependency {
         let userDefaultsClient: UserDefaultsClient
