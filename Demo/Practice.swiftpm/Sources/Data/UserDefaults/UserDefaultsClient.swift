@@ -1,25 +1,18 @@
-import Combine
 import Foundation
 
 struct UserDefaultsClient {
-    private let userDefaults: UserDefaults
+    private var userDefaultsKeyValue = UserDefaultsKeyValue()
 
-    init(userDefaults: UserDefaults = .standard) {
-        self.userDefaults = userDefaults
+    func value<Value>(
+        for keyPath: KeyPath<UserDefaultsKeyValue, Value>
+    ) -> Value {
+        userDefaultsKeyValue[keyPath: keyPath]
     }
 
-    func fetch<Value>(
-        for keyPath: KeyPath<UserDefaults, Value>
-    ) -> AnyPublisher<Value, Never> {
-        userDefaults.publisher(for: keyPath)
-            .compactMap { $0 }
-            .eraseToAnyPublisher()
-    }
-
-    func save<Value>(
-        value: Value,
-        for keyPath: ReferenceWritableKeyPath<UserDefaults, Value>
+    func setValue<Value>(
+        for keyPath: ReferenceWritableKeyPath<UserDefaultsKeyValue, Value>,
+        value: Value
     ) {
-        userDefaults[keyPath: keyPath] = value
+        userDefaultsKeyValue[keyPath: keyPath] = value
     }
 }

@@ -160,8 +160,8 @@ struct SearchView: View {
         viewModel: SearchViewModel(
             state: .init(viewState: .empty),
             dependency: .init(
-                apiClient: { .init() },
-                userDefaultsClient: { .init() },
+                apiClient: .init(),
+                userDefaultsClient: .init(),
                 translator: .init()
             )
         )

@@ -1,7 +1,20 @@
 import Combine
+import Foundation
 
 @MainActor
 final class RootViewModel: BaseViewModel<RootViewModel> {
+    private var cancellables = Set<AnyCancellable>()
+
+    required init(
+        state: State,
+        dependency: Dependency
+    ) {
+        super.init(
+            state: state,
+            dependency: dependency
+        )
+    }
+
     func didTapCreateButton() {
         send(.create)
     }
@@ -14,7 +27,9 @@ final class RootViewModel: BaseViewModel<RootViewModel> {
 extension RootViewModel {
     struct State {}
 
-    typealias Dependency = Void
+    struct Dependency {
+        let userDefaultsClient: UserDefaultsClient
+    }
 
     enum Output {
         case create
