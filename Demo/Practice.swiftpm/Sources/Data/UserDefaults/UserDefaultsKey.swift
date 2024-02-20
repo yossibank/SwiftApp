@@ -19,4 +19,16 @@ struct UserDefaultsKeyValue {
         defaultValue: 0
     )
     var test2: Int
+
+    @UserDefaultsStorage(
+        .test3,
+        defaultValue: false
+    )
+    var test3: Bool
+
+    @UserDefaultsStorage(
+        .itemList,
+        defaultValue: []
+    )
+    var itemList: [ProductModel]
 }

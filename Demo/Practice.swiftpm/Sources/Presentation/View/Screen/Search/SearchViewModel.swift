@@ -2,11 +2,6 @@ import Combine
 
 @MainActor
 final class SearchViewModel: BaseViewModel<SearchViewModel> {
-    enum SearchEngine: CaseIterable {
-        case yahoo
-        case rakuten
-    }
-
     func search() async {
         state.loadedItems = []
         state.isEmptySearchEngine = state.searchEngines.isEmpty
@@ -61,7 +56,7 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
         }
     }
 
-    func select(engine: SearchEngine) {
+    func select(engine: ProductModel.SearchEngine) {
         if state.searchEngines.contains(engine) {
             state.searchEngines.removeAll(where: { $0 == engine })
         } else {
@@ -74,7 +69,7 @@ extension SearchViewModel {
     struct State {
         var viewState: UIPagingState<[ProductModel]> = .initial
         var loadedItems: [ProductModel] = []
-        var searchEngines = SearchEngine.allCases
+        var searchEngines = ProductModel.SearchEngine.allCases
         var isEmptySearchEngine = false
         var keyword = ""
     }
