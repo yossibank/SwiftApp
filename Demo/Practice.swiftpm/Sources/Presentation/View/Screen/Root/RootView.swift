@@ -12,9 +12,46 @@ struct RootView: View {
             ScrollView {
                 LazyVStack {
                     ForEach(viewModel.state.itemList, id: \.self) { item in
-                        Text(item.name)
+                        HStack(alignment: .top, spacing: 12) {
+                            AsyncImageView(
+                                url: item.imageUrl,
+                                successImage: { image in
+                                    image.resizable()
+                                },
+                                failureImage: {
+                                    Image("noImage", bundle: .module).resizable()
+                                },
+                                placeholderImage: {
+                                    Image("noImage", bundle: .module).resizable()
+                                }
+                            )
+                            .frame(width: 128, height: 128)
+                            .clipShape(RoundedRectangle(cornerRadius: 4))
+
+                            VStack(alignment: .leading, spacing: 12) {
+                                Text(item.name)
+                                    .font(.system(size: 16, weight: .bold))
+                                    .lineLimit(4)
+
+                                HStack {
+                                    Text(item.price)
+                                        .font(.system(size: 18, weight: .bold))
+                                        .foregroundStyle(.red)
+
+                                    Image(item.searchEngine.rawValue, bundle: .module)
+                                        .resizable()
+                                        .frame(width: 16, height: 16)
+                                }
+                            }
+                        }
+                        .onTapGesture {
+                            print(item.price)
+                        }
+
+                        Divider()
                     }
                 }
+                .padding(.horizontal, 16)
             }
 
             HStack(spacing: 24) {
