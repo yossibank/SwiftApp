@@ -26,6 +26,8 @@ struct YahooProductSearchEntity: DataStructure {
         let image: YahooImage
         /// [価格]
         let price: Int
+        /// [商品コード]
+        let code: String
     }
 
     struct YahooRequest: DataStructure {

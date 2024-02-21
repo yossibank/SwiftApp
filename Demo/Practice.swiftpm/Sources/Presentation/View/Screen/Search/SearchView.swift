@@ -185,20 +185,33 @@ struct SearchView: View {
 
                                     Spacer()
 
-                                    Button {
-                                        viewModel.save(item)
-                                    } label: {
-                                        Text("追加")
+                                    if item.isAddedItem {
+                                        Text("追加済み")
+                                            .padding(.vertical, 4)
+                                            .padding(.horizontal, 8)
+                                            .font(.system(size: 14, weight: .bold))
+                                            .foregroundStyle(.red)
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 12)
+                                                    .stroke(.red, lineWidth: 2)
+                                            )
+                                            .frame(height: 16)
+                                    } else {
+                                        Button {
+                                            viewModel.save(item)
+                                        } label: {
+                                            Text("追加")
+                                        }
+                                        .padding(.vertical, 4)
+                                        .padding(.horizontal, 8)
+                                        .font(.system(size: 14, weight: .bold))
+                                        .foregroundStyle(.red)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 12)
+                                                .stroke(.red, lineWidth: 2)
+                                        )
+                                        .frame(height: 16)
                                     }
-                                    .padding(.vertical, 4)
-                                    .padding(.horizontal, 8)
-                                    .font(.system(size: 14, weight: .bold))
-                                    .foregroundStyle(.red)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 12)
-                                            .stroke(.red, lineWidth: 2)
-                                    )
-                                    .frame(height: 16)
                                 }
                             }
                         }

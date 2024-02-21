@@ -4,7 +4,7 @@ struct ProductTranslator {
     func translate(_ entity: RakutenProductSearchEntity) -> [ProductModel] {
         entity.items.map {
             .init(
-                id: UUID().uuidString,
+                id: $0.itemCode,
                 name: $0.itemName,
                 description: $0.itemCaption,
                 price: priceLabel(price: $0.itemPrice),
@@ -19,7 +19,7 @@ struct ProductTranslator {
     func translate(_ entity: YahooProductSearchEntity) -> [ProductModel] {
         entity.hits.map {
             .init(
-                id: UUID().uuidString,
+                id: $0.code,
                 name: $0.name,
                 description: $0.description ?? "",
                 price: priceLabel(price: $0.price),
