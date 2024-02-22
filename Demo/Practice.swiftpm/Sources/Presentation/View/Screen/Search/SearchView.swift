@@ -8,13 +8,16 @@ struct SearchView: View {
     }
 
     var body: some View {
-        VStack(spacing: 4) {
+        ZStack(alignment: .top) {
             SearchEnginesView(viewModel: viewModel)
+                .frame(height: 60)
 
             VStack {
                 switch viewModel.state.viewState {
                 case .initial:
-                    InitialView()
+                    CenterView {
+                        InitialView()
+                    }
 
                 case let .loading(items):
                     if items.isEmpty {
@@ -25,7 +28,8 @@ struct SearchView: View {
                         VStack {
                             SearchItemView(
                                 viewModel: viewModel,
-                                items: items
+                                items: items,
+                                lastItemID: nil
                             )
 
                             LoadingView()
@@ -38,7 +42,7 @@ struct SearchView: View {
                             errorDescription: appError.errorDescription,
                             didTapReloadButton: {
                                 Task { @MainActor in
-                                    await viewModel.search()
+                                    await viewModel.search(isAdditionalLoading: false)
                                 }
                             }
                         )
@@ -53,21 +57,18 @@ struct SearchView: View {
                     }
 
                 case let .loaded(items):
-                    VStack {
-                        if viewModel.state.isEmptySearchEngine {
-                            SearchFilterEmptyView()
-                        } else {
-                            SearchItemView(
-                                viewModel: viewModel,
-                                items: items
-                            )
-                        }
+                    if viewModel.state.isEmptySearchEngine {
+                        SearchFilterEmptyView()
+                    } else {
+                        SearchItemView(
+                            viewModel: viewModel,
+                            items: items,
+                            lastItemID: viewModel.state.lastItemId
+                        )
                     }
                 }
             }
-            .padding(.vertical, 8)
-
-            Spacer()
+            .padding(.top, 64)
         }
         .searchable(
             text: .init(
@@ -83,7 +84,7 @@ struct SearchView: View {
         )
         .onSubmit(of: .search) {
             Task { @MainActor in
-                await viewModel.search()
+                await viewModel.search(isAdditionalLoading: false)
             }
         }
     }
@@ -148,45 +149,62 @@ struct SearchView: View {
         @ObservedObject var viewModel: SearchViewModel
 
         let items: [ProductModel]
+        let lastItemID: String?
 
         var body: some View {
             ScrollView {
-                LazyVStack(spacing: 16) {
-                    ForEach(items, id: \.self) { item in
-                        HStack(alignment: .top, spacing: 12) {
-                            AsyncImageView(
-                                url: item.imageUrl,
-                                successImage: { image in
-                                    image.resizable()
-                                },
-                                failureImage: {
-                                    Image("noImage", bundle: .module).resizable()
-                                },
-                                placeholderImage: {
-                                    Image("noImage", bundle: .module).resizable()
-                                }
-                            )
-                            .frame(width: 128, height: 128)
-                            .clipShape(RoundedRectangle(cornerRadius: 4))
+                ScrollViewReader { proxy in
+                    LazyVStack(spacing: 16) {
+                        ForEach(items, id: \.self) { item in
+                            HStack(alignment: .top, spacing: 12) {
+                                AsyncImageView(
+                                    url: item.imageUrl,
+                                    successImage: { image in
+                                        image.resizable()
+                                    },
+                                    failureImage: {
+                                        Image("noImage", bundle: .module).resizable()
+                                    },
+                                    placeholderImage: {
+                                        Image("noImage", bundle: .module).resizable()
+                                    }
+                                )
+                                .frame(width: 128, height: 128)
+                                .clipShape(RoundedRectangle(cornerRadius: 4))
 
-                            VStack(alignment: .leading, spacing: 12) {
-                                Text(item.name)
-                                    .font(.system(size: 16, weight: .bold))
-                                    .lineLimit(4)
+                                VStack(alignment: .leading, spacing: 12) {
+                                    Text(item.name)
+                                        .font(.system(size: 16, weight: .bold))
+                                        .lineLimit(4)
 
-                                HStack {
-                                    Text(item.price)
-                                        .font(.system(size: 18, weight: .bold))
-                                        .foregroundStyle(.red)
+                                    HStack {
+                                        Text(item.price)
+                                            .font(.system(size: 18, weight: .bold))
+                                            .foregroundStyle(.red)
 
-                                    Image(item.searchEngine.rawValue, bundle: .module)
-                                        .resizable()
-                                        .frame(width: 16, height: 16)
+                                        Image(item.searchEngine.rawValue, bundle: .module)
+                                            .resizable()
+                                            .frame(width: 16, height: 16)
 
-                                    Spacer()
+                                        Spacer()
 
-                                    if item.isAddedItem {
-                                        Text("追加済み")
+                                        if item.isAddedItem {
+                                            Text("追加済み")
+                                                .padding(.vertical, 4)
+                                                .padding(.horizontal, 8)
+                                                .font(.system(size: 14, weight: .bold))
+                                                .foregroundStyle(.red)
+                                                .overlay(
+                                                    RoundedRectangle(cornerRadius: 12)
+                                                        .stroke(.red, lineWidth: 2)
+                                                )
+                                                .frame(height: 16)
+                                        } else {
+                                            Button {
+                                                viewModel.save(item)
+                                            } label: {
+                                                Text("追加")
+                                            }
                                             .padding(.vertical, 4)
                                             .padding(.horizontal, 8)
                                             .font(.system(size: 14, weight: .bold))
@@ -196,33 +214,27 @@ struct SearchView: View {
                                                     .stroke(.red, lineWidth: 2)
                                             )
                                             .frame(height: 16)
-                                    } else {
-                                        Button {
-                                            viewModel.save(item)
-                                        } label: {
-                                            Text("追加")
                                         }
-                                        .padding(.vertical, 4)
-                                        .padding(.horizontal, 8)
-                                        .font(.system(size: 14, weight: .bold))
-                                        .foregroundStyle(.red)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 12)
-                                                .stroke(.red, lineWidth: 2)
-                                        )
-                                        .frame(height: 16)
                                     }
                                 }
                             }
-                        }
-                        .onTapGesture {
-                            print(item.price)
-                        }
+                            .id(item.id)
+                            .onAppear {
+                                Task { @MainActor in
+                                    await viewModel.additionalLoadingItems(id: item.id)
+                                }
 
-                        Divider()
+                                if let lastItemID {
+                                    viewModel.resetLastItemID()
+                                    proxy.scrollTo(lastItemID, anchor: .bottom)
+                                }
+                            }
+
+                            Divider()
+                        }
                     }
+                    .padding(.horizontal, 16)
                 }
-                .padding(.horizontal, 16)
             }
         }
     }
@@ -239,7 +251,7 @@ struct SearchView: View {
 #Preview {
     SearchView(
         viewModel: .init(
-            state: .init(viewState: .empty),
+            state: .init(viewState: .initial),
             dependency: .init(
                 apiClient: .init(),
                 userDefaultsClient: .init(),

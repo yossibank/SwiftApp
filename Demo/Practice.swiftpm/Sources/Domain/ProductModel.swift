@@ -12,5 +12,6 @@ struct ProductModel: Hashable, Codable, UserDefaultsCompatible {
     enum SearchEngine: String, CaseIterable, Codable {
         case yahoo
         case rakuten
+        case original
     }
 }

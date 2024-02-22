@@ -16,12 +16,16 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
         mixtureItems()
     }
 
-    func search() async {
-        state.loadedItems = []
-        state.isEmptySearchEngine = state.searchEngines.isEmpty
+    func search(isAdditionalLoading: Bool) async {
+        if !isAdditionalLoading {
+            state.loadedItems = []
+            state.currentRakutenPage = 1
+            state.currentYahooStart = 1
+            state.isEmptySearchEngine = state.searchEngines.isEmpty
 
-        guard !state.isEmptySearchEngine else {
-            return
+            guard !state.isEmptySearchEngine else {
+                return
+            }
         }
 
         state.viewState = .loading(loaded: state.loadedItems)
@@ -34,21 +38,32 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
                 case .rakuten:
                     let entity = try await dependency.apiClient.request(
                         item: RakutenProductSearchRequest(
-                            parameters: .init(keyword: state.keyword)
+                            parameters: .init(
+                                keyword: state.keyword,
+                                page: state.currentRakutenPage
+                            )
                         )
                     )
+                    state.currentRakutenPage += 1
                     newItems = dependency.translator.translate(entity)
 
                 case .yahoo:
                     let entity = try await dependency.apiClient.request(
                         item: YahooProductSearchRequest(
-                            parameters: .init(query: state.keyword)
+                            parameters: .init(
+                                query: state.keyword,
+                                start: state.currentYahooStart
+                            )
                         )
                     )
+                    state.currentYahooStart += 20
                     newItems = dependency.translator.translate(entity)
+
+                case .original:
+                    newItems = []
                 }
-                let newLoadedItems = updateItems(items: state.loadedItems + newItems)
-                state.loadedItems.append(contentsOf: newLoadedItems)
+                let newLoadedItems = updateItems(items: state.loadedItems + newItems).removeDuplicates(keyPath: \.id)
+                state.loadedItems = newLoadedItems
 
                 if newLoadedItems.isEmpty {
                     state.viewState = .empty
@@ -64,9 +79,15 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
                     state.viewState = .loadingError(
                         AppError.parse(error: error)
                     )
-                    state.viewState = .loaded(state.loadedItems)
                 }
             }
+        }
+    }
+
+    func additionalLoadingItems(id: String) async {
+        if state.loadedItems.last?.id == id {
+            state.lastItemId = id
+            await search(isAdditionalLoading: true)
         }
     }
 
@@ -82,6 +103,10 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
         var itemList = dependency.userDefaultsClient.value(for: \.itemList)
         itemList.append(item)
         dependency.userDefaultsClient.setValue(for: \.itemList, value: itemList)
+    }
+
+    func resetLastItemID() {
+        state.lastItemId = nil
     }
 
     private func mixtureItems() {
@@ -118,9 +143,12 @@ extension SearchViewModel {
     struct State {
         var viewState: UIPagingState<[ProductModel]> = .initial
         var loadedItems: [ProductModel] = []
-        var searchEngines = ProductModel.SearchEngine.allCases
+        var searchEngines: [ProductModel.SearchEngine] = [.rakuten, .yahoo]
         var isEmptySearchEngine = false
         var keyword = ""
+        var currentRakutenPage = 1
+        var currentYahooStart = 1
+        var lastItemId: String?
     }
 
     struct Dependency {

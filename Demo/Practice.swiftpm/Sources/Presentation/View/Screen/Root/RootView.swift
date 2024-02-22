@@ -10,6 +10,11 @@ struct RootView: View {
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             ScrollView {
+                Text("欲しいものリスト")
+                    .font(.system(size: 20, weight: .bold))
+                    .padding([.top, .leading], 16)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
                 LazyVStack {
                     ForEach(viewModel.state.itemList, id: \.self) { item in
                         HStack(alignment: .top, spacing: 12) {
