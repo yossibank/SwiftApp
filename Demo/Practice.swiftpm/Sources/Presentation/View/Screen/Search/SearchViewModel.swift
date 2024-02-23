@@ -77,7 +77,7 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
                         appError: AppError.parse(error: error)
                     )
                 } else {
-                    state.displayState = .toastError
+                    state.isShowToastError = true
                 }
             }
         }
@@ -136,6 +136,7 @@ extension SearchViewModel {
     struct State {
         var displayState: DisplayState = .initial
         var searchParameter = SearchParameter()
+        var isShowToastError = false
 
         enum DisplayState {
             case initial
@@ -143,7 +144,6 @@ extension SearchViewModel {
             case emptySearchEngine
             case emptySearchItem
             case showError(appError: AppError)
-            case toastError
             case loaded(loaded: [ProductModel])
         }
 

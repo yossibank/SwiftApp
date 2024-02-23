@@ -43,9 +43,6 @@ struct SearchView: View {
                         )
                     }
 
-                case .toastError:
-                    Text("エラー")
-
                 case let .loaded(items):
                     SearchItemView(
                         viewModel: viewModel,
@@ -53,6 +50,13 @@ struct SearchView: View {
                     )
                 }
             }
+            .modifier(
+                ToastModifier(
+                    isShown: $viewModel.state.isShowToastError,
+                    toastType: .error,
+                    message: "読み込みに失敗しました"
+                )
+            )
         }
         .searchable(
             text: .init(
