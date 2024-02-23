@@ -11,24 +11,27 @@ struct SearchView: View {
         VStack(spacing: 16) {
             SearchEnginesView(viewModel: viewModel)
 
-            ZStack {
-                if viewModel.state.isShowToastError {
-                    ToastView(isShowing: $viewModel.state.isShowToastError)
-                }
+            ScrollView {
+                switch viewModel.state.displayState {
+                case .initial:
+                    EmptyView()
 
-                if viewModel.state.isEmptySearchEngine {
+                case .initialLoading:
+                    CenterView {
+                        LoadingView()
+                    }
+
+                case .emptySearchEngine:
                     CenterView {
                         SearchFilterEmptyView()
                     }
-                }
 
-                if viewModel.state.isEmptyProduct {
+                case .emptySearchItem:
                     CenterView {
                         NoResultView(title: "検索した商品が見つかりませんでした")
                     }
-                }
 
-                if let appError = viewModel.state.appError {
+                case let .showError(appError):
                     CenterView {
                         ErrorView(
                             errorDescription: appError.errorDescription,
@@ -39,24 +42,25 @@ struct SearchView: View {
                             }
                         )
                     }
-                }
 
-                ScrollView {
-                    SearchItemView(viewModel: viewModel)
+                case .toastError:
+                    Text("エラー")
 
-                    if viewModel.state.isLoading {
-                        LoadingView()
-                    }
+                case let .loaded(items):
+                    SearchItemView(
+                        viewModel: viewModel,
+                        items: items
+                    )
                 }
             }
         }
         .searchable(
             text: .init(
                 get: {
-                    viewModel.state.keyword
+                    viewModel.state.searchParameter.keyword
                 },
                 set: { text in
-                    viewModel.state.keyword = text
+                    viewModel.state.searchParameter.keyword = text
                 }
             ),
             placement: .navigationBarDrawer(displayMode: .always),
@@ -103,7 +107,7 @@ struct SearchView: View {
                     }
                     .buttonStyle(
                         BorderedRoundedButtonStyle(
-                            isSelected: viewModel.state.searchEngines.contains(.yahoo)
+                            isSelected: viewModel.state.searchParameter.isSelectedYahoo
                         )
                     )
 
@@ -124,7 +128,7 @@ struct SearchView: View {
                     }
                     .buttonStyle(
                         BorderedRoundedButtonStyle(
-                            isSelected: viewModel.state.searchEngines.contains(.rakuten)
+                            isSelected: viewModel.state.searchParameter.isSelectedRakuten
                         )
                     )
                 }
@@ -136,9 +140,11 @@ struct SearchView: View {
     private struct SearchItemView: View {
         @ObservedObject var viewModel: SearchViewModel
 
+        let items: [ProductModel]
+
         var body: some View {
             LazyVStack(spacing: 16) {
-                ForEach(viewModel.state.loadedItems, id: \.self) { item in
+                ForEach(items, id: \.self) { item in
                     HStack(alignment: .top, spacing: 12) {
                         AsyncImageView(
                             url: item.imageUrl,
@@ -218,7 +224,7 @@ struct SearchView: View {
 #Preview {
     SearchView(
         viewModel: .init(
-            state: .init(isShowToastError: true),
+            state: .init(),
             dependency: .init(
                 apiClient: .init(),
                 userDefaultsClient: .init(),
