@@ -27,6 +27,15 @@ final class RootViewModel: BaseViewModel<RootViewModel> {
     func didTapSearchButton() {
         send(.search)
     }
+
+    func deleteItem(item: ProductModel) {
+        state.itemList.removeAll { $0.id == item.id }
+
+        dependency.userDefaultsClient.setValue(
+            for: \.itemList,
+            value: state.itemList
+        )
+    }
 }
 
 extension RootViewModel {

@@ -117,6 +117,7 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
                 }
 
                 state.searchParameter.loadedItems = updatedItems
+                state.displayState = .loaded(loaded: updatedItems)
             }
             .store(in: &cancellables)
     }
