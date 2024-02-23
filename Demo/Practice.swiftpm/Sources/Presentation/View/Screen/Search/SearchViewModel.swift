@@ -18,17 +18,14 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
 
     func search(isAdditionalLoading: Bool) async {
         if !isAdditionalLoading {
-            state.loadedItems = []
-            state.currentRakutenPage = 1
-            state.currentYahooStart = 1
-            state.isEmptySearchEngine = state.searchEngines.isEmpty
+            updateSearchState()
 
             guard !state.isEmptySearchEngine else {
                 return
             }
         }
 
-        state.viewState = .loading(loaded: state.loadedItems)
+        state.isLoading = true
 
         var newItems: [ProductModel]
 
@@ -62,31 +59,17 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
                 case .original:
                     newItems = []
                 }
-                let newLoadedItems = updateItems(items: state.loadedItems + newItems).removeDuplicates(keyPath: \.id)
-                state.loadedItems = newLoadedItems
 
-                if newLoadedItems.isEmpty {
-                    state.viewState = .empty
-                } else {
-                    state.viewState = .loaded(newLoadedItems)
-                }
+                let newLoadedItems = updateItems(items: state.loadedItems + newItems).removeDuplicates(keyPath: \.id)
+                updateSuccessState(items: newLoadedItems)
             } catch {
-                if state.loadedItems.isEmpty {
-                    state.viewState = .initialError(
-                        AppError.parse(error: error)
-                    )
-                } else {
-                    state.viewState = .loadingError(
-                        AppError.parse(error: error)
-                    )
-                }
+                updateFailureState(error: error)
             }
         }
     }
 
     func additionalLoadingItems(id: String) async {
         if state.loadedItems.last?.id == id {
-            state.lastItemId = id
             await search(isAdditionalLoading: true)
         }
     }
@@ -105,10 +88,6 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
         dependency.userDefaultsClient.setValue(for: \.itemList, value: itemList)
     }
 
-    func resetLastItemID() {
-        state.lastItemId = nil
-    }
-
     private func mixtureItems() {
         dependency.userDefaultsClient.value(for: \.$itemList)
             .sink { [weak self] itemList in
@@ -116,14 +95,13 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
                     return
                 }
 
-                if case let .loaded(items) = state.viewState {
-                    let updatedItems = items.map {
-                        var item = $0
-                        item.isAddedItem = itemList.contains { $0.id == item.id }
-                        return item
-                    }
-                    state.viewState = .loaded(updatedItems)
+                let updatedItems = state.loadedItems.map {
+                    var item = $0
+                    item.isAddedItem = itemList.contains { $0.id == item.id }
+                    return item
                 }
+
+                state.loadedItems = updatedItems
             }
             .store(in: &cancellables)
     }
@@ -137,18 +115,45 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
             return item
         }
     }
+
+    private func updateSearchState() {
+        state.loadedItems = []
+        state.currentRakutenPage = 1
+        state.currentYahooStart = 1
+        state.isEmptySearchEngine = state.searchEngines.isEmpty
+    }
+
+    private func updateSuccessState(items: [ProductModel]) {
+        state.isLoading = false
+        state.initialError = nil
+        state.addtionalError = nil
+        state.isEmptyProduct = items.isEmpty
+        state.loadedItems = items
+    }
+
+    private func updateFailureState(error: Error) {
+        state.isLoading = false
+
+        if state.loadedItems.isEmpty {
+            state.initialError = AppError.parse(error: error)
+        } else {
+            state.addtionalError = AppError.parse(error: error)
+        }
+    }
 }
 
 extension SearchViewModel {
     struct State {
-        var viewState: UIPagingState<[ProductModel]> = .initial
-        var loadedItems: [ProductModel] = []
         var searchEngines: [ProductModel.SearchEngine] = [.rakuten, .yahoo]
         var isEmptySearchEngine = false
+        var isEmptyProduct = false
+        var isLoading = false
         var keyword = ""
         var currentRakutenPage = 1
         var currentYahooStart = 1
-        var lastItemId: String?
+        var loadedItems: [ProductModel] = []
+        var initialError: AppError?
+        var addtionalError: AppError?
     }
 
     struct Dependency {
