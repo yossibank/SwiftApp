@@ -10,38 +10,43 @@ struct SearchView: View {
     var body: some View {
         VStack(spacing: 16) {
             SearchEnginesView(viewModel: viewModel)
-                .frame(height: 60)
 
-            if viewModel.state.isEmptySearchEngine {
-                CenterView {
-                    SearchFilterEmptyView()
+            ZStack {
+                if viewModel.state.isShowToastError {
+                    ToastView(isShowing: $viewModel.state.isShowToastError)
                 }
-            }
 
-            if viewModel.state.isEmptyProduct {
-                CenterView {
-                    NoResultView(title: "検索した商品が見つかりませんでした")
+                if viewModel.state.isEmptySearchEngine {
+                    CenterView {
+                        SearchFilterEmptyView()
+                    }
                 }
-            }
 
-            if let appError = viewModel.state.initialError {
-                CenterView {
-                    ErrorView(
-                        errorDescription: appError.errorDescription,
-                        didTapReloadButton: {
-                            Task { @MainActor in
-                                await viewModel.search(isAdditionalLoading: false)
+                if viewModel.state.isEmptyProduct {
+                    CenterView {
+                        NoResultView(title: "検索した商品が見つかりませんでした")
+                    }
+                }
+
+                if let appError = viewModel.state.appError {
+                    CenterView {
+                        ErrorView(
+                            errorDescription: appError.errorDescription,
+                            didTapReloadButton: {
+                                Task { @MainActor in
+                                    await viewModel.search(isAdditionalLoading: false)
+                                }
                             }
-                        }
-                    )
+                        )
+                    }
                 }
-            }
 
-            ScrollView {
-                SearchItemView(viewModel: viewModel)
+                ScrollView {
+                    SearchItemView(viewModel: viewModel)
 
-                if viewModel.state.isLoading {
-                    LoadingView()
+                    if viewModel.state.isLoading {
+                        LoadingView()
+                    }
                 }
             }
         }
@@ -213,7 +218,7 @@ struct SearchView: View {
 #Preview {
     SearchView(
         viewModel: .init(
-            state: .init(),
+            state: .init(isShowToastError: true),
             dependency: .init(
                 apiClient: .init(),
                 userDefaultsClient: .init(),

@@ -125,8 +125,8 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
 
     private func updateSuccessState(items: [ProductModel]) {
         state.isLoading = false
-        state.initialError = nil
-        state.addtionalError = nil
+        state.isShowToastError = false
+        state.appError = nil
         state.isEmptyProduct = items.isEmpty
         state.loadedItems = items
     }
@@ -135,9 +135,9 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
         state.isLoading = false
 
         if state.loadedItems.isEmpty {
-            state.initialError = AppError.parse(error: error)
+            state.appError = AppError.parse(error: error)
         } else {
-            state.addtionalError = AppError.parse(error: error)
+            state.isShowToastError = true
         }
     }
 }
@@ -148,12 +148,12 @@ extension SearchViewModel {
         var isEmptySearchEngine = false
         var isEmptyProduct = false
         var isLoading = false
+        var isShowToastError = false
         var keyword = ""
         var currentRakutenPage = 1
         var currentYahooStart = 1
         var loadedItems: [ProductModel] = []
-        var initialError: AppError?
-        var addtionalError: AppError?
+        var appError: AppError?
     }
 
     struct Dependency {
