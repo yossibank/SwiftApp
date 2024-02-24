@@ -72,14 +72,20 @@ struct RootView: View {
                             )
                         }
                     }
-                    .onMove { _, _ in
+                    .onMove { offsets, destination in
+                        viewModel.moveItem(
+                            from: offsets,
+                            to: destination
+                        )
                     }
-                    .onDelete { _ in
+                    .onDelete { offsets in
+                        viewModel.deleteItem(from: offsets)
                     }
                 }
                 .listStyle(.plain)
                 .toolbar {
                     EditButton()
+                        .bold()
                 }
             }
 

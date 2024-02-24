@@ -9,6 +9,7 @@ import PackageDescription
 
 let package = Package(
     name: "Practice",
+    defaultLocalization: "ja",
     platforms: [
         .iOS("17.0")
     ],

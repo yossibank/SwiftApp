@@ -46,6 +46,30 @@ final class RootViewModel: BaseViewModel<RootViewModel> {
             value: state.itemList
         )
     }
+
+    func moveItem(
+        from source: IndexSet,
+        to destination: Int
+    ) {
+        state.itemList.move(
+            fromOffsets: source,
+            toOffset: destination
+        )
+
+        dependency.userDefaultsClient.setValue(
+            for: \.itemList,
+            value: state.itemList
+        )
+    }
+
+    func deleteItem(from source: IndexSet) {
+        state.itemList.remove(atOffsets: source)
+
+        dependency.userDefaultsClient.setValue(
+            for: \.itemList,
+            value: state.itemList
+        )
+    }
 }
 
 extension RootViewModel {

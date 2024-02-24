@@ -10,7 +10,7 @@ struct FloatingActionButtonView: View {
             if isSelected {
                 ForEach(actionButtons) { actionButton in
                     Button {
-                        withAnimation(.easeIn(duration: 0.3)) {
+                        withAnimation(.linear(duration: 0.3)) {
                             isSelected.toggle()
                         }
                         actionButton.didTap()
@@ -20,7 +20,7 @@ struct FloatingActionButtonView: View {
                             .frame(width: 25, height: 25)
                     }
                     .frame(width: 60, height: 60)
-                    .background(Color.green)
+                    .background(.green)
                     .foregroundStyle(.white)
                     .clipShape(Circle())
                     .transition(.move(edge: .bottom))
@@ -28,7 +28,7 @@ struct FloatingActionButtonView: View {
             }
 
             Button {
-                withAnimation(.easeIn(duration: 0.3)) {
+                withAnimation(.linear(duration: 0.3)) {
                     isSelected.toggle()
                 }
             } label: {
