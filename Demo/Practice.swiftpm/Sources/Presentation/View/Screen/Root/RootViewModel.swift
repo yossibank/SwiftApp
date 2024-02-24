@@ -38,15 +38,6 @@ final class RootViewModel: BaseViewModel<RootViewModel> {
         return [searchButton, createButton]
     }
 
-    func deleteItem(item: ProductModel) {
-        state.itemList.removeAll { $0.id == item.id }
-
-        dependency.userDefaultsClient.setValue(
-            for: \.itemList,
-            value: state.itemList
-        )
-    }
-
     func moveItem(
         from source: IndexSet,
         to destination: Int
@@ -70,6 +61,15 @@ final class RootViewModel: BaseViewModel<RootViewModel> {
             value: state.itemList
         )
     }
+
+    func deleteItem(item: ProductModel) {
+        state.itemList.removeAll { $0.id == item.id }
+
+        dependency.userDefaultsClient.setValue(
+            for: \.itemList,
+            value: state.itemList
+        )
+    }
 }
 
 extension RootViewModel {
@@ -87,6 +87,7 @@ extension RootViewModel {
     }
 
     enum Output {
+        case detail
         case create
         case search
     }

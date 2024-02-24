@@ -31,6 +31,12 @@ final class RootViewController: UIHostingController<RootView> {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] output in
                 switch output {
+                case .detail:
+                    self?.navigationController?.pushViewController(
+                        DetailViewController(),
+                        animated: true
+                    )
+
                 case .create:
                     self?.navigationController?.pushViewController(
                         CreateViewController(),
