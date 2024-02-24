@@ -3,6 +3,8 @@ import SwiftUI
 struct RootView: View {
     @StateObject var viewModel: RootViewModel
 
+    @State private var isSelectedFloatingButton = false
+
     init(viewModel: RootViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
@@ -71,10 +73,8 @@ struct RootView: View {
                         }
                     }
                     .onMove { _, _ in
-
                     }
                     .onDelete { _ in
-
                     }
                 }
                 .listStyle(.plain)
@@ -83,20 +83,10 @@ struct RootView: View {
                 }
             }
 
-            HStack(spacing: 24) {
-                SystemImageButton(
-                    systemName: "plus.circle",
-                    didTap: {
-                        viewModel.didTapCreateButton()
-                    }
-                )
-                SystemImageButton(
-                    systemName: "magnifyingglass.circle",
-                    didTap: {
-                        viewModel.didTapSearchButton()
-                    }
-                )
-            }
+            FloatingActionButtonView(
+                isSelected: $viewModel.state.isSelectedButton,
+                actionButtons: viewModel.makeFloatingActionButtons()
+            )
             .padding(32)
         }
     }

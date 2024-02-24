@@ -20,12 +20,22 @@ final class RootViewModel: BaseViewModel<RootViewModel> {
             .store(in: &cancellables)
     }
 
-    func didTapCreateButton() {
-        send(.create)
-    }
+    func makeFloatingActionButtons() -> [FloatingActionButton] {
+        let createButton: FloatingActionButton = .init(
+            iconName: "plus",
+            didTap: { [weak self] in
+                self?.send(.create)
+            }
+        )
 
-    func didTapSearchButton() {
-        send(.search)
+        let searchButton: FloatingActionButton = .init(
+            iconName: "magnifyingglass",
+            didTap: { [weak self] in
+                self?.send(.search)
+            }
+        )
+
+        return [searchButton, createButton]
     }
 
     func deleteItem(item: ProductModel) {
@@ -40,6 +50,7 @@ final class RootViewModel: BaseViewModel<RootViewModel> {
 
 extension RootViewModel {
     struct State {
+        var isSelectedButton = false
         var itemList: [ProductModel] = []
     }
 
