@@ -22,7 +22,7 @@ final class RootViewModel: BaseViewModel<RootViewModel> {
 
     func makeFloatingActionButtons() -> [FloatingActionButton] {
         let createButton: FloatingActionButton = .init(
-            iconName: "plus",
+            iconName: "plus.square.on.square",
             didTap: { [weak self] in
                 self?.send(.create)
             }
