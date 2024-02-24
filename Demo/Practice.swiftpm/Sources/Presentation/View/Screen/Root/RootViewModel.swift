@@ -76,6 +76,10 @@ extension RootViewModel {
     struct State {
         var isSelectedButton = false
         var itemList: [ProductModel] = []
+
+        var isShowEditButton: Bool {
+            !itemList.isEmpty
+        }
     }
 
     struct Dependency {

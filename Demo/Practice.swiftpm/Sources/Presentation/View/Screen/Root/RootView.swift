@@ -84,8 +84,10 @@ struct RootView: View {
                 }
                 .listStyle(.plain)
                 .toolbar {
-                    EditButton()
-                        .bold()
+                    if viewModel.state.isShowEditButton {
+                        EditButton()
+                            .bold()
+                    }
                 }
             }
 
