@@ -70,6 +70,10 @@ final class RootViewModel: BaseViewModel<RootViewModel> {
             value: state.itemList
         )
     }
+
+    func didTapItem(_ item: ProductModel) {
+        send(.detail(item))
+    }
 }
 
 extension RootViewModel {
@@ -87,7 +91,7 @@ extension RootViewModel {
     }
 
     enum Output {
-        case detail
+        case detail(ProductModel)
         case create
         case search
     }

@@ -2,8 +2,8 @@ import SwiftUI
 import UIKit
 
 final class DetailViewController: UIHostingController<DetailView> {
-    init() {
-        super.init(rootView: DetailView())
+    init(item: ProductModel) {
+        super.init(rootView: DetailView(item: item))
     }
 
     @available(*, unavailable)
@@ -13,5 +13,10 @@ final class DetailViewController: UIHostingController<DetailView> {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
+    }
+
+    private func setupView() {
+        title = "商品詳細"
     }
 }

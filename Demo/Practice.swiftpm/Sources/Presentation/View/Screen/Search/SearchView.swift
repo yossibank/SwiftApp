@@ -151,7 +151,7 @@ struct SearchView: View {
                 ForEach(items, id: \.self) { item in
                     HStack(alignment: .top, spacing: 12) {
                         AsyncImageView(
-                            url: item.imageUrl,
+                            url: item.imageURL,
                             successImage: { image in
                                 image.resizable()
                             },

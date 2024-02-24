@@ -22,7 +22,7 @@ struct RootView: View {
                         VStack {
                             HStack(alignment: .top, spacing: 12) {
                                 AsyncImageView(
-                                    url: item.imageUrl,
+                                    url: item.imageURL,
                                     successImage: { image in
                                         image.resizable()
                                     },
@@ -58,7 +58,7 @@ struct RootView: View {
                         }
                         .listRowSeparator(.hidden)
                         .onTapGesture {
-                            print(item.price)
+                            viewModel.didTapItem(item)
                         }
                         .swipeActions(edge: .trailing) {
                             Button(

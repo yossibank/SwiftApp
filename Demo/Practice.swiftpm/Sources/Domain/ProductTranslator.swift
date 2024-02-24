@@ -8,9 +8,13 @@ struct ProductTranslator {
                 name: $0.itemName,
                 description: $0.itemCaption,
                 price: priceLabel(price: $0.itemPrice),
-                imageUrl: $0.mediumImageUrls.compactMap {
+                imageURL: $0.mediumImageUrls.compactMap {
                     .init(string: $0)
                 }.first,
+                imageURLs: $0.mediumImageUrls.compactMap {
+                    .init(string: $0)
+                },
+                itemURL: .init(string: $0.itemUrl),
                 searchEngine: .rakuten
             )
         }
@@ -23,7 +27,9 @@ struct ProductTranslator {
                 name: $0.name,
                 description: $0.description ?? "",
                 price: priceLabel(price: $0.price),
-                imageUrl: .init(string: $0.image.medium),
+                imageURL: .init(string: $0.image.medium),
+                imageURLs: [.init(string: $0.image.medium)].compactMap { $0 },
+                itemURL: .init(string: $0.url),
                 searchEngine: .yahoo
             )
         }

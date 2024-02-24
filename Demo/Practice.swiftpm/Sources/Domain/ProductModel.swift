@@ -5,7 +5,9 @@ struct ProductModel: Hashable, Codable, UserDefaultsCompatible {
     let name: String
     let description: String
     let price: String
-    let imageUrl: URL?
+    let imageURL: URL?
+    let imageURLs: [URL]
+    let itemURL: URL?
     let searchEngine: SearchEngine
     var isAddedItem = false
 

@@ -31,9 +31,9 @@ final class RootViewController: UIHostingController<RootView> {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] output in
                 switch output {
-                case .detail:
+                case let .detail(item):
                     self?.navigationController?.pushViewController(
-                        DetailViewController(),
+                        DetailViewController(item: item),
                         animated: true
                     )
 
