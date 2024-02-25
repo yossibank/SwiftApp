@@ -3,27 +3,46 @@ import SwiftUI
 struct DetailView: View {
     let item: ProductModel
 
+    @Environment(\.openURL) var openURL
+
     var body: some View {
         GeometryReader { geometry in
-            VStack {
-                AsyncImageView(
-                    url: item.imageURL,
-                    successImage: { image in
-                        image.resizable()
-                    },
-                    failureImage: {
-                        Image("noImage", bundle: .module).resizable()
-                    },
-                    placeholderImage: {
-                        Image("placeholder", bundle: .module).resizable()
+            ScrollView {
+                VStack(spacing: 32) {
+                    AsyncImageView(
+                        url: item.imageURL,
+                        successImage: { image in
+                            image.resizable()
+                        },
+                        failureImage: {
+                            Image("noImage", bundle: .module).resizable()
+                        },
+                        placeholderImage: {
+                            Image("placeholder", bundle: .module).resizable()
+                        }
+                    )
+                    .frame(
+                        width: geometry.size.width * 0.5,
+                        height: geometry.size.width * 0.5,
+                        alignment: .center
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+
+                    Text(item.name)
+                        .font(.system(size: 14, weight: .bold))
+
+                    Button {
+                        if let url = item.itemURL {
+                            openURL(url)
+                        }
+                    } label: {
+                        Text("商品サイトへ")
                     }
-                )
-                .frame(
-                    width: geometry.size.width * 0.5,
-                    height: geometry.size.width * 0.5,
-                    alignment: .center
-                )
+                    .buttonStyle(BorderedRoundedButtonStyle(isSelected: false))
+                }
+                .padding(32)
             }
+            .frame(width: geometry.size.width)
         }
     }
 }

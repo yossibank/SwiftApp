@@ -99,6 +99,8 @@ final class SearchViewModel: BaseViewModel<SearchViewModel> {
 
     func save(_ item: ProductModel) {
         var itemList = dependency.userDefaultsClient.value(for: \.itemList)
+        var item = item
+        item.isAddedItem = true
         itemList.append(item)
         dependency.userDefaultsClient.setValue(for: \.itemList, value: itemList)
     }
