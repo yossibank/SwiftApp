@@ -22,7 +22,7 @@ struct AsyncImageView: View {
                 ProgressView()
 
             @unknown default:
-                failureImage()
+                placeholderImage()
             }
         }
     }

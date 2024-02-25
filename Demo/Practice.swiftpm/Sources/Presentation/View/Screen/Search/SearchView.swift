@@ -159,7 +159,7 @@ struct SearchView: View {
                                 Image("noImage", bundle: .module).resizable()
                             },
                             placeholderImage: {
-                                Image("noImage", bundle: .module).resizable()
+                                Image("placeholder", bundle: .module).resizable()
                             }
                         )
                         .frame(width: 128, height: 128)
