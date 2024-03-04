@@ -8,20 +8,20 @@ import AppleProductTypes
 import PackageDescription
 
 let package = Package(
-    name: "Sample",
+    name: "CleanArchitecture",
     platforms: [
         .iOS("17.0")
     ],
     products: [
         .iOSApplication(
-            name: "Sample",
-            targets: ["Sample"],
-            bundleIdentifier: "yossibank-yahoo.co.jp.Sample",
+            name: "CleanArchitecture",
+            targets: ["CleanArchitecture"],
+            bundleIdentifier: "yossibank-yahoo.co.jp.CleanArchitecture",
             teamIdentifier: "6WHPY5MQSB",
             displayVersion: "1.0",
             bundleVersion: "1",
-            appIcon: .placeholder(icon: .lightningBolt),
-            accentColor: .presetColor(.indigo),
+            appIcon: .placeholder(icon: .cloud),
+            accentColor: .presetColor(.blue),
             supportedDeviceFamilies: [
                 .pad,
                 .phone
@@ -34,19 +34,10 @@ let package = Package(
             ]
         )
     ],
-    dependencies: [
-        .package(path: "../../Package"),
-        .package(path: "../../Macro/CodingKeysMacro"),
-        .package(path: "../../Macro/StructBuilderMacro")
-    ],
+    dependencies: [],
     targets: [
         .executableTarget(
-            name: "Sample",
-            dependencies: [
-                .product(name: "API", package: "Package", condition: nil),
-                .product(name: "CodingKeys", package: "CodingKeysMacro", condition: nil),
-                .product(name: "StructBuilder", package: "StructBuilderMacro", condition: nil)
-            ],
+            name: "CleanArchitecture",
             path: "Sources"
         )
     ]
