@@ -1,14 +1,17 @@
 import Foundation
 
 protocol GitHubRepositoryProtocol {
-    func fetch(query: String) async throws -> [GitHubRepositoryEntity]
+    func fetch(query: String) async throws -> [GitHubRepositoryEntity.Item]
 }
 
-final class GitHubRepository: GitHubRepositoryProtocol {
-    private let apiClient = APIClient()
+struct GitHubRepository: GitHubRepositoryProtocol {
+    private let dataStore: GitHubRepositoryDataStore
 
-    func fetch(query: String) async throws -> [GitHubRepositoryEntity] {
-        let dto = try await apiClient.fetchRepositories(query: query)
-        return dto.map(GitHubRepositoryMapper.map)
+    init(dataStore: GitHubRepositoryDataStore) {
+        self.dataStore = dataStore
+    }
+
+    func fetch(query: String) async throws -> [GitHubRepositoryEntity.Item] {
+        try await dataStore.fetch(query: query)
     }
 }

@@ -1,19 +1,25 @@
 import Foundation
 
 protocol GithubRepositoryUseCaseProtocol {
-    func execute(query: String) async throws -> [GitHubRepositoryEntity]
+    func fetch(query: String) async throws -> [GitHubRepositoryModel]
 }
 
-final class GitHubRepositoryUseCase: GithubRepositoryUseCaseProtocol {
+struct GitHubRepositoryUseCase: GithubRepositoryUseCaseProtocol {
     private let repository: GitHubRepositoryProtocol
+    private let translator: GitHubRepositoryTranslatorProtocol
 
-    init(repository: GitHubRepositoryProtocol) {
+    init(
+        repository: GitHubRepositoryProtocol,
+        translator: GitHubRepositoryTranslatorProtocol
+    ) {
         self.repository = repository
+        self.translator = translator
     }
 
-    func execute(query: String) async throws -> [GitHubRepositoryEntity] {
+    func fetch(query: String) async throws -> [GitHubRepositoryModel] {
         do {
-            return try await repository.fetch(query: query)
+            let entity = try await repository.fetch(query: query)
+            return entity.map { translator.translate(from: $0) }
         } catch {
             throw error
         }

@@ -1,6 +1,6 @@
 import Foundation
 
-struct GitHubRepositoryEntity: Hashable {
+struct GitHubRepositoryModel: Hashable {
     var id: Int
     var name: String
     var description: String?

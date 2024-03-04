@@ -2,7 +2,7 @@ import Foundation
 
 @MainActor
 final class GitHubRepositoryViewModel: ObservableObject {
-    @Published var repositories: [GitHubRepositoryEntity] = []
+    @Published var repositories: [GitHubRepositoryModel] = []
 
     private let useCase: GithubRepositoryUseCaseProtocol
 
@@ -12,7 +12,7 @@ final class GitHubRepositoryViewModel: ObservableObject {
 
     func search(query: String) async {
         do {
-            repositories = try await useCase.execute(query: query)
+            repositories = try await useCase.fetch(query: query)
         } catch {
             print(error)
         }

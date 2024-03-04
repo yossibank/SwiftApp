@@ -1,7 +1,7 @@
 import Foundation
 
 final class APIClient {
-    func fetchRepositories(query: String) async throws -> [GitHubRepositoryDTO.Item] {
+    func fetch(query: String) async throws -> [GitHubRepositoryEntity.Item] {
         let query = query.addingPercentEncoding(
             withAllowedCharacters: .urlQueryAllowed
         ) ?? ""
@@ -23,7 +23,7 @@ final class APIClient {
 
         do {
             return try JSONDecoder().decode(
-                GitHubRepositoryDTO.self,
+                GitHubRepositoryEntity.self,
                 from: data
             ).items
         } catch {

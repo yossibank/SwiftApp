@@ -1,6 +1,6 @@
 import Foundation
 
-struct GitHubRepositoryDTO: Codable {
+struct GitHubRepositoryEntity: Codable {
     let items: [Item]
 
     struct Item: Codable {
