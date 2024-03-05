@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Demo/MVC.swiftpm">
+   </FileRef>
+   <FileRef
       location = "group:Demo/CleanArchitecture.swiftpm">
    </FileRef>
    <FileRef
