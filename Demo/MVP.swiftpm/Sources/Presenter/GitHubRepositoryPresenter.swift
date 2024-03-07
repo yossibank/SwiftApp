@@ -1,17 +1,17 @@
 import Foundation
 
-final class GitHubRepositoryModel: ObservableObject {
+final class GitHubRepositoryPresenter: ObservableObject {
     @Published var repositories: [GitHubRepositoryEntity.Item] = []
 
-    private let apiClient: APIClient
+    private let model: GitHubRepositoryModel
 
-    init(apiClient: APIClient) {
-        self.apiClient = apiClient
+    init(model: GitHubRepositoryModel) {
+        self.model = model
     }
 
     func fetch(query: String) async {
         do {
-            let response = try await apiClient.fetch(query: query)
+            let response = try await model.fetch(query: query)
 
             await MainActor.run {
                 repositories = response
