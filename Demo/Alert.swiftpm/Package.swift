@@ -8,20 +8,20 @@ import AppleProductTypes
 import PackageDescription
 
 let package = Package(
-    name: "MVC",
+    name: "Alert",
     platforms: [
-        .iOS("16.0")
+        .iOS("15.0")
     ],
     products: [
         .iOSApplication(
-            name: "MVC",
-            targets: ["MVC"],
-            bundleIdentifier: "yossibank-yahoo.co.jp.MVC",
+            name: "Alert",
+            targets: ["Alert"],
+            bundleIdentifier: "yossibank-yahoo.co.jp.Alert",
             teamIdentifier: "6WHPY5MQSB",
             displayVersion: "1.0",
             bundleVersion: "1",
-            appIcon: .placeholder(icon: .openBook),
-            accentColor: .presetColor(.mint),
+            appIcon: .placeholder(icon: .mic),
+            accentColor: .presetColor(.orange),
             supportedDeviceFamilies: [
                 .pad,
                 .phone
@@ -36,7 +36,7 @@ let package = Package(
     ],
     targets: [
         .executableTarget(
-            name: "MVC",
+            name: "Alert",
             path: "Sources",
             resources: [
                 .process("Resources")

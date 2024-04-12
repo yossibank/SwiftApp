@@ -37,7 +37,10 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "MVVM",
-            path: "Sources"
+            path: "Sources",
+            resources: [
+                .process("Resources")
+            ]
         )
     ]
 )

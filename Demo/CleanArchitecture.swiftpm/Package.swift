@@ -38,7 +38,10 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "CleanArchitecture",
-            path: "Sources"
+            path: "Sources",
+            resources: [
+                .process("Resources")
+            ]
         )
     ]
 )

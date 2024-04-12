@@ -37,7 +37,10 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "Flux",
-            path: "Sources"
+            path: "Sources",
+            resources: [
+                .process("Resources")
+            ]
         )
     ]
 )

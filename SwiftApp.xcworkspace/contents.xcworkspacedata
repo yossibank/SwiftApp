@@ -17,6 +17,9 @@
       location = "group:Demo/CleanArchitecture.swiftpm">
    </FileRef>
    <FileRef
+      location = "group:Demo/Alert.swiftpm">
+   </FileRef>
+   <FileRef
       location = "group:Demo/Practice.swiftpm">
    </FileRef>
    <FileRef

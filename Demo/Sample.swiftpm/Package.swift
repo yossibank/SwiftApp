@@ -47,7 +47,10 @@ let package = Package(
                 .product(name: "CodingKeys", package: "CodingKeysMacro", condition: nil),
                 .product(name: "StructBuilder", package: "StructBuilderMacro", condition: nil)
             ],
-            path: "Sources"
+            path: "Sources",
+            resources: [
+                .process("Resources")
+            ]
         )
     ]
 )
