@@ -34,9 +34,16 @@ let package = Package(
             ]
         )
     ],
+    dependencies: [
+        .package(url: "https://github.com/SnapKit/SnapKit", "5.7.1" ..< "6.0.0")
+    ],
     targets: [
         .executableTarget(
             name: "Alert",
+            dependencies: [
+                .product(name: "SnapKit", package: "snapkit"),
+                .product(name: "SnapKit-Dynamic", package: "snapkit")
+            ],
             path: "Sources",
             resources: [
                 .process("Resources")
