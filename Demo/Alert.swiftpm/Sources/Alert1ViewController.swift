@@ -1,3 +1,4 @@
+import Combine
 import SnapKit
 import UIKit
 
@@ -7,26 +8,19 @@ final class Alert1ViewController: UIViewController {
         return $0
     }(UIButton(type: .system))
 
-    private var isShowAlert = false
+    private let alertManager = AlertManager.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         setupTitle()
         setupEvent()
+        setupAlert()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        if isShowAlert {
-            present(
-                Alert5ViewController(),
-                animated: true
-            )
-
-            isShowAlert = false
-        }
+        alertManager.showAlertIfNeeded(rootViewController: self)
     }
 
     private func setupView() {
@@ -45,10 +39,21 @@ final class Alert1ViewController: UIViewController {
     private func setupEvent() {
         button.addAction(
             .init { [weak self] _ in
-                self?.isShowAlert = true
                 self?.showAlert()
             },
             for: .touchUpInside
+        )
+    }
+
+    private func setupAlert() {
+        alertManager.addAlert(
+            priority: .medium,
+            alert: Alert2ViewController()
+        )
+
+        alertManager.addAlert(
+            priority: .low,
+            alert: Alert3ViewController()
         )
     }
 
@@ -73,18 +78,21 @@ final class Alert1ViewController: UIViewController {
             title: "キャンセル",
             style: .cancel
         ) { [weak self] _ in
-            self?.present(
-                Alert5ViewController(),
-                animated: true
-            )
+            guard let self else {
+                return
+            }
+            alertManager.showAlertIfNeeded(rootViewController: self)
         }
 
         alert.addAction(okAction)
         alert.addAction(cancelAction)
 
-        present(
-            alert,
-            animated: true
+        alertManager.addAlert(
+            priority: .high,
+            alert: alert
         )
+
+        alertManager.activate()
+        alertManager.showAlertIfNeeded(rootViewController: self)
     }
 }
